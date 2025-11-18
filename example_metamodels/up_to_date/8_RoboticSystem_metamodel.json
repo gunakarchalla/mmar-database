@@ -1,0 +1,2880 @@
+{
+  "uuid": "113c3133-bf77-493a-a36f-553e77832280",
+  "name": "Robotic system",
+  "description": "This is a robotic system model",
+  "rotation": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "w": 1
+  },
+  "classes": [
+    {
+      "uuid": "c5cf9a3c-988a-4fd4-87e5-0ad8fcc7234b",
+      "name": "Joint",
+      "description": "The joint element describes the kinematics and dynamics of the joint",
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "attributes": [
+        {
+          "uuid": "6a9e9b72-b656-4621-9602-87b79ffb23e9",
+          "name": "Type",
+          "description": "Specifies the type of joint.",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "b62e8ece-6df5-4d9f-b1bd-07f963d0c186",
+            "name": "Type type",
+            "description": "revolute, continuous, prismatic, fixed, floating, planar",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [],
+            "creation_time": "2025-09-24T15:07:55.562Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "b62e8ece-6df5-4d9f-b1bd-07f963d0c186"
+          },
+          "creation_time": "2025-09-24T15:07:28.348Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "6a9e9b72-b656-4621-9602-87b79ffb23e9",
+          "attribute_type_uuid": "b62e8ece-6df5-4d9f-b1bd-07f963d0c186"
+        },
+        {
+          "uuid": "4f80661e-96e0-4eb5-9c66-ef651997e7f3",
+          "name": "Origin",
+          "description": "This is the origin of the object",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "70abfde2-2cbf-48a7-b731-e1098e95df71",
+            "name": "Origin type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                  "name": "Position x",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                    "name": "Coordinate point",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:12:13.246Z",
+                    "modification_time": "2025-09-24T13:23:52.940Z",
+                    "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                  },
+                  "creation_time": "2025-09-24T09:19:46.347Z",
+                  "modification_time": "2025-09-24T13:23:52.940Z",
+                  "uuid_metaobject": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                  "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "43fcdfc7-824b-46d1-8466-a5e6f5e541f6",
+                  "name": "Pitch",
+                  "description": "A circular (clockwise or anticlockwise) movement of the body as it moves forward",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "",
+                  "attribute_type": {
+                    "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                    "name": "Radian",
+                    "description": "Rotation from 0 to 2 Pi",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:19:10.378Z",
+                    "modification_time": "2025-09-24T13:23:53.621Z",
+                    "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                  },
+                  "creation_time": "2025-09-24T12:18:51.484Z",
+                  "modification_time": "2025-09-24T13:16:44.227Z",
+                  "uuid_metaobject": "43fcdfc7-824b-46d1-8466-a5e6f5e541f6",
+                  "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "e6fb9f0f-96d7-4223-bd66-d2e70cae721f",
+                  "name": "Yaw",
+                  "description": "Nose moves from side to side",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                    "name": "Radian",
+                    "description": "Rotation from 0 to 2 Pi",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:19:10.378Z",
+                    "modification_time": "2025-09-24T13:23:53.621Z",
+                    "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                  },
+                  "creation_time": "2025-09-24T12:18:27.292Z",
+                  "modification_time": "2025-09-24T13:23:53.621Z",
+                  "uuid_metaobject": "e6fb9f0f-96d7-4223-bd66-d2e70cae721f",
+                  "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                },
+                "sequence": 3
+              },
+              {
+                "attribute": {
+                  "uuid": "a09bc075-7fa9-45c4-b7c0-c5c6918b4b55",
+                  "name": "Roll",
+                  "description": "Nose up or tail up.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                    "name": "Radian",
+                    "description": "Rotation from 0 to 2 Pi",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:19:10.378Z",
+                    "modification_time": "2025-09-24T13:23:53.621Z",
+                    "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                  },
+                  "creation_time": "2025-09-24T12:16:18.534Z",
+                  "modification_time": "2025-09-24T13:23:51.167Z",
+                  "uuid_metaobject": "a09bc075-7fa9-45c4-b7c0-c5c6918b4b55",
+                  "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                },
+                "sequence": 4
+              },
+              {
+                "attribute": {
+                  "uuid": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                  "name": "Position z",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
+                    "name": "Float",
+                    "description": "This is the float attribute type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "pre_defined": false,
+                    "regex_value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+                    "has_table_attribute": [],
+                    "creation_time": "2023-08-24T15:12:15.868Z",
+                    "modification_time": "2025-09-24T12:59:18.559Z",
+                    "uuid_metaobject": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                  },
+                  "creation_time": "2025-09-24T09:19:46.347Z",
+                  "modification_time": "2025-09-24T09:19:46.347Z",
+                  "uuid_metaobject": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                  "attribute_type_uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                },
+                "sequence": 5
+              },
+              {
+                "attribute": {
+                  "uuid": "455eae8f-35c7-44f9-8909-468972f53341",
+                  "name": "Position y",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                    "name": "Coordinate point",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:12:13.246Z",
+                    "modification_time": "2025-09-24T13:23:52.940Z",
+                    "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                  },
+                  "creation_time": "2025-09-24T09:19:46.347Z",
+                  "modification_time": "2025-09-24T12:13:52.880Z",
+                  "uuid_metaobject": "455eae8f-35c7-44f9-8909-468972f53341",
+                  "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                },
+                "sequence": 6
+              }
+            ],
+            "creation_time": "2025-09-24T13:17:59.338Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "70abfde2-2cbf-48a7-b731-e1098e95df71"
+          },
+          "creation_time": "2025-09-24T13:25:48.017Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "4f80661e-96e0-4eb5-9c66-ef651997e7f3",
+          "attribute_type_uuid": "70abfde2-2cbf-48a7-b731-e1098e95df71"
+        },
+        {
+          "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+          "name": "Name",
+          "description": "The name of the object",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+            "name": "Name type",
+            "description": "This is the name of the attribute",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [],
+            "creation_time": "2025-09-27T14:06:48.902Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+          },
+          "creation_time": "2025-09-27T14:07:15.370Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+          "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+        },
+        {
+          "uuid": "f4c9c809-b117-49d8-8fd1-13e7cffd57a9",
+          "name": "Parent link",
+          "description": "This is the parent link",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "11398499-3b89-4634-b501-cdebbb5db0ee",
+            "name": "Link ref type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "role": {
+              "uuid": "a85ac0bb-4e3f-432b-abf5-350e9bfbba64",
+              "name": "RoleRef_4eb02f76-fc47-4edc-81b5-0e01f88f8674",
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "class_references": [
+                {
+                  "uuid": "4eb02f76-fc47-4edc-81b5-0e01f88f8674",
+                  "min": 0,
+                  "max": 1
+                }
+              ],
+              "relationclass_references": [],
+              "scenetype_references": [],
+              "port_references": [],
+              "attribute_references": [],
+              "uuid_metaobject": "a85ac0bb-4e3f-432b-abf5-350e9bfbba64",
+              "uuid_attribute_type": "11398499-3b89-4634-b501-cdebbb5db0ee",
+              "creation_time": "2025-11-12T08:11:10.441Z",
+              "modification_time": "2025-11-12T09:30:59.781Z"
+            },
+            "has_table_attribute": [],
+            "creation_time": "2025-11-12T08:09:03.903Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "11398499-3b89-4634-b501-cdebbb5db0ee"
+          },
+          "creation_time": "2025-11-12T08:11:19.695Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "f4c9c809-b117-49d8-8fd1-13e7cffd57a9",
+          "attribute_type_uuid": "11398499-3b89-4634-b501-cdebbb5db0ee"
+        },
+        {
+          "uuid": "0994e1e2-3e7f-4b46-b958-b95cd892774e",
+          "name": "Limit",
+          "description": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "16a627df-681f-4e04-a8c8-d2437f778911",
+            "name": "Limit type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "e4e714ca-9ace-40ca-b312-86769caec46f",
+                  "name": "Effort",
+                  "description": "An attribute for enforcing the maximum joint effort",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "b633c3de-8ee2-47f0-9d7d-be607f102759",
+                    "name": "Effort type",
+                    "description": "|applied effort| < |effort|",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-25T06:17:15.231Z",
+                    "modification_time": "2025-09-25T06:18:00.696Z",
+                    "uuid_metaobject": "b633c3de-8ee2-47f0-9d7d-be607f102759"
+                  },
+                  "creation_time": "2025-09-25T06:17:38.088Z",
+                  "modification_time": "2025-09-25T06:18:00.696Z",
+                  "uuid_metaobject": "e4e714ca-9ace-40ca-b312-86769caec46f",
+                  "attribute_type_uuid": "b633c3de-8ee2-47f0-9d7d-be607f102759"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "4c55b38d-e64d-41ca-850c-a2dbbb79c833",
+                  "name": "Lower",
+                  "description": "An attribute specifying the lower joint limit",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-25T06:15:56.850Z",
+                  "modification_time": "2025-09-25T06:16:40.616Z",
+                  "uuid_metaobject": "4c55b38d-e64d-41ca-850c-a2dbbb79c833",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "b7e21682-9194-44c6-8232-8d5c286e0c1a",
+                  "name": "Upper",
+                  "description": "An attribute specifying the upper joint limit",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-25T06:16:44.629Z",
+                  "modification_time": "2025-09-25T06:17:03.496Z",
+                  "uuid_metaobject": "b7e21682-9194-44c6-8232-8d5c286e0c1a",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 3
+              },
+              {
+                "attribute": {
+                  "uuid": "7a73a132-953b-4932-a02d-a0741614b265",
+                  "name": "Velocity",
+                  "description": "An attribute for enforcing the maximum joint velocity",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "fd7624ab-9377-4cc1-ab1d-e44f6db7645c",
+                    "name": "Velocity type",
+                    "description": "In radians per second [rad/s] for revolute joints, in metres per second [m/s] for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-25T06:18:10.959Z",
+                    "modification_time": "2025-09-25T06:25:01.012Z",
+                    "uuid_metaobject": "fd7624ab-9377-4cc1-ab1d-e44f6db7645c"
+                  },
+                  "creation_time": "2025-09-25T06:18:53.405Z",
+                  "modification_time": "2025-09-25T06:19:51.201Z",
+                  "uuid_metaobject": "7a73a132-953b-4932-a02d-a0741614b265",
+                  "attribute_type_uuid": "fd7624ab-9377-4cc1-ab1d-e44f6db7645c"
+                },
+                "sequence": 4
+              }
+            ],
+            "creation_time": "2025-09-25T06:15:34.088Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "16a627df-681f-4e04-a8c8-d2437f778911"
+          },
+          "creation_time": "2025-09-25T06:20:48.476Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "0994e1e2-3e7f-4b46-b958-b95cd892774e",
+          "attribute_type_uuid": "16a627df-681f-4e04-a8c8-d2437f778911"
+        },
+        {
+          "uuid": "a71f5009-2577-4bdc-bd11-97d45facb718",
+          "name": "Axis",
+          "description": "The joint axis specified in the joint frame. ",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "a6d02fcd-5f2d-4c3b-8b4d-0c6ac2b6128a",
+            "name": "Axis type",
+            "description": "This is the axis of rotation for revolute joints, the axis of translation for prismatic joints, and the surface normal for planar joints. The axis is specified in the joint frame of reference. Fixed and floating",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                  "name": "Position x",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                    "name": "Coordinate point",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:12:13.246Z",
+                    "modification_time": "2025-09-24T13:23:52.940Z",
+                    "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                  },
+                  "creation_time": "2025-09-24T09:19:46.347Z",
+                  "modification_time": "2025-09-24T13:23:52.940Z",
+                  "uuid_metaobject": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                  "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                  "name": "Position z",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
+                    "name": "Float",
+                    "description": "This is the float attribute type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "pre_defined": false,
+                    "regex_value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+                    "has_table_attribute": [],
+                    "creation_time": "2023-08-24T15:12:15.868Z",
+                    "modification_time": "2025-09-24T12:59:18.559Z",
+                    "uuid_metaobject": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                  },
+                  "creation_time": "2025-09-24T09:19:46.347Z",
+                  "modification_time": "2025-09-24T09:19:46.347Z",
+                  "uuid_metaobject": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                  "attribute_type_uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "455eae8f-35c7-44f9-8909-468972f53341",
+                  "name": "Position y",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                    "name": "Coordinate point",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T12:12:13.246Z",
+                    "modification_time": "2025-09-24T13:23:52.940Z",
+                    "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                  },
+                  "creation_time": "2025-09-24T09:19:46.347Z",
+                  "modification_time": "2025-09-24T12:13:52.880Z",
+                  "uuid_metaobject": "455eae8f-35c7-44f9-8909-468972f53341",
+                  "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                },
+                "sequence": 3
+              }
+            ],
+            "creation_time": "2025-09-24T15:00:49.708Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "a6d02fcd-5f2d-4c3b-8b4d-0c6ac2b6128a"
+          },
+          "creation_time": "2025-09-24T15:01:42.398Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "a71f5009-2577-4bdc-bd11-97d45facb718",
+          "attribute_type_uuid": "a6d02fcd-5f2d-4c3b-8b4d-0c6ac2b6128a"
+        },
+        {
+          "uuid": "768c8f9b-7c4f-4f3e-8ac3-24b1b9bc857f",
+          "name": "Dynamics",
+          "description": "An element specifying physical properties of the joint.",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "5a729570-39f9-42c4-8b0c-c118b1a8075a",
+            "name": "Dynamics type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "ce14b2ef-7d23-4053-b2f8-e649c53db15c",
+                  "name": "Damping",
+                  "description": "The physical damping value of the joint",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "e5e061c7-a12f-47a7-a4c6-b68a27a61280",
+                    "name": "Damping type",
+                    "description": "In newton-seconds per metre [N∙s/m] for prismatic joints, in newton-metre-seconds per radian [N∙m∙s/rad] for revolute joints.",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:32:04.074Z",
+                    "modification_time": "2025-09-24T15:34:17.240Z",
+                    "uuid_metaobject": "e5e061c7-a12f-47a7-a4c6-b68a27a61280"
+                  },
+                  "creation_time": "2025-09-24T15:33:46.668Z",
+                  "modification_time": "2025-09-24T15:34:17.240Z",
+                  "uuid_metaobject": "ce14b2ef-7d23-4053-b2f8-e649c53db15c",
+                  "attribute_type_uuid": "e5e061c7-a12f-47a7-a4c6-b68a27a61280"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "4dec5709-3b8e-49c9-9203-7fa4ded33d2e",
+                  "name": "Friction",
+                  "description": "The physical static friction value of the joint",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": "0",
+                  "attribute_type": {
+                    "uuid": "f39e9646-6028-40eb-9f99-4aa51b05966a",
+                    "name": "Friction type",
+                    "description": "In newtons [N] for prismatic joints, in newton-metres [N∙m] for revolute joints.",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:33:07.030Z",
+                    "modification_time": "2025-09-24T15:35:22.789Z",
+                    "uuid_metaobject": "f39e9646-6028-40eb-9f99-4aa51b05966a"
+                  },
+                  "creation_time": "2025-09-24T15:34:20.945Z",
+                  "modification_time": "2025-09-24T15:35:22.789Z",
+                  "uuid_metaobject": "4dec5709-3b8e-49c9-9203-7fa4ded33d2e",
+                  "attribute_type_uuid": "f39e9646-6028-40eb-9f99-4aa51b05966a"
+                },
+                "sequence": 2
+              }
+            ],
+            "creation_time": "2025-09-24T15:35:55.816Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "5a729570-39f9-42c4-8b0c-c118b1a8075a"
+          },
+          "creation_time": "2025-09-24T15:36:19.594Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "768c8f9b-7c4f-4f3e-8ac3-24b1b9bc857f",
+          "attribute_type_uuid": "5a729570-39f9-42c4-8b0c-c118b1a8075a"
+        },
+        {
+          "uuid": "a8ec8471-75d7-4781-8787-15eb3ef4dacc",
+          "name": "Child link",
+          "description": "The is the child link",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "11398499-3b89-4634-b501-cdebbb5db0ee",
+            "name": "Link ref type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "role": {
+              "uuid": "a85ac0bb-4e3f-432b-abf5-350e9bfbba64",
+              "name": "RoleRef_4eb02f76-fc47-4edc-81b5-0e01f88f8674",
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "class_references": [
+                {
+                  "uuid": "4eb02f76-fc47-4edc-81b5-0e01f88f8674",
+                  "min": 0,
+                  "max": 1
+                }
+              ],
+              "relationclass_references": [],
+              "scenetype_references": [],
+              "port_references": [],
+              "attribute_references": [],
+              "uuid_metaobject": "a85ac0bb-4e3f-432b-abf5-350e9bfbba64",
+              "uuid_attribute_type": "11398499-3b89-4634-b501-cdebbb5db0ee",
+              "creation_time": "2025-11-12T08:11:10.441Z",
+              "modification_time": "2025-11-12T09:30:59.781Z"
+            },
+            "has_table_attribute": [],
+            "creation_time": "2025-11-12T08:09:03.903Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "11398499-3b89-4634-b501-cdebbb5db0ee"
+          },
+          "creation_time": "2025-11-12T08:12:50.741Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "a8ec8471-75d7-4781-8787-15eb3ef4dacc",
+          "attribute_type_uuid": "11398499-3b89-4634-b501-cdebbb5db0ee"
+        },
+        {
+          "uuid": "3d464ad0-78f5-4493-b6c9-3313e3f72456",
+          "name": "Safety controller",
+          "description": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "d428266d-32f6-4a6c-97c6-a17796517a00",
+            "name": "Safety controller type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "2a979faf-9915-4ca0-b291-8fd65c4458bc",
+                  "name": "Soft lower limit",
+                  "description": "An attribute specifying the lower joint boundary where the safety controller starts limiting the position of the joint. This limit needs to be larger than the lower joint limit.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-25T06:22:22.856Z",
+                  "modification_time": "2025-09-25T06:23:38.285Z",
+                  "uuid_metaobject": "2a979faf-9915-4ca0-b291-8fd65c4458bc",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "e7fb0280-b5c2-44f8-8475-a7f980c136d1",
+                  "name": "Soft upper limit",
+                  "description": "An attribute specifying the upper joint boundary where the safety controller starts limiting the position of the joint. This limit needs to be smaller than the upper joint limit.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-25T06:23:10.626Z",
+                  "modification_time": "2025-09-25T06:23:37.397Z",
+                  "uuid_metaobject": "e7fb0280-b5c2-44f8-8475-a7f980c136d1",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "f50543d4-4bbe-44d6-ae96-a2eac83446f0",
+                  "name": "K position",
+                  "description": "The k_position term determines the scale of the bound on velocity.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a602236f-f615-4638-907d-e31c264e0a98",
+                    "name": "K position type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-25T06:26:33.993Z",
+                    "modification_time": "2025-09-25T06:28:09.618Z",
+                    "uuid_metaobject": "a602236f-f615-4638-907d-e31c264e0a98"
+                  },
+                  "creation_time": "2025-09-25T06:27:21.503Z",
+                  "modification_time": "2025-09-25T06:28:09.618Z",
+                  "uuid_metaobject": "f50543d4-4bbe-44d6-ae96-a2eac83446f0",
+                  "attribute_type_uuid": "a602236f-f615-4638-907d-e31c264e0a98"
+                },
+                "sequence": 3
+              },
+              {
+                "attribute": {
+                  "uuid": "5a299446-e583-4e55-bca9-8621e03fbe1f",
+                  "name": "K velocity",
+                  "description": "An attribute specifying the relation between effort and velocity limits.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "fd7624ab-9377-4cc1-ab1d-e44f6db7645c",
+                    "name": "Velocity type",
+                    "description": "In radians per second [rad/s] for revolute joints, in metres per second [m/s] for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-25T06:18:10.959Z",
+                    "modification_time": "2025-09-25T06:25:01.012Z",
+                    "uuid_metaobject": "fd7624ab-9377-4cc1-ab1d-e44f6db7645c"
+                  },
+                  "creation_time": "2025-09-25T06:23:58.413Z",
+                  "modification_time": "2025-09-25T06:25:01.012Z",
+                  "uuid_metaobject": "5a299446-e583-4e55-bca9-8621e03fbe1f",
+                  "attribute_type_uuid": "fd7624ab-9377-4cc1-ab1d-e44f6db7645c"
+                },
+                "sequence": 4
+              }
+            ],
+            "creation_time": "2025-09-25T06:34:00.560Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "d428266d-32f6-4a6c-97c6-a17796517a00"
+          },
+          "creation_time": "2025-09-25T06:24:22.525Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "3d464ad0-78f5-4493-b6c9-3313e3f72456",
+          "attribute_type_uuid": "d428266d-32f6-4a6c-97c6-a17796517a00"
+        },
+        {
+          "uuid": "c96e414d-14cb-4d0a-bdb8-3e621484b537",
+          "name": "Calibration",
+          "description": "The reference positions of the joint, used to calibrate the absolute position of the joint. ",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "ce0ac0d2-565c-4948-9130-08ebd5e5ea27",
+            "name": "Callibration type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "5d02159d-db36-4557-99b4-4ab2de164437",
+                  "name": "Falling",
+                  "description": "When the joint moves in a positive direction, this reference position will trigger a falling edge.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-24T15:43:23.869Z",
+                  "modification_time": "2025-09-24T15:43:52.298Z",
+                  "uuid_metaobject": "5d02159d-db36-4557-99b4-4ab2de164437",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "8c5a5a40-76cf-4b4a-9dc3-28e2792ca8b0",
+                  "name": "Rising",
+                  "description": "When the joint moves in a positive direction, this reference position will trigger a rising edge. ",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-24T15:42:30.155Z",
+                  "modification_time": "2025-09-24T15:43:18.969Z",
+                  "uuid_metaobject": "8c5a5a40-76cf-4b4a-9dc3-28e2792ca8b0",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 2
+              }
+            ],
+            "creation_time": "2025-09-24T15:44:06.782Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "ce0ac0d2-565c-4948-9130-08ebd5e5ea27"
+          },
+          "creation_time": "2025-09-24T15:44:33.747Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "c96e414d-14cb-4d0a-bdb8-3e621484b537",
+          "attribute_type_uuid": "ce0ac0d2-565c-4948-9130-08ebd5e5ea27"
+        },
+        {
+          "uuid": "253aebcd-c8ae-435d-97be-9aaceaccfb7d",
+          "name": "Mimic",
+          "description": "This tag is used to specify that the defined joint mimics another existing joint. The value of this joint can be computed as value = multiplier * other_joint_value + offset.",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "12a6e706-e28d-42fb-b6d0-412b13f7f6a5",
+            "name": "Mimic type",
+            "description": "",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "208599d2-d182-40a2-af32-d0827897ae93",
+                  "name": "Offset",
+                  "description": "Specifies the offset to add in the formula above.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "a816660a-82ba-499e-988d-62ed20f0cc48",
+                    "name": "Joint type",
+                    "description": "In radians for revolute joints, in metres for prismatic joints",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T15:41:10.271Z",
+                    "modification_time": "2025-09-25T06:45:54.627Z",
+                    "uuid_metaobject": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                  },
+                  "creation_time": "2025-09-25T06:44:48.880Z",
+                  "modification_time": "2025-09-25T06:45:54.627Z",
+                  "uuid_metaobject": "208599d2-d182-40a2-af32-d0827897ae93",
+                  "attribute_type_uuid": "a816660a-82ba-499e-988d-62ed20f0cc48"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "f52d2c65-9f3e-4a65-a602-2b89d0ece66b",
+                  "name": "Joint ref",
+                  "description": "This specifies the name of the joint to mimic. ",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "e631a35a-dfcb-488e-8332-e3a26ba7e408",
+                    "name": "Joint ref type",
+                    "description": "Reference a joint",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "role": {
+                      "uuid": "cfcc6fae-66d2-465f-a59d-f21d8283a7af",
+                      "name": "RoleRef_55781095-3ffb-4d05-92cc-79f2e327500f",
+                      "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                      },
+                      "class_references": [],
+                      "relationclass_references": [
+                        {
+                          "uuid": "55781095-3ffb-4d05-92cc-79f2e327500f",
+                          "min": 0,
+                          "max": 1
+                        }
+                      ],
+                      "scenetype_references": [],
+                      "port_references": [],
+                      "attribute_references": [],
+                      "uuid_metaobject": "cfcc6fae-66d2-465f-a59d-f21d8283a7af",
+                      "uuid_attribute_type": "e631a35a-dfcb-488e-8332-e3a26ba7e408",
+                      "creation_time": "2025-09-25T06:46:33.146Z",
+                      "modification_time": "2025-09-25T06:47:38.300Z"
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-25T06:46:05.349Z",
+                    "modification_time": "2025-09-25T06:47:38.300Z",
+                    "uuid_metaobject": "e631a35a-dfcb-488e-8332-e3a26ba7e408"
+                  },
+                  "creation_time": "2025-09-25T06:46:41.347Z",
+                  "modification_time": "2025-09-25T06:47:38.300Z",
+                  "uuid_metaobject": "f52d2c65-9f3e-4a65-a602-2b89d0ece66b",
+                  "attribute_type_uuid": "e631a35a-dfcb-488e-8332-e3a26ba7e408"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "7804b7c6-1849-480d-a955-a227588bb75e",
+                  "name": "Multiplier",
+                  "description": "Specified the multiplicative factor.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "4cfc163c-166a-4c21-8773-18ab1a68415d",
+                    "name": "Multiplier type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-25T06:43:24.806Z",
+                    "modification_time": "2025-09-25T06:44:41.408Z",
+                    "uuid_metaobject": "4cfc163c-166a-4c21-8773-18ab1a68415d"
+                  },
+                  "creation_time": "2025-09-25T06:43:52.463Z",
+                  "modification_time": "2025-09-25T06:44:41.408Z",
+                  "uuid_metaobject": "7804b7c6-1849-480d-a955-a227588bb75e",
+                  "attribute_type_uuid": "4cfc163c-166a-4c21-8773-18ab1a68415d"
+                },
+                "sequence": 3
+              }
+            ],
+            "creation_time": "2025-09-25T06:42:27.602Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "12a6e706-e28d-42fb-b6d0-412b13f7f6a5"
+          },
+          "creation_time": "2025-09-25T06:48:33.186Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "253aebcd-c8ae-435d-97be-9aaceaccfb7d",
+          "attribute_type_uuid": "12a6e706-e28d-42fb-b6d0-412b13f7f6a5"
+        }
+      ],
+      "ports": [],
+      "creation_time": "2025-11-12T08:06:11.758Z",
+      "modification_time": "2025-11-12T09:30:59.781Z",
+      "uuid_metaobject": "c5cf9a3c-988a-4fd4-87e5-0ad8fcc7234b"
+    },
+    {
+      "uuid": "4eb02f76-fc47-4edc-81b5-0e01f88f8674",
+      "name": "Link",
+      "geometry": "/** @param {GraphicContext} gc */\n async function vizRep(gc) { let map = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAADGUlEQVR4nO3bPUo0SQCA4Z4f5jMSjzCKeBbFg3gUb2DiSTyAYCqsgbAwp5hAGLqXnmVlvy94UwWfB6qprk4qeSkq6MV+v59eX1+H/X4/wE+3WCyG1Wo1brfb5Xa7fVu/v78Pt7e3w9XV1fHjNE1fvUf4MpvNZtjtdsP19fXw+Pg4rD8+PoaLi4vh5eXl63YF38jDw8Pw/Px8nC/nx3xqjON4XHCC8FMdDoffWvgMBPjXfM34P4FAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAgEgUAQCASBQBAIBIFAEAj8YZqm45gJBIJAIAgEgkAgCASCQCAIBIJAIAgEgkAgCASCQCAIBIJAIAgE/rBYLI5jJhAIAoEgEAgCgSAQCOv5Mf+gfjgchuVyeZz/d4OHn2RuYDaO4++BnJycDJvN5ut2Bt/Aen3MYTg7O/s8JOaV8e3tbbi/v/88QeAnGsdx+PXr1/D09DSenp7OS9P68vJyeXd3N+x2u2M1AuEnW61Ww/n5+fLm5mZ+PVlM0/TXV28Khu9lvoQsx3H8+x8L5Gs62nutmgAAAABJRU5ErkJggg=='; await gc.setVariable('name', await gc.expression.attrvalByName('Name'), false);await gc.setVariable('x_rel', 0, true);await gc.setVariable('y_rel', 0, true);await gc.setVariable('z_rel', 0.1, true);await gc.graphic_cube(2, 2, 0.00002, 'grey', map); await gc.graphic_text(await gc.getVariableValue('x_rel'), await gc.getVariableValue('y_rel'), await gc.getVariableValue('z_rel'), 0.2, 'gray', await gc.getVariableValue('name'), 'x_rel', 'y_rel', 'z_rel'); }",
+      "description": "The link element describes a rigid body with an inertia, visual features, and collision properties. ",
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "attributes": [
+        {
+          "uuid": "6e05572f-1df7-4d8a-86f4-37404eacdf47",
+          "name": "Collision",
+          "description": "The collision properties of a link.",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "1e3cb94c-6e84-4f36-a3a8-c9dc4335202f",
+            "name": "Collision type",
+            "description": "This the type of collision",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "ec749557-c7d2-4eec-8ba9-800bb23d6d45",
+                  "name": "Geometry",
+                  "description": "The shape of the visual object.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "6245fd44-d450-48fc-ab1a-cc59547d0a1c",
+                    "name": "Geometry type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [
+                      {
+                        "attribute": {
+                          "uuid": "9408d6c1-1c2c-4e31-b260-c1c245f28e5e",
+                          "name": "Geometry box",
+                          "description": "Size attribute contains the three side lengths of the box. The origin of the box is in its center. ",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "c1226e5d-e999-4e52-9264-d9a2d9b50f32",
+                            "name": "Geometry box type",
+                            "description": "Holds the size of the box",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:37:02.783Z",
+                            "modification_time": "2025-09-24T13:58:40.757Z",
+                            "uuid_metaobject": "c1226e5d-e999-4e52-9264-d9a2d9b50f32"
+                          },
+                          "creation_time": "2025-09-24T13:56:15.225Z",
+                          "modification_time": "2025-09-24T13:58:40.757Z",
+                          "uuid_metaobject": "9408d6c1-1c2c-4e31-b260-c1c245f28e5e",
+                          "attribute_type_uuid": "c1226e5d-e999-4e52-9264-d9a2d9b50f32"
+                        },
+                        "sequence": 1
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "7877f3ad-8347-4765-83a7-b755c2c5628d",
+                          "name": "Geometry cylinder",
+                          "description": "Specify the radius and length. The origin of the cylinder is in its center.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "aa4c01ce-45d8-4937-b49a-1290b3258c22",
+                            "name": "Geometry cylinder type",
+                            "description": "Holds the radius and the length",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:39:10.927Z",
+                            "modification_time": "2025-09-24T15:35:23.366Z",
+                            "uuid_metaobject": "aa4c01ce-45d8-4937-b49a-1290b3258c22"
+                          },
+                          "creation_time": "2025-09-24T13:56:56.503Z",
+                          "modification_time": "2025-09-24T15:35:23.366Z",
+                          "uuid_metaobject": "7877f3ad-8347-4765-83a7-b755c2c5628d",
+                          "attribute_type_uuid": "aa4c01ce-45d8-4937-b49a-1290b3258c22"
+                        },
+                        "sequence": 2
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "cfc45a9e-3942-4294-9c9a-611e73febfe7",
+                          "name": "Geometry mesh",
+                          "description": "A trimesh element specified by a filename",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "bcf4f423-64d1-484e-99ec-f18db6f586a5",
+                            "name": "Geometry mesh type",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:37:49.321Z",
+                            "modification_time": "2025-09-24T13:58:37.065Z",
+                            "uuid_metaobject": "bcf4f423-64d1-484e-99ec-f18db6f586a5"
+                          },
+                          "creation_time": "2025-09-24T13:53:59.014Z",
+                          "modification_time": "2025-09-24T13:55:22.181Z",
+                          "uuid_metaobject": "cfc45a9e-3942-4294-9c9a-611e73febfe7",
+                          "attribute_type_uuid": "bcf4f423-64d1-484e-99ec-f18db6f586a5"
+                        },
+                        "sequence": 3
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "86516631-3a40-4caf-8488-31bb0d58be23",
+                          "name": "Geometry sphere",
+                          "description": "Specify the radius. The origin of the sphere is in its center.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "6e8159bd-9028-4389-86e1-d950987f2889",
+                            "name": "Geometry sphere type",
+                            "description": "Holds the radius of the sphere",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:38:35.202Z",
+                            "modification_time": "2025-09-24T13:58:38.990Z",
+                            "uuid_metaobject": "6e8159bd-9028-4389-86e1-d950987f2889"
+                          },
+                          "creation_time": "2025-09-24T13:55:24.131Z",
+                          "modification_time": "2025-09-24T13:58:38.990Z",
+                          "uuid_metaobject": "86516631-3a40-4caf-8488-31bb0d58be23",
+                          "attribute_type_uuid": "6e8159bd-9028-4389-86e1-d950987f2889"
+                        },
+                        "sequence": 4
+                      }
+                    ],
+                    "creation_time": "2025-09-24T13:59:43.006Z",
+                    "modification_time": "2025-09-24T14:13:54.108Z",
+                    "uuid_metaobject": "6245fd44-d450-48fc-ab1a-cc59547d0a1c"
+                  },
+                  "creation_time": "2025-09-24T13:58:50.939Z",
+                  "modification_time": "2025-09-24T14:13:54.108Z",
+                  "uuid_metaobject": "ec749557-c7d2-4eec-8ba9-800bb23d6d45",
+                  "attribute_type_uuid": "6245fd44-d450-48fc-ab1a-cc59547d0a1c"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "4f80661e-96e0-4eb5-9c66-ef651997e7f3",
+                  "name": "Origin",
+                  "description": "This is the origin of the object",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "70abfde2-2cbf-48a7-b731-e1098e95df71",
+                    "name": "Origin type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [
+                      {
+                        "attribute": {
+                          "uuid": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                          "name": "Position x",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "0",
+                          "attribute_type": {
+                            "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                            "name": "Coordinate point",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:12:13.246Z",
+                            "modification_time": "2025-09-24T13:23:52.940Z",
+                            "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                          },
+                          "creation_time": "2025-09-24T09:19:46.347Z",
+                          "modification_time": "2025-09-24T13:23:52.940Z",
+                          "uuid_metaobject": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                          "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                        },
+                        "sequence": 1
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "43fcdfc7-824b-46d1-8466-a5e6f5e541f6",
+                          "name": "Pitch",
+                          "description": "A circular (clockwise or anticlockwise) movement of the body as it moves forward",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "",
+                          "attribute_type": {
+                            "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                            "name": "Radian",
+                            "description": "Rotation from 0 to 2 Pi",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:19:10.378Z",
+                            "modification_time": "2025-09-24T13:23:53.621Z",
+                            "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                          },
+                          "creation_time": "2025-09-24T12:18:51.484Z",
+                          "modification_time": "2025-09-24T13:16:44.227Z",
+                          "uuid_metaobject": "43fcdfc7-824b-46d1-8466-a5e6f5e541f6",
+                          "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                        },
+                        "sequence": 2
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "e6fb9f0f-96d7-4223-bd66-d2e70cae721f",
+                          "name": "Yaw",
+                          "description": "Nose moves from side to side",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                            "name": "Radian",
+                            "description": "Rotation from 0 to 2 Pi",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:19:10.378Z",
+                            "modification_time": "2025-09-24T13:23:53.621Z",
+                            "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                          },
+                          "creation_time": "2025-09-24T12:18:27.292Z",
+                          "modification_time": "2025-09-24T13:23:53.621Z",
+                          "uuid_metaobject": "e6fb9f0f-96d7-4223-bd66-d2e70cae721f",
+                          "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                        },
+                        "sequence": 3
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "a09bc075-7fa9-45c4-b7c0-c5c6918b4b55",
+                          "name": "Roll",
+                          "description": "Nose up or tail up.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                            "name": "Radian",
+                            "description": "Rotation from 0 to 2 Pi",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:19:10.378Z",
+                            "modification_time": "2025-09-24T13:23:53.621Z",
+                            "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                          },
+                          "creation_time": "2025-09-24T12:16:18.534Z",
+                          "modification_time": "2025-09-24T13:23:51.167Z",
+                          "uuid_metaobject": "a09bc075-7fa9-45c4-b7c0-c5c6918b4b55",
+                          "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                        },
+                        "sequence": 4
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                          "name": "Position z",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "0",
+                          "attribute_type": {
+                            "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
+                            "name": "Float",
+                            "description": "This is the float attribute type",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "pre_defined": false,
+                            "regex_value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+                            "has_table_attribute": [],
+                            "creation_time": "2023-08-24T15:12:15.868Z",
+                            "modification_time": "2025-09-24T12:59:18.559Z",
+                            "uuid_metaobject": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                          },
+                          "creation_time": "2025-09-24T09:19:46.347Z",
+                          "modification_time": "2025-09-24T09:19:46.347Z",
+                          "uuid_metaobject": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                          "attribute_type_uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                        },
+                        "sequence": 5
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "455eae8f-35c7-44f9-8909-468972f53341",
+                          "name": "Position y",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "0",
+                          "attribute_type": {
+                            "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                            "name": "Coordinate point",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:12:13.246Z",
+                            "modification_time": "2025-09-24T13:23:52.940Z",
+                            "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                          },
+                          "creation_time": "2025-09-24T09:19:46.347Z",
+                          "modification_time": "2025-09-24T12:13:52.880Z",
+                          "uuid_metaobject": "455eae8f-35c7-44f9-8909-468972f53341",
+                          "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                        },
+                        "sequence": 6
+                      }
+                    ],
+                    "creation_time": "2025-09-24T13:17:59.338Z",
+                    "modification_time": "2025-11-12T09:30:59.781Z",
+                    "uuid_metaobject": "70abfde2-2cbf-48a7-b731-e1098e95df71"
+                  },
+                  "creation_time": "2025-09-24T13:25:48.017Z",
+                  "modification_time": "2025-11-12T09:30:59.781Z",
+                  "uuid_metaobject": "4f80661e-96e0-4eb5-9c66-ef651997e7f3",
+                  "attribute_type_uuid": "70abfde2-2cbf-48a7-b731-e1098e95df71"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+                  "name": "Name",
+                  "description": "The name of the object",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+                    "name": "Name type",
+                    "description": "This is the name of the attribute",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-27T14:06:48.902Z",
+                    "modification_time": "2025-11-12T09:30:59.781Z",
+                    "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+                  },
+                  "creation_time": "2025-09-27T14:07:15.370Z",
+                  "modification_time": "2025-11-12T09:30:59.781Z",
+                  "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+                  "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+                },
+                "sequence": 2
+              }
+            ],
+            "creation_time": "2025-09-24T13:52:30.336Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "1e3cb94c-6e84-4f36-a3a8-c9dc4335202f"
+          },
+          "creation_time": "2025-09-24T14:02:47.331Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "6e05572f-1df7-4d8a-86f4-37404eacdf47",
+          "attribute_type_uuid": "1e3cb94c-6e84-4f36-a3a8-c9dc4335202f"
+        },
+        {
+          "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+          "name": "Name",
+          "description": "The name of the object",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+            "name": "Name type",
+            "description": "This is the name of the attribute",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [],
+            "creation_time": "2025-09-27T14:06:48.902Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+          },
+          "creation_time": "2025-09-27T14:07:15.370Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+          "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+        },
+        {
+          "uuid": "b896321c-f776-4fa1-872a-c2a9f3519b0c",
+          "name": "Visual",
+          "description": "The visual properties of the link",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "5c3762d7-2fa2-49b9-a6bb-7b2a633ca554",
+            "name": "Visual type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "317f6822-1e4b-4e8f-bc1c-ae14d0268ac5",
+                  "name": "Material",
+                  "description": "The material of the visual element.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "8146bb08-38f3-428d-b747-118cd08df0aa",
+                    "name": "Material type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [
+                      {
+                        "attribute": {
+                          "uuid": "05d493a1-c8f5-4dc4-828b-e2afa4aef07e",
+                          "name": "Color",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "d7f6218e-ee8a-44ec-9e97-1fb455fc1813",
+                            "name": "Color type",
+                            "description": "The color of a material specified by set of four numbers representing red/green/blue/alpha, each in the range of [0,1]. ",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T14:12:09.797Z",
+                            "modification_time": "2025-09-24T14:13:55.325Z",
+                            "uuid_metaobject": "d7f6218e-ee8a-44ec-9e97-1fb455fc1813"
+                          },
+                          "creation_time": "2025-09-24T14:13:36.505Z",
+                          "modification_time": "2025-09-24T14:13:55.325Z",
+                          "uuid_metaobject": "05d493a1-c8f5-4dc4-828b-e2afa4aef07e",
+                          "attribute_type_uuid": "d7f6218e-ee8a-44ec-9e97-1fb455fc1813"
+                        },
+                        "sequence": 1
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "f126d440-97e1-4a79-bd25-0ca8cf628c11",
+                          "name": "Texture",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "2ff0b353-d645-4db2-85cf-0ba0b8d6b4aa",
+                            "name": "Texture type",
+                            "description": "The texture of a material is specified by a filename",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T14:12:22.638Z",
+                            "modification_time": "2025-09-24T14:16:07.457Z",
+                            "uuid_metaobject": "2ff0b353-d645-4db2-85cf-0ba0b8d6b4aa"
+                          },
+                          "creation_time": "2025-09-24T14:13:58.680Z",
+                          "modification_time": "2025-09-24T14:14:45.522Z",
+                          "uuid_metaobject": "f126d440-97e1-4a79-bd25-0ca8cf628c11",
+                          "attribute_type_uuid": "2ff0b353-d645-4db2-85cf-0ba0b8d6b4aa"
+                        },
+                        "sequence": 2
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+                          "name": "Name",
+                          "description": "The name of the object",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+                            "name": "Name type",
+                            "description": "This is the name of the attribute",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-27T14:06:48.902Z",
+                            "modification_time": "2025-11-12T09:30:59.781Z",
+                            "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+                          },
+                          "creation_time": "2025-09-27T14:07:15.370Z",
+                          "modification_time": "2025-11-12T09:30:59.781Z",
+                          "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+                          "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+                        },
+                        "sequence": 2
+                      }
+                    ],
+                    "creation_time": "2025-09-24T14:10:41.386Z",
+                    "modification_time": "2025-09-27T14:31:42.380Z",
+                    "uuid_metaobject": "8146bb08-38f3-428d-b747-118cd08df0aa"
+                  },
+                  "creation_time": "2025-09-24T14:11:01.259Z",
+                  "modification_time": "2025-09-24T14:11:55.862Z",
+                  "uuid_metaobject": "317f6822-1e4b-4e8f-bc1c-ae14d0268ac5",
+                  "attribute_type_uuid": "8146bb08-38f3-428d-b747-118cd08df0aa"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "4f80661e-96e0-4eb5-9c66-ef651997e7f3",
+                  "name": "Origin",
+                  "description": "This is the origin of the object",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "70abfde2-2cbf-48a7-b731-e1098e95df71",
+                    "name": "Origin type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [
+                      {
+                        "attribute": {
+                          "uuid": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                          "name": "Position x",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "0",
+                          "attribute_type": {
+                            "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                            "name": "Coordinate point",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:12:13.246Z",
+                            "modification_time": "2025-09-24T13:23:52.940Z",
+                            "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                          },
+                          "creation_time": "2025-09-24T09:19:46.347Z",
+                          "modification_time": "2025-09-24T13:23:52.940Z",
+                          "uuid_metaobject": "5a038d67-bc1a-4881-86e8-f53f37dae5d6",
+                          "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                        },
+                        "sequence": 1
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "43fcdfc7-824b-46d1-8466-a5e6f5e541f6",
+                          "name": "Pitch",
+                          "description": "A circular (clockwise or anticlockwise) movement of the body as it moves forward",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "",
+                          "attribute_type": {
+                            "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                            "name": "Radian",
+                            "description": "Rotation from 0 to 2 Pi",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:19:10.378Z",
+                            "modification_time": "2025-09-24T13:23:53.621Z",
+                            "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                          },
+                          "creation_time": "2025-09-24T12:18:51.484Z",
+                          "modification_time": "2025-09-24T13:16:44.227Z",
+                          "uuid_metaobject": "43fcdfc7-824b-46d1-8466-a5e6f5e541f6",
+                          "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                        },
+                        "sequence": 2
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "e6fb9f0f-96d7-4223-bd66-d2e70cae721f",
+                          "name": "Yaw",
+                          "description": "Nose moves from side to side",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                            "name": "Radian",
+                            "description": "Rotation from 0 to 2 Pi",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:19:10.378Z",
+                            "modification_time": "2025-09-24T13:23:53.621Z",
+                            "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                          },
+                          "creation_time": "2025-09-24T12:18:27.292Z",
+                          "modification_time": "2025-09-24T13:23:53.621Z",
+                          "uuid_metaobject": "e6fb9f0f-96d7-4223-bd66-d2e70cae721f",
+                          "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                        },
+                        "sequence": 3
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "a09bc075-7fa9-45c4-b7c0-c5c6918b4b55",
+                          "name": "Roll",
+                          "description": "Nose up or tail up.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6",
+                            "name": "Radian",
+                            "description": "Rotation from 0 to 2 Pi",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:19:10.378Z",
+                            "modification_time": "2025-09-24T13:23:53.621Z",
+                            "uuid_metaobject": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                          },
+                          "creation_time": "2025-09-24T12:16:18.534Z",
+                          "modification_time": "2025-09-24T13:23:51.167Z",
+                          "uuid_metaobject": "a09bc075-7fa9-45c4-b7c0-c5c6918b4b55",
+                          "attribute_type_uuid": "30195051-dbd2-451c-bf0f-3c3ee0124ba6"
+                        },
+                        "sequence": 4
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                          "name": "Position z",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "0",
+                          "attribute_type": {
+                            "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
+                            "name": "Float",
+                            "description": "This is the float attribute type",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "pre_defined": false,
+                            "regex_value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+                            "has_table_attribute": [],
+                            "creation_time": "2023-08-24T15:12:15.868Z",
+                            "modification_time": "2025-09-24T12:59:18.559Z",
+                            "uuid_metaobject": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                          },
+                          "creation_time": "2025-09-24T09:19:46.347Z",
+                          "modification_time": "2025-09-24T09:19:46.347Z",
+                          "uuid_metaobject": "d84b02fd-3c04-4612-82f5-b7a1eb95a7c4",
+                          "attribute_type_uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f"
+                        },
+                        "sequence": 5
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "455eae8f-35c7-44f9-8909-468972f53341",
+                          "name": "Position y",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "default_value": "0",
+                          "attribute_type": {
+                            "uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3",
+                            "name": "Coordinate point",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T12:12:13.246Z",
+                            "modification_time": "2025-09-24T13:23:52.940Z",
+                            "uuid_metaobject": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                          },
+                          "creation_time": "2025-09-24T09:19:46.347Z",
+                          "modification_time": "2025-09-24T12:13:52.880Z",
+                          "uuid_metaobject": "455eae8f-35c7-44f9-8909-468972f53341",
+                          "attribute_type_uuid": "c68c494d-4908-44f9-a23f-576a08cb30c3"
+                        },
+                        "sequence": 6
+                      }
+                    ],
+                    "creation_time": "2025-09-24T13:17:59.338Z",
+                    "modification_time": "2025-11-12T09:30:59.781Z",
+                    "uuid_metaobject": "70abfde2-2cbf-48a7-b731-e1098e95df71"
+                  },
+                  "creation_time": "2025-09-24T13:25:48.017Z",
+                  "modification_time": "2025-11-12T09:30:59.781Z",
+                  "uuid_metaobject": "4f80661e-96e0-4eb5-9c66-ef651997e7f3",
+                  "attribute_type_uuid": "70abfde2-2cbf-48a7-b731-e1098e95df71"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+                  "name": "Name",
+                  "description": "The name of the object",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+                    "name": "Name type",
+                    "description": "This is the name of the attribute",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-27T14:06:48.902Z",
+                    "modification_time": "2025-11-12T09:30:59.781Z",
+                    "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+                  },
+                  "creation_time": "2025-09-27T14:07:15.370Z",
+                  "modification_time": "2025-11-12T09:30:59.781Z",
+                  "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+                  "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+                },
+                "sequence": 2
+              },
+              {
+                "attribute": {
+                  "uuid": "ec749557-c7d2-4eec-8ba9-800bb23d6d45",
+                  "name": "Geometry",
+                  "description": "The shape of the visual object.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "6245fd44-d450-48fc-ab1a-cc59547d0a1c",
+                    "name": "Geometry type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [
+                      {
+                        "attribute": {
+                          "uuid": "9408d6c1-1c2c-4e31-b260-c1c245f28e5e",
+                          "name": "Geometry box",
+                          "description": "Size attribute contains the three side lengths of the box. The origin of the box is in its center. ",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "c1226e5d-e999-4e52-9264-d9a2d9b50f32",
+                            "name": "Geometry box type",
+                            "description": "Holds the size of the box",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:37:02.783Z",
+                            "modification_time": "2025-09-24T13:58:40.757Z",
+                            "uuid_metaobject": "c1226e5d-e999-4e52-9264-d9a2d9b50f32"
+                          },
+                          "creation_time": "2025-09-24T13:56:15.225Z",
+                          "modification_time": "2025-09-24T13:58:40.757Z",
+                          "uuid_metaobject": "9408d6c1-1c2c-4e31-b260-c1c245f28e5e",
+                          "attribute_type_uuid": "c1226e5d-e999-4e52-9264-d9a2d9b50f32"
+                        },
+                        "sequence": 1
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "7877f3ad-8347-4765-83a7-b755c2c5628d",
+                          "name": "Geometry cylinder",
+                          "description": "Specify the radius and length. The origin of the cylinder is in its center.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "aa4c01ce-45d8-4937-b49a-1290b3258c22",
+                            "name": "Geometry cylinder type",
+                            "description": "Holds the radius and the length",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:39:10.927Z",
+                            "modification_time": "2025-09-24T15:35:23.366Z",
+                            "uuid_metaobject": "aa4c01ce-45d8-4937-b49a-1290b3258c22"
+                          },
+                          "creation_time": "2025-09-24T13:56:56.503Z",
+                          "modification_time": "2025-09-24T15:35:23.366Z",
+                          "uuid_metaobject": "7877f3ad-8347-4765-83a7-b755c2c5628d",
+                          "attribute_type_uuid": "aa4c01ce-45d8-4937-b49a-1290b3258c22"
+                        },
+                        "sequence": 2
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "cfc45a9e-3942-4294-9c9a-611e73febfe7",
+                          "name": "Geometry mesh",
+                          "description": "A trimesh element specified by a filename",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "bcf4f423-64d1-484e-99ec-f18db6f586a5",
+                            "name": "Geometry mesh type",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:37:49.321Z",
+                            "modification_time": "2025-09-24T13:58:37.065Z",
+                            "uuid_metaobject": "bcf4f423-64d1-484e-99ec-f18db6f586a5"
+                          },
+                          "creation_time": "2025-09-24T13:53:59.014Z",
+                          "modification_time": "2025-09-24T13:55:22.181Z",
+                          "uuid_metaobject": "cfc45a9e-3942-4294-9c9a-611e73febfe7",
+                          "attribute_type_uuid": "bcf4f423-64d1-484e-99ec-f18db6f586a5"
+                        },
+                        "sequence": 3
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "86516631-3a40-4caf-8488-31bb0d58be23",
+                          "name": "Geometry sphere",
+                          "description": "Specify the radius. The origin of the sphere is in its center.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "6e8159bd-9028-4389-86e1-d950987f2889",
+                            "name": "Geometry sphere type",
+                            "description": "Holds the radius of the sphere",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T13:38:35.202Z",
+                            "modification_time": "2025-09-24T13:58:38.990Z",
+                            "uuid_metaobject": "6e8159bd-9028-4389-86e1-d950987f2889"
+                          },
+                          "creation_time": "2025-09-24T13:55:24.131Z",
+                          "modification_time": "2025-09-24T13:58:38.990Z",
+                          "uuid_metaobject": "86516631-3a40-4caf-8488-31bb0d58be23",
+                          "attribute_type_uuid": "6e8159bd-9028-4389-86e1-d950987f2889"
+                        },
+                        "sequence": 4
+                      }
+                    ],
+                    "creation_time": "2025-09-24T13:59:43.006Z",
+                    "modification_time": "2025-09-24T14:13:54.108Z",
+                    "uuid_metaobject": "6245fd44-d450-48fc-ab1a-cc59547d0a1c"
+                  },
+                  "creation_time": "2025-09-24T13:58:50.939Z",
+                  "modification_time": "2025-09-24T14:13:54.108Z",
+                  "uuid_metaobject": "ec749557-c7d2-4eec-8ba9-800bb23d6d45",
+                  "attribute_type_uuid": "6245fd44-d450-48fc-ab1a-cc59547d0a1c"
+                },
+                "sequence": 3
+              }
+            ],
+            "creation_time": "2025-09-24T14:09:29.762Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "5c3762d7-2fa2-49b9-a6bb-7b2a633ca554"
+          },
+          "creation_time": "2025-09-24T14:09:47.471Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "b896321c-f776-4fa1-872a-c2a9f3519b0c",
+          "attribute_type_uuid": "5c3762d7-2fa2-49b9-a6bb-7b2a633ca554"
+        },
+        {
+          "uuid": "210f2f5d-d3d2-4bdd-b920-23ecec4cfd49",
+          "name": "Interial",
+          "description": "This hold the Origin, the Mass and the Inertia tensor",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "9a754c93-bd13-4c47-b91f-f3a5aa25b532",
+            "name": "Intertial type",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "860a9d22-b7d6-40aa-929d-6714ee6d8cc9",
+                  "name": "Mass",
+                  "description": "The mass of the link is represented by the value attribute of this element ",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "fcae4501-ae31-415b-bceb-9457fc1169b1",
+                    "name": "Kilogram",
+                    "description": "This is the standard unit of weight",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [],
+                    "creation_time": "2025-09-24T11:18:40.325Z",
+                    "modification_time": "2025-09-24T11:21:12.654Z",
+                    "uuid_metaobject": "fcae4501-ae31-415b-bceb-9457fc1169b1"
+                  },
+                  "min": 0,
+                  "creation_time": "2025-09-24T11:16:34.679Z",
+                  "modification_time": "2025-09-24T11:21:12.654Z",
+                  "uuid_metaobject": "860a9d22-b7d6-40aa-929d-6714ee6d8cc9",
+                  "attribute_type_uuid": "fcae4501-ae31-415b-bceb-9457fc1169b1"
+                },
+                "sequence": 1
+              },
+              {
+                "attribute": {
+                  "uuid": "cc096a17-d87f-40a8-b03a-e45a73724f5f",
+                  "name": "Inertia",
+                  "description": "This defines how the mass is distributed in a rigid body.",
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "attribute_type": {
+                    "uuid": "3b753b0c-4712-4f68-8363-40c6781a75de",
+                    "name": "Interia type",
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "has_table_attribute": [
+                      {
+                        "attribute": {
+                          "uuid": "796abf9d-3c1d-407a-8b1a-657904ab0893",
+                          "name": "Ixx",
+                          "description": "Rotational inertia about the x-axis, reflecting mass spread in the y–z directions.",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:25:28.661Z",
+                          "modification_time": "2025-09-24T11:27:26.843Z",
+                          "uuid_metaobject": "796abf9d-3c1d-407a-8b1a-657904ab0893",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 1
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "e5985d0c-f741-4bba-ae76-80ed4b62a212",
+                          "name": "Izz",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:36:59.029Z",
+                          "modification_time": "2025-09-24T11:38:56.598Z",
+                          "uuid_metaobject": "e5985d0c-f741-4bba-ae76-80ed4b62a212",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 2
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "21402f24-d8c9-432c-bc4a-201d10c283b2",
+                          "name": "Izy",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:36:48.442Z",
+                          "modification_time": "2025-09-24T11:36:57.487Z",
+                          "uuid_metaobject": "21402f24-d8c9-432c-bc4a-201d10c283b2",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 3
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "d5fd614d-09db-490f-9607-4fe4177ec89d",
+                          "name": "Izx",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:36:30.233Z",
+                          "modification_time": "2025-09-24T11:36:46.934Z",
+                          "uuid_metaobject": "d5fd614d-09db-490f-9607-4fe4177ec89d",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 4
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "3fc1d164-e760-43a6-b6f7-de37482510c7",
+                          "name": "Iyz",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:36:13.689Z",
+                          "modification_time": "2025-09-24T13:23:54.154Z",
+                          "uuid_metaobject": "3fc1d164-e760-43a6-b6f7-de37482510c7",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 5
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "29794a72-276d-419c-8962-c0ea1971da31",
+                          "name": "Iyy",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:36:01.100Z",
+                          "modification_time": "2025-09-24T11:36:11.804Z",
+                          "uuid_metaobject": "29794a72-276d-419c-8962-c0ea1971da31",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 6
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "23d63bd8-7c34-45eb-aed9-03c03300fadf",
+                          "name": "Iyx",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:35:39.239Z",
+                          "modification_time": "2025-09-24T11:35:56.885Z",
+                          "uuid_metaobject": "23d63bd8-7c34-45eb-aed9-03c03300fadf",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 7
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "3e767d44-fc6c-4bf8-a69f-d6ff37c9ca45",
+                          "name": "Ixz",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:35:17.356Z",
+                          "modification_time": "2025-09-24T11:35:35.951Z",
+                          "uuid_metaobject": "3e767d44-fc6c-4bf8-a69f-d6ff37c9ca45",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 8
+                      },
+                      {
+                        "attribute": {
+                          "uuid": "e48c3009-b18a-4137-948d-ad535142a175",
+                          "name": "Ixy",
+                          "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0,
+                            "w": 1
+                          },
+                          "multi_valued": false,
+                          "attribute_type": {
+                            "uuid": "53c0645c-bfd1-4917-968f-a10836767464",
+                            "name": "Moment of inertia",
+                            "description": "This is the ratio between the torque applied and the resulting angular acceleration about that axis.",
+                            "rotation": {
+                              "x": 0,
+                              "y": 0,
+                              "z": 0,
+                              "w": 1
+                            },
+                            "has_table_attribute": [],
+                            "creation_time": "2025-09-24T11:21:45.180Z",
+                            "modification_time": "2025-09-24T13:23:54.154Z",
+                            "uuid_metaobject": "53c0645c-bfd1-4917-968f-a10836767464"
+                          },
+                          "creation_time": "2025-09-24T11:33:40.372Z",
+                          "modification_time": "2025-09-24T11:35:11.815Z",
+                          "uuid_metaobject": "e48c3009-b18a-4137-948d-ad535142a175",
+                          "attribute_type_uuid": "53c0645c-bfd1-4917-968f-a10836767464"
+                        },
+                        "sequence": 9
+                      }
+                    ],
+                    "creation_time": "2025-09-24T11:32:07.037Z",
+                    "modification_time": "2025-09-25T08:53:59.419Z",
+                    "uuid_metaobject": "3b753b0c-4712-4f68-8363-40c6781a75de"
+                  },
+                  "creation_time": "2025-09-24T11:29:00.824Z",
+                  "modification_time": "2025-09-24T13:24:16.233Z",
+                  "uuid_metaobject": "cc096a17-d87f-40a8-b03a-e45a73724f5f",
+                  "attribute_type_uuid": "3b753b0c-4712-4f68-8363-40c6781a75de"
+                },
+                "sequence": 2
+              }
+            ],
+            "creation_time": "2025-09-24T12:04:59.269Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "9a754c93-bd13-4c47-b91f-f3a5aa25b532"
+          },
+          "creation_time": "2025-09-24T12:04:04.202Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "210f2f5d-d3d2-4bdd-b920-23ecec4cfd49",
+          "attribute_type_uuid": "9a754c93-bd13-4c47-b91f-f3a5aa25b532"
+        }
+      ],
+      "ports": [],
+      "creation_time": "2025-09-24T11:12:08.890Z",
+      "modification_time": "2025-11-12T09:30:59.781Z",
+      "uuid_metaobject": "4eb02f76-fc47-4edc-81b5-0e01f88f8674"
+    },
+    {
+      "uuid": "ab36eab0-716b-465c-8b63-117b2cc2bde4",
+      "name": "Robot",
+      "geometry": "/** @param {GraphicContext} gc */\n async function vizRep(gc) { let map = 'data:image/png;base64,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'; await gc.setVariable('name', await gc.expression.attrvalByName('Name'), false);await gc.setVariable('x_rel', 0, true);await gc.setVariable('y_rel', 0, true);await gc.setVariable('z_rel', 0.1, true);await gc.graphic_cube(5, 5, 0.00002, 'grey', map); await gc.graphic_text(await gc.getVariableValue('x_rel'), await gc.getVariableValue('y_rel'), await gc.getVariableValue('z_rel'), 0.2, 'gray', await gc.getVariableValue('name'), 'x_rel', 'y_rel', 'z_rel'); }",
+      "description": "A robotic system composed of links and joints",
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "attributes": [
+        {
+          "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+          "name": "Name",
+          "description": "The name of the object",
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "attribute_type": {
+            "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+            "name": "Name type",
+            "description": "This is the name of the attribute",
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "has_table_attribute": [],
+            "creation_time": "2025-09-27T14:06:48.902Z",
+            "modification_time": "2025-11-12T09:30:59.781Z",
+            "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+          },
+          "creation_time": "2025-09-27T14:07:15.370Z",
+          "modification_time": "2025-11-12T09:30:59.781Z",
+          "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+          "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+        }
+      ],
+      "ports": [],
+      "creation_time": "2025-09-24T15:48:02.756Z",
+      "modification_time": "2025-11-12T09:30:59.781Z",
+      "uuid_metaobject": "ab36eab0-716b-465c-8b63-117b2cc2bde4"
+    }
+  ],
+  "relationclasses": [],
+  "attributes": [
+    {
+      "uuid": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+      "name": "Name",
+      "description": "The name of the object",
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "multi_valued": false,
+      "attribute_type": {
+        "uuid": "dfe15a27-98f4-4448-b295-1c4247491200",
+        "name": "Name type",
+        "description": "This is the name of the attribute",
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "has_table_attribute": [],
+        "creation_time": "2025-09-27T14:06:48.902Z",
+        "modification_time": "2025-11-12T09:30:59.781Z",
+        "uuid_metaobject": "dfe15a27-98f4-4448-b295-1c4247491200"
+      },
+      "creation_time": "2025-09-27T14:07:15.370Z",
+      "modification_time": "2025-11-12T09:30:59.781Z",
+      "uuid_metaobject": "9fb204a6-ee0b-4682-8ef1-79306364ddc6",
+      "attribute_type_uuid": "dfe15a27-98f4-4448-b295-1c4247491200"
+    }
+  ],
+  "ports": [],
+  "procedures": [],
+  "creation_time": "2025-11-12T09:29:44.333Z",
+  "modification_time": "2025-11-12T09:30:59.781Z",
+  "uuid_metaobject": "113c3133-bf77-493a-a36f-553e77832280"
+}
