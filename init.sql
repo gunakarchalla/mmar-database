@@ -2747,7 +2747,7 @@ ALTER TABLE ONLY public.role_class_reference
 --
 
 ALTER TABLE ONLY public.relationclass
-    ADD CONSTRAINT fk_role_from FOREIGN KEY (role_from) REFERENCES public.role (uuid_metaobject) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_role_from FOREIGN KEY (role_from) REFERENCES public.role (uuid_metaobject) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
 
 
@@ -2836,7 +2836,7 @@ ALTER TABLE ONLY public.role_port_reference
 --
 
 ALTER TABLE ONLY public.role_relationclass_reference
-    ADD CONSTRAINT fk_role_relationclass_reference_relationclass FOREIGN KEY (uuid_relationclass) REFERENCES public.relationclass (uuid_class) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_role_relationclass_reference_relationclass FOREIGN KEY (uuid_relationclass) REFERENCES public.relationclass (uuid_class) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -2875,7 +2875,7 @@ ALTER TABLE ONLY public.role_attribute_reference
 --
 
 ALTER TABLE ONLY public.relationclass
-    ADD CONSTRAINT fk_role_to FOREIGN KEY (role_to) REFERENCES public.role (uuid_metaobject) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_role_to FOREIGN KEY (role_to) REFERENCES public.role (uuid_metaobject) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
 
 --
