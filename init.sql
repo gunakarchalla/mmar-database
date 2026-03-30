@@ -108,8 +108,7 @@ BEGIN
                            FROM has_delete_right
                                     JOIN user_group ug ON has_delete_right.uuid_user_group = ug.uuid_metaobject
                                     JOIN has_user_user_group huug ON ug.uuid_metaobject = huug.uuid_user_group
-                           WHERE (has_delete_right.uuid_instance_object = p_uuid OR
-                                  has_delete_right.uuid_metaobject = p_uuid)
+                       WHERE has_delete_right.uuid_metaobject = p_uuid
                              AND huug.uuid_user = user_uuid)
         OR user_uuid = 'ff892138-77e0-47fe-a323-3fe0e1bf0240';
 
@@ -423,10 +422,7 @@ BEGIN
                       FROM has_delete_right
                                JOIN user_group ug ON has_delete_right.uuid_user_group = ug.uuid_metaobject
                                JOIN has_user_user_group huug ON ug.uuid_metaobject = huug.uuid_user_group
-                      WHERE (
-                          has_delete_right.uuid_instance_object = uuid_to_delete
-                              OR has_delete_right.uuid_metaobject = uuid_to_delete
-                          )
+                      WHERE has_delete_right.uuid_metaobject = uuid_to_delete
                         AND huug.uuid_user = user_uuid))
     THEN
         DELETE FROM metaobject WHERE uuid = uuid_to_delete;
@@ -864,8 +860,7 @@ CREATE TABLE public.has_delete_right
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     uuid_user_group      uuid,
-    uuid_metaobject      uuid,
-    uuid_instance_object uuid
+    uuid_metaobject      uuid
 );
 
 
@@ -918,8 +913,7 @@ CREATE TABLE public.has_read_right
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     uuid_user_group      uuid,
-    uuid_metaobject      uuid,
-    uuid_instance_object uuid
+    uuid_metaobject      uuid
 );
 
 
@@ -1017,8 +1011,7 @@ CREATE TABLE public.has_write_right
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     uuid_user_group      uuid,
-    uuid_metaobject      uuid,
-    uuid_instance_object uuid
+    uuid_metaobject      uuid
 );
 
 
@@ -2489,14 +2482,6 @@ ALTER TABLE ONLY public.generic_constraint
 
 
 --
--- Name: has_delete_right fk_has_delete_right_instanceobject; Type: FK CONSTRAINT; Schema: public; Owner: api
---
-
-ALTER TABLE ONLY public.has_delete_right
-    ADD CONSTRAINT fk_has_delete_right_instanceobject FOREIGN KEY (uuid_instance_object) REFERENCES public.instance_object (uuid) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: has_delete_right fk_has_delete_right_metaobject; Type: FK CONSTRAINT; Schema: public; Owner: api
 --
 
@@ -2510,14 +2495,6 @@ ALTER TABLE ONLY public.has_delete_right
 
 ALTER TABLE ONLY public.has_delete_right
     ADD CONSTRAINT fk_has_delete_right_user_group FOREIGN KEY (uuid_user_group) REFERENCES public.user_group (uuid_metaobject) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: has_read_right fk_has_read_right_instanceobject; Type: FK CONSTRAINT; Schema: public; Owner: api
---
-
-ALTER TABLE ONLY public.has_read_right
-    ADD CONSTRAINT fk_has_read_right_instanceobject FOREIGN KEY (uuid_instance_object) REFERENCES public.instance_object (uuid) ON UPDATE CASCADE ON DELETE cascade;
 
 
 --
@@ -2550,14 +2527,6 @@ ALTER TABLE ONLY public.has_user_user_group
 
 ALTER TABLE ONLY public.has_user_user_group
     ADD CONSTRAINT fk_has_user_user_group_user_group FOREIGN KEY (uuid_user_group) REFERENCES public.user_group (uuid_metaobject) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: has_write_right fk_has_write_right_instanceobject; Type: FK CONSTRAINT; Schema: public; Owner: api
---
-
-ALTER TABLE ONLY public.has_write_right
-    ADD CONSTRAINT fk_has_write_right_instanceobject FOREIGN KEY (uuid_instance_object) REFERENCES public.instance_object (uuid) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
