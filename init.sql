@@ -2496,6 +2496,10 @@ ALTER TABLE ONLY public.has_delete_right
 ALTER TABLE ONLY public.has_delete_right
     ADD CONSTRAINT fk_has_delete_right_user_group FOREIGN KEY (uuid_user_group) REFERENCES public.user_group (uuid_metaobject) ON UPDATE CASCADE ON DELETE CASCADE;
 
+ALTER TABLE ONLY public.has_delete_right
+    ADD CONSTRAINT unique_usergroup_metaobject_delete
+    UNIQUE (uuid_user_group, uuid_metaobject);
+
 
 --
 -- Name: has_read_right fk_has_read_right_metaobject; Type: FK CONSTRAINT; Schema: public; Owner: api
@@ -2511,6 +2515,10 @@ ALTER TABLE ONLY public.has_read_right
 
 ALTER TABLE ONLY public.has_read_right
     ADD CONSTRAINT fk_has_read_right_user_group FOREIGN KEY (uuid_user_group) REFERENCES public.user_group (uuid_metaobject) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.has_read_right
+    ADD CONSTRAINT unique_usergroup_metaobject_read
+    UNIQUE (uuid_user_group, uuid_metaobject);
 
 
 --
@@ -2543,6 +2551,10 @@ ALTER TABLE ONLY public.has_write_right
 
 ALTER TABLE ONLY public.has_write_right
     ADD CONSTRAINT fk_has_write_right_user_group FOREIGN KEY (uuid_user_group) REFERENCES public.user_group (uuid_metaobject) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.has_write_right
+    ADD CONSTRAINT unique_usergroup_metaobject_write
+    UNIQUE (uuid_user_group, uuid_metaobject);
 
 
 
@@ -2948,6 +2960,10 @@ ALTER TABLE ONLY public.can_create_instances
 
 ALTER TABLE ONLY public.can_create_instances
     ADD CONSTRAINT fk_can_create_instances_meta_object FOREIGN KEY (uuid_metaobject) REFERENCES public.metaobject (uuid) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.can_create_instances
+    ADD CONSTRAINT unique_usergroup_metaobject_create
+    UNIQUE (uuid_user_group, uuid_metaobject);
 --
 -- Name: users fk_user_metaobject; Type: FK CONSTRAINT; Schema: public; Owner: api
 --
