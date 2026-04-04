@@ -1380,6 +1380,23 @@ ALTER TABLE public.scene_instance
     OWNER TO api;
 
 --
+-- Name: scene_instance_user_access; Type: TABLE; Schema: public; Owner: api
+--
+
+CREATE TABLE public.scene_instance_user_access
+(
+    uuid_scene_instance uuid NOT NULL,
+    uuid_user           uuid NOT NULL,
+    read_access         boolean,
+    write_access        boolean,
+    delete_access       boolean
+);
+
+
+ALTER TABLE public.scene_instance_user_access
+    OWNER TO api;
+
+--
 -- Name: scene_type; Type: TABLE; Schema: public; Owner: api
 --
 
@@ -1962,6 +1979,14 @@ ALTER TABLE ONLY public.scene_has_attributes
 
 ALTER TABLE ONLY public.scene_instance
     ADD CONSTRAINT scene_instance_pkey PRIMARY KEY (uuid_instance_object);
+
+
+--
+-- Name: scene_instance_user_access scene_instance_user_access_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+--
+
+ALTER TABLE ONLY public.scene_instance_user_access
+    ADD CONSTRAINT scene_instance_user_access_pkey PRIMARY KEY (uuid_scene_instance, uuid_user);
 
 
 --
@@ -2913,6 +2938,22 @@ ALTER TABLE ONLY public.scene_has_attributes
 
 ALTER TABLE ONLY public.scene_instance
     ADD CONSTRAINT fk_scene_instance_instance_object FOREIGN KEY (uuid_instance_object) REFERENCES public.instance_object (uuid) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: scene_instance_user_access fk_scene_instance_user_access_scene_instance; Type: FK CONSTRAINT; Schema: public; Owner: api
+--
+
+ALTER TABLE ONLY public.scene_instance_user_access
+    ADD CONSTRAINT fk_scene_instance_user_access_scene_instance FOREIGN KEY (uuid_scene_instance) REFERENCES public.scene_instance (uuid_instance_object) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: scene_instance_user_access fk_scene_instance_user_access_user; Type: FK CONSTRAINT; Schema: public; Owner: api
+--
+
+ALTER TABLE ONLY public.scene_instance_user_access
+    ADD CONSTRAINT fk_scene_instance_user_access_user FOREIGN KEY (uuid_user) REFERENCES public.users (uuid_metaobject) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
