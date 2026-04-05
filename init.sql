@@ -1388,7 +1388,7 @@ CREATE TABLE public.scene_instance_user_access
     uuid_scene_instance uuid NOT NULL,
     uuid_user           uuid NOT NULL,
     read_access         boolean,
-    write_access        boolean,
+    edit_access        boolean,
     delete_access       boolean
 );
 
