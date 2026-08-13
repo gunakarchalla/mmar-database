@@ -7,6 +7,54 @@ This project is part of the MMAR Metamodeling Platform, focusing on the database
 To install the database, please refer to the readme of the [MMAR repository](https://github.com/MM-AR/mmar) or the Wiki Entry of the [MMAR Manual Installation](https://github.com/MM-AR/mmar/wiki/Manual-MMAR-Installation).
 
 
+## Audit trail
+
+Two tables in the `logging` schema record what happened.
+
+`logging.t_history` is written by the `public.change_trigger()` trigger on every insert,
+update and delete of `metaobject` and `instance_object`. Besides the old and new row it
+records `uuid_user`, the platform user responsible for the change.
+
+It used to carry a `who` column defaulting to `CURRENT_USER`. That column was dropped: the
+trigger is `SECURITY DEFINER`, so `CURRENT_USER` resolved to the owner of the function rather
+than to the role that connected, and every row recorded the same value whoever made the
+change. `uuid_user` answers the question it was meant to answer.
+
+The API server publishes the acting user for the duration of a transaction:
+
+```sql
+SELECT set_config('mmar.uuid_user', '<uuid of the user>', true);
+```
+
+`public.current_app_user()` reads it back, returning `NULL` when it is absent or malformed,
+so a change made outside the API server is recorded with `uuid_user IS NULL` rather than
+being rejected. The setting is transaction local, so it cannot leak between two requests
+sharing a pooled connection.
+
+`logging.t_security_event` is written by the API server itself and holds the authentication
+and privilege trail: sign ins, rejected tokens, granted and revoked access rights, and
+refused requests. It carries no foreign key on `uuid_user` on purpose: an audit record has
+to outlive the account it refers to, and a failed sign in has no account at all.
+
+```sql
+-- who changed a given object, most recent first
+SELECT h.tstamp, h.operation, u.username
+FROM logging.t_history h
+         LEFT JOIN public.users u ON u.uuid_metaobject = h.uuid_user
+WHERE h.affected_uuid = '<uuid>'
+ORDER BY h.tstamp DESC;
+
+-- failed sign ins per address over the last day
+SELECT ip, count(*)
+FROM logging.t_security_event
+WHERE event = 'login'
+  AND outcome = 'failure'
+  AND tstamp > now() - interval '1 day'
+GROUP BY ip
+ORDER BY 2 DESC;
+```
+
+
 ## Contributing
 
 We welcome contributions! Please follow these steps:

@@ -26,6 +26,29 @@ CREATE SCHEMA logging;
 ALTER SCHEMA logging OWNER TO api;
 
 --
+-- Name: current_app_user(); Type: FUNCTION; Schema: public; Owner: api
+--
+
+CREATE OR REPLACE FUNCTION public.current_app_user() RETURNS uuid
+    LANGUAGE plpgsql
+    STABLE
+AS
+$$
+BEGIN
+    -- The API server sets this per transaction, see set_config('mmar.uuid_user', ..., true).
+    -- Every connection of the pool authenticates as the same database role, so
+    -- CURRENT_USER cannot tell the platform users apart: this setting can.
+    RETURN NULLIF(current_setting('mmar.uuid_user', true), '')::uuid;
+EXCEPTION
+    WHEN others THEN
+        -- A malformed value must never abort the statement being audited.
+        RETURN NULL;
+END;
+$$;
+
+ALTER FUNCTION public.current_app_user() OWNER TO api;
+
+--
 -- Name: change_trigger(); Type: FUNCTION; Schema: public; Owner: api
 --
 
@@ -34,23 +57,25 @@ CREATE OR REPLACE FUNCTION public.change_trigger() RETURNS trigger
     SECURITY DEFINER
 AS
 $$
+DECLARE
+    acting_user uuid := public.current_app_user();
 BEGIN
     IF TG_OP = 'INSERT'
     THEN
-        INSERT INTO logging.t_history (tabname, schemaname, operation, new_val, transaction, affected_uuid)
-        VALUES (TG_RELNAME, TG_TABLE_SCHEMA, TG_OP, row_to_json(NEW), txid_current(), NEW.uuid);
+        INSERT INTO logging.t_history (tabname, schemaname, operation, new_val, transaction, affected_uuid, uuid_user)
+        VALUES (TG_RELNAME, TG_TABLE_SCHEMA, TG_OP, row_to_json(NEW), txid_current(), NEW.uuid, acting_user);
         RETURN NEW;
     ELSIF TG_OP = 'UPDATE'
     THEN
         NEW.modification_time = now();
-        INSERT INTO logging.t_history (tabname, schemaname, operation, new_val, old_val, transaction, affected_uuid)
-        VALUES (TG_RELNAME, TG_TABLE_SCHEMA, TG_OP, row_to_json(NEW), row_to_json(OLD), txid_current(), OLD.uuid);
+        INSERT INTO logging.t_history (tabname, schemaname, operation, new_val, old_val, transaction, affected_uuid, uuid_user)
+        VALUES (TG_RELNAME, TG_TABLE_SCHEMA, TG_OP, row_to_json(NEW), row_to_json(OLD), txid_current(), OLD.uuid, acting_user);
         RETURN NEW;
     ELSIF TG_OP = 'DELETE'
     THEN
         INSERT INTO logging.t_history
-            (tabname, schemaname, operation, old_val, transaction, affected_uuid)
-        VALUES (TG_RELNAME, TG_TABLE_SCHEMA, TG_OP, row_to_json(OLD), txid_current(), OLD.uuid);
+            (tabname, schemaname, operation, old_val, transaction, affected_uuid, uuid_user)
+        VALUES (TG_RELNAME, TG_TABLE_SCHEMA, TG_OP, row_to_json(OLD), txid_current(), OLD.uuid, acting_user);
         RETURN OLD;
     END IF;
 END;
@@ -464,7 +489,7 @@ CREATE TABLE logging.t_history
     schemaname    text,
     tabname       text,
     operation     text,
-    who           text                        DEFAULT CURRENT_USER,
+    uuid_user     uuid,
     new_val       json,
     old_val       json,
     affected_uuid uuid
@@ -479,6 +504,13 @@ ALTER TABLE logging.t_history
 --
 
 COMMENT ON COLUMN logging.t_history.affected_uuid IS 'This is the affected uuid by the operation';
+
+
+--
+-- Name: COLUMN t_history.uuid_user; Type: COMMENT; Schema: logging; Owner: api
+--
+
+COMMENT ON COLUMN logging.t_history.uuid_user IS 'The platform user that performed the operation, NULL when the change was not made through the API server';
 
 
 --
@@ -502,6 +534,119 @@ ALTER TABLE logging.t_history_id_seq
 --
 
 ALTER SEQUENCE logging.t_history_id_seq OWNED BY logging.t_history.id;
+
+
+--
+-- Name: t_security_event; Type: TABLE; Schema: logging; Owner: api
+--
+-- Authentication and privilege audit trail written by the API server.
+-- Deliberately has no foreign key on uuid_user: an audit record must survive the
+-- deletion of the account it refers to, and a failed sign in has no account at all.
+--
+
+CREATE TABLE logging.t_security_event
+(
+    id        bigint                   NOT NULL,
+    tstamp    timestamp with time zone DEFAULT now() NOT NULL,
+    event     text                     NOT NULL,
+    outcome   text                     NOT NULL,
+    uuid_user uuid,
+    username  text,
+    ip        text,
+    method    text,
+    path      text,
+    reason    text,
+    detail    jsonb,
+    CONSTRAINT t_security_event_outcome_check CHECK (outcome IN ('success', 'failure'))
+);
+
+
+ALTER TABLE logging.t_security_event
+    OWNER TO api;
+
+--
+-- Name: COLUMN t_security_event.event; Type: COMMENT; Schema: logging; Owner: api
+--
+
+COMMENT ON COLUMN logging.t_security_event.event IS 'The kind of event, for example login, token_verification, access_grant, access_revoke or access_denied';
+
+--
+-- Name: COLUMN t_security_event.uuid_user; Type: COMMENT; Schema: logging; Owner: api
+--
+
+COMMENT ON COLUMN logging.t_security_event.uuid_user IS 'The platform user concerned by the event, NULL when it could not be established';
+
+--
+-- Name: COLUMN t_security_event.username; Type: COMMENT; Schema: logging; Owner: api
+--
+
+COMMENT ON COLUMN logging.t_security_event.username IS 'The login that was attempted, kept even when no account matches it';
+
+--
+-- Name: t_security_event_id_seq; Type: SEQUENCE; Schema: logging; Owner: api
+--
+
+CREATE SEQUENCE logging.t_security_event_id_seq
+    AS bigint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE logging.t_security_event_id_seq
+    OWNER TO api;
+
+--
+-- Name: t_security_event_id_seq; Type: SEQUENCE OWNED BY; Schema: logging; Owner: api
+--
+
+ALTER SEQUENCE logging.t_security_event_id_seq OWNED BY logging.t_security_event.id;
+
+
+--
+-- Name: t_security_event id; Type: DEFAULT; Schema: logging; Owner: api
+--
+
+ALTER TABLE ONLY logging.t_security_event
+    ALTER COLUMN id SET DEFAULT nextval('logging.t_security_event_id_seq'::regclass);
+
+
+--
+-- Name: t_security_event t_security_event_pkey; Type: CONSTRAINT; Schema: logging; Owner: api
+--
+
+ALTER TABLE ONLY logging.t_security_event
+    ADD CONSTRAINT t_security_event_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: t_security_event_tstamp_idx; Type: INDEX; Schema: logging; Owner: api
+--
+
+CREATE INDEX t_security_event_tstamp_idx ON logging.t_security_event USING btree (tstamp DESC);
+
+
+--
+-- Name: t_security_event_uuid_user_idx; Type: INDEX; Schema: logging; Owner: api
+--
+
+CREATE INDEX t_security_event_uuid_user_idx ON logging.t_security_event USING btree (uuid_user, tstamp DESC);
+
+
+--
+-- Name: t_security_event_event_idx; Type: INDEX; Schema: logging; Owner: api
+--
+
+CREATE INDEX t_security_event_event_idx ON logging.t_security_event USING btree (event, outcome, tstamp DESC);
+
+
+--
+-- Name: t_history_uuid_user_idx; Type: INDEX; Schema: logging; Owner: api
+--
+
+CREATE INDEX t_history_uuid_user_idx ON logging.t_history USING btree (uuid_user, tstamp DESC);
 
 
 --
