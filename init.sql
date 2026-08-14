@@ -135,7 +135,7 @@ BEGIN
                                     JOIN has_user_user_group huug ON ug.uuid_metaobject = huug.uuid_user_group
                        WHERE has_delete_right.uuid_metaobject = p_uuid
                              AND huug.uuid_user = user_uuid)
-        OR user_uuid = 'ff892138-77e0-47fe-a323-3fe0e1bf0240';
+        OR public.is_administrator(user_uuid);
 
     IF NOT v_has_right THEN
         uuid := p_uuid;
@@ -441,7 +441,7 @@ $BODY$
 BEGIN
 
     IF (
-        user_uuid = 'ff892138-77e0-47fe-a323-3fe0e1bf0240'
+        public.is_administrator(user_uuid)
             OR user_uuid IS NULL
             OR EXISTS(SELECT 1
                       FROM has_delete_right
@@ -1585,7 +1585,14 @@ CREATE TABLE public.user_group
     can_create_port           boolean not null default false,
     can_create_role           boolean not null default false,
     can_create_procedure  boolean not null default false,
-    can_create_user_group boolean not null default false
+    can_create_user_group boolean not null default false,
+
+    -- Membership of a group carrying this flag makes a user an administrator:
+    -- every right check below passes unconditionally, and only administrators may
+    -- create accounts. It replaces a hardcoded user uuid that was written into
+    -- each of those checks, which could be granted to nobody else and revoked
+    -- from nobody at all. A deployment may define more than one such group.
+    is_administrator      boolean not null default false
 
 );
 
@@ -1619,6 +1626,32 @@ CREATE TABLE public.users
 
 
 ALTER TABLE public.users
+    OWNER TO api;
+
+--
+-- Name: is_administrator; Type: FUNCTION; Schema: public; Owner: api
+--
+-- Whether a user belongs to any group flagged as administrative. Every right
+-- check in the application ends with a call to this, which is the single place
+-- the privilege is defined. Passing NULL — an unauthenticated caller — is not an
+-- administrator.
+--
+CREATE OR REPLACE FUNCTION public.is_administrator(p_user uuid)
+    RETURNS boolean
+    LANGUAGE sql
+    STABLE
+    PARALLEL SAFE
+AS
+$$
+SELECT EXISTS (SELECT 1
+               FROM public.user_group ug
+                        JOIN public.has_user_user_group huug
+                             ON huug.uuid_user_group = ug.uuid_metaobject
+               WHERE huug.uuid_user = p_user
+                 AND ug.is_administrator);
+$$;
+
+ALTER FUNCTION public.is_administrator(uuid)
     OWNER TO api;
 
 --
@@ -1686,6 +1719,26 @@ VALUES ('03f0cbf8-0278-4c85-8130-28aed970284f', 'test', '$2a$10$oPU3HTi7gV6tkKbB
 INSERT INTO public.users (uuid_metaobject, username, password, salt, token)
 VALUES ('ff892138-77e0-47fe-a323-3fe0e1bf0240', 'admin', '$2a$10$VC0PBQ7djoHjtubEahV7XexPW.B8x7dDUBQ6l9LEiOjLMmewiWTJy',
         NULL, NULL);
+
+-- ---------------------
+-- administrators
+-- ---------------------
+-- The group that carries the administrative privilege, and the seeded admin
+-- account's membership of it. Administrator status is membership of a group
+-- flagged is_administrator, so it can be granted and revoked through the normal
+-- user group API; nothing in the code names this particular group.
+INSERT INTO public.metaobject (uuid, name, description, creation_time, modification_time)
+VALUES ('014db23f-3d88-4643-b54d-eef6df4e57ae', 'administrators',
+        'Members of this group hold every right and are the only users who may create accounts.',
+        now(), now());
+
+INSERT INTO public.user_group (uuid_metaobject, is_administrator, can_create_scenetype, can_create_attribute,
+                               can_create_attribute_type, can_create_class, can_create_relationclass,
+                               can_create_port, can_create_role, can_create_procedure, can_create_user_group)
+VALUES ('014db23f-3d88-4643-b54d-eef6df4e57ae', true, true, true, true, true, true, true, true, true, true);
+
+INSERT INTO public.has_user_user_group (uuid_user, uuid_user_group)
+VALUES ('ff892138-77e0-47fe-a323-3fe0e1bf0240', '014db23f-3d88-4643-b54d-eef6df4e57ae');
 -- ---------------------
 -- attribute_types
 -- ---------------------
