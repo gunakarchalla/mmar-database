@@ -3273,3 +3273,77 @@ ALTER DEFAULT PRIVILEGES FOR ROLE api GRANT ALL ON TABLES TO api WITH GRANT OPTI
 --
 
 
+
+
+--
+-- Name: foreign key indexes; Type: INDEX; Schema: public; Owner: api
+--
+-- PostgreSQL creates an index for a primary key or a unique constraint, never for a
+-- foreign key. Every one of the columns below is what some query filters or joins
+-- on to walk from a parent to its children -- the attributes of a class, the classes
+-- of a scene, the rights of a user -- so without these each of those lookups is a
+-- sequential scan of the whole table.
+--
+-- The three right-check indexes are composite rather than single-column because the
+-- checks filter on the metaobject and join on the group in the same query.
+--
+
+CREATE INDEX IF NOT EXISTS assigned_to_scene_uuid_scene_instance_idx ON public.assigned_to_scene USING btree (uuid_scene_instance);
+CREATE INDEX IF NOT EXISTS attribute_attribute_type_uuid_idx ON public.attribute USING btree (attribute_type_uuid);
+CREATE INDEX IF NOT EXISTS attribute_instance_assigned_uuid_class_instance_idx ON public.attribute_instance USING btree (assigned_uuid_class_instance);
+CREATE INDEX IF NOT EXISTS attribute_instance_assigned_uuid_port_instance_idx ON public.attribute_instance USING btree (assigned_uuid_port_instance);
+CREATE INDEX IF NOT EXISTS attribute_instance_assigned_uuid_scene_instance_idx ON public.attribute_instance USING btree (assigned_uuid_scene_instance);
+CREATE INDEX IF NOT EXISTS attribute_instance_role_instance_from_idx ON public.attribute_instance USING btree (role_instance_from);
+CREATE INDEX IF NOT EXISTS attribute_instance_table_attribute_reference_idx ON public.attribute_instance USING btree (table_attribute_reference);
+CREATE INDEX IF NOT EXISTS attribute_instance_uuid_attribute_idx ON public.attribute_instance USING btree (uuid_attribute);
+CREATE INDEX IF NOT EXISTS class_aggregation_reference_uuid_contained_class_instance_idx ON public.class_aggregation_reference USING btree (uuid_contained_class_instance);
+CREATE INDEX IF NOT EXISTS class_decomposition_reference_uuid_decomposed_class_instanc_idx ON public.class_decomposition_reference USING btree (uuid_decomposed_class_instance);
+CREATE INDEX IF NOT EXISTS class_has_attributes_uuid_attribute_idx ON public.class_has_attributes USING btree (uuid_attribute);
+CREATE INDEX IF NOT EXISTS class_instance_uuid_aggregator_class_idx ON public.class_instance USING btree (uuid_aggregator_class);
+CREATE INDEX IF NOT EXISTS class_instance_uuid_class_idx ON public.class_instance USING btree (uuid_class);
+CREATE INDEX IF NOT EXISTS class_instance_uuid_decomposable_class_idx ON public.class_instance USING btree (uuid_decomposable_class);
+CREATE INDEX IF NOT EXISTS class_instance_uuid_relationclass_bendpoint_idx ON public.class_instance USING btree (uuid_relationclass_bendpoint);
+CREATE INDEX IF NOT EXISTS contains_aggreg_classes_uuid_aggregator_class_idx ON public.contains_aggreg_classes USING btree (uuid_aggregator_class);
+CREATE INDEX IF NOT EXISTS contains_aggreg_relationclasses_uuid_aggregator_class_idx ON public.contains_aggreg_relationclasses USING btree (uuid_aggregator_class);
+CREATE INDEX IF NOT EXISTS contains_classes_uuid_scene_type_idx ON public.contains_classes USING btree (uuid_scene_type);
+CREATE INDEX IF NOT EXISTS decomposable_into_aggregator_classes_uuid_aggregator_class_idx ON public.decomposable_into_aggregator_classes USING btree (uuid_aggregator_class);
+CREATE INDEX IF NOT EXISTS decomposable_into_classes_uuid_class_idx ON public.decomposable_into_classes USING btree (uuid_class);
+CREATE INDEX IF NOT EXISTS decomposable_into_scenes_uuid_scene_type_idx ON public.decomposable_into_scenes USING btree (uuid_scene_type);
+CREATE INDEX IF NOT EXISTS generic_constraint_assigned_uuid_metaobject_idx ON public.generic_constraint USING btree (assigned_uuid_metaobject);
+CREATE INDEX IF NOT EXISTS has_algorithm_uuid_procedure_idx ON public.has_algorithm USING btree (uuid_procedure);
+CREATE INDEX IF NOT EXISTS has_delete_right_uuid_metaobject_uuid_user_group_idx ON public.has_delete_right USING btree (uuid_metaobject, uuid_user_group);
+CREATE INDEX IF NOT EXISTS has_read_right_uuid_metaobject_uuid_user_group_idx ON public.has_read_right USING btree (uuid_metaobject, uuid_user_group);
+CREATE INDEX IF NOT EXISTS has_table_attribute_uuid_attribute_type_idx ON public.has_table_attribute USING btree (uuid_attribute_type);
+CREATE INDEX IF NOT EXISTS has_user_user_group_uuid_user_group_idx ON public.has_user_user_group USING btree (uuid_user_group);
+CREATE INDEX IF NOT EXISTS has_write_right_uuid_metaobject_uuid_user_group_idx ON public.has_write_right USING btree (uuid_metaobject, uuid_user_group);
+CREATE INDEX IF NOT EXISTS is_sub_scene_uuid_sub_scene_type_idx ON public.is_sub_scene USING btree (uuid_sub_scene_type);
+CREATE INDEX IF NOT EXISTS is_subclass_of_uuid_class_idx ON public.is_subclass_of USING btree (uuid_class);
+CREATE INDEX IF NOT EXISTS port_uuid_class_idx ON public.port USING btree (uuid_class);
+CREATE INDEX IF NOT EXISTS port_uuid_scene_type_idx ON public.port USING btree (uuid_scene_type);
+CREATE INDEX IF NOT EXISTS port_has_attributes_uuid_attribute_idx ON public.port_has_attributes USING btree (uuid_attribute);
+CREATE INDEX IF NOT EXISTS port_instance_uuid_class_instance_idx ON public.port_instance USING btree (uuid_class_instance);
+CREATE INDEX IF NOT EXISTS port_instance_uuid_port_idx ON public.port_instance USING btree (uuid_port);
+CREATE INDEX IF NOT EXISTS port_instance_uuid_scene_instance_idx ON public.port_instance USING btree (uuid_scene_instance);
+CREATE INDEX IF NOT EXISTS relationclass_role_from_idx ON public.relationclass USING btree (role_from);
+CREATE INDEX IF NOT EXISTS relationclass_role_to_idx ON public.relationclass USING btree (role_to);
+CREATE INDEX IF NOT EXISTS relationclass_uuid_class_bendpoint_idx ON public.relationclass USING btree (uuid_class_bendpoint);
+CREATE INDEX IF NOT EXISTS relationclass_instance_uuid_role_instance_from_idx ON public.relationclass_instance USING btree (uuid_role_instance_from);
+CREATE INDEX IF NOT EXISTS relationclass_instance_uuid_role_instance_to_idx ON public.relationclass_instance USING btree (uuid_role_instance_to);
+CREATE INDEX IF NOT EXISTS role_uuid_attribute_type_idx ON public.role USING btree (uuid_attribute_type);
+CREATE INDEX IF NOT EXISTS role_attribute_reference_uuid_attribute_idx ON public.role_attribute_reference USING btree (uuid_attribute);
+CREATE INDEX IF NOT EXISTS role_class_reference_uuid_class_idx ON public.role_class_reference USING btree (uuid_class);
+CREATE INDEX IF NOT EXISTS role_instance_uuid_has_reference_attribute_instance_idx ON public.role_instance USING btree (uuid_has_reference_attribute_instance);
+CREATE INDEX IF NOT EXISTS role_instance_uuid_has_reference_class_instance_idx ON public.role_instance USING btree (uuid_has_reference_class_instance);
+CREATE INDEX IF NOT EXISTS role_instance_uuid_has_reference_port_instance_idx ON public.role_instance USING btree (uuid_has_reference_port_instance);
+CREATE INDEX IF NOT EXISTS role_instance_uuid_has_reference_relationclass_instance_idx ON public.role_instance USING btree (uuid_has_reference_relationclass_instance);
+CREATE INDEX IF NOT EXISTS role_instance_uuid_has_reference_scene_instance_idx ON public.role_instance USING btree (uuid_has_reference_scene_instance);
+CREATE INDEX IF NOT EXISTS role_instance_uuid_role_idx ON public.role_instance USING btree (uuid_role);
+CREATE INDEX IF NOT EXISTS role_port_reference_uuid_port_idx ON public.role_port_reference USING btree (uuid_port);
+CREATE INDEX IF NOT EXISTS role_relationclass_reference_uuid_relationclass_idx ON public.role_relationclass_reference USING btree (uuid_relationclass);
+CREATE INDEX IF NOT EXISTS role_scene_reference_uuid_scene_type_idx ON public.role_scene_reference USING btree (uuid_scene_type);
+CREATE INDEX IF NOT EXISTS scene_decomposition_reference_uuid_scene_instance_idx ON public.scene_decomposition_reference USING btree (uuid_scene_instance);
+CREATE INDEX IF NOT EXISTS scene_group_is_subgroup_of_idx ON public.scene_group USING btree (is_subgroup_of);
+CREATE INDEX IF NOT EXISTS scene_has_attributes_uuid_attribute_idx ON public.scene_has_attributes USING btree (uuid_attribute);
+CREATE INDEX IF NOT EXISTS scene_instance_uuid_scene_type_idx ON public.scene_instance USING btree (uuid_scene_type);
+CREATE INDEX IF NOT EXISTS scene_instance_user_access_uuid_user_idx ON public.scene_instance_user_access USING btree (uuid_user);
+CREATE INDEX IF NOT EXISTS selected_propagation_attributes_uuid_attribute_idx ON public.selected_propagation_attributes USING btree (uuid_attribute);
