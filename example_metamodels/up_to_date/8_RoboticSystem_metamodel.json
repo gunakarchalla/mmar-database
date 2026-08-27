@@ -131,7 +131,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -165,7 +165,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -346,7 +346,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -395,7 +395,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -444,7 +444,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -509,7 +509,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -543,7 +543,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -592,7 +592,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -641,7 +641,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -690,7 +690,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -739,7 +739,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -788,7 +788,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -837,7 +837,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -886,7 +886,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -935,7 +935,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1000,7 +1000,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1063,7 +1063,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -1097,7 +1097,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-25T16:10:41.435Z",
@@ -1146,7 +1146,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -1327,7 +1327,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1376,7 +1376,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1425,7 +1425,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1490,7 +1490,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -1524,7 +1524,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1573,7 +1573,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-26T03:33:52.680Z",
@@ -1622,7 +1622,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -1750,7 +1750,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -1784,7 +1784,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-25T16:10:41.435Z",
@@ -1833,7 +1833,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -2014,7 +2014,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2063,7 +2063,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2112,7 +2112,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2177,7 +2177,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -2211,7 +2211,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2260,7 +2260,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-26T03:33:52.680Z",
@@ -2309,7 +2309,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2423,7 +2423,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [
                       {
                         "attribute": {
@@ -2457,7 +2457,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-25T16:10:41.435Z",
@@ -2506,7 +2506,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2555,7 +2555,7 @@
                               "w": 1
                             },
                             "pre_defined": null,
-                            "regex_value": null,
+                            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                             "has_table_attribute": [],
                             "creation_time": "2026-01-18T03:20:48.627Z",
                             "modification_time": "2026-01-18T03:20:48.627Z",
@@ -2781,7 +2781,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -2976,7 +2976,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -3010,7 +3010,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3059,7 +3059,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3122,7 +3122,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -3156,7 +3156,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3205,7 +3205,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3254,7 +3254,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3303,7 +3303,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3366,7 +3366,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -3400,7 +3400,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3449,7 +3449,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3498,7 +3498,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3547,7 +3547,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3657,7 +3657,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -3838,7 +3838,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3887,7 +3887,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3936,7 +3936,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -3999,7 +3999,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -4033,7 +4033,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -4082,7 +4082,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -4145,7 +4145,7 @@
               "w": 1
             },
             "pre_defined": null,
-            "regex_value": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
             "has_table_attribute": [
               {
                 "attribute": {
@@ -4179,7 +4179,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -4228,7 +4228,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "role": {
                       "uuid": "cfcc6fae-66d2-465f-a59d-f21d8283a7af",
                       "name": "RoleRef_c5cf9a3c-988a-4fd4-87e5-0ad8fcc7234b",
@@ -4307,7 +4307,7 @@
                       "w": 1
                     },
                     "pre_defined": null,
-                    "regex_value": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
                     "has_table_attribute": [],
                     "creation_time": "2026-01-18T03:20:48.627Z",
                     "modification_time": "2026-01-18T03:20:48.627Z",
@@ -4503,7 +4503,7 @@
           "w": 1
         },
         "pre_defined": null,
-        "regex_value": null,
+        "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
         "has_table_attribute": [],
         "creation_time": "2026-01-18T03:20:48.627Z",
         "modification_time": "2026-01-25T16:10:41.435Z",
