@@ -568,7 +568,7 @@ ALTER TABLE logging.t_security_event
 -- Name: COLUMN t_security_event.event; Type: COMMENT; Schema: logging; Owner: api
 --
 
-COMMENT ON COLUMN logging.t_security_event.event IS 'The kind of event, for example login, token_verification, access_grant, access_revoke or access_denied';
+COMMENT ON COLUMN logging.t_security_event.event IS 'The kind of event, for example login, token_verification, password_change, access_grant, access_revoke or access_denied';
 
 --
 -- Name: COLUMN t_security_event.uuid_user; Type: COMMENT; Schema: logging; Owner: api
