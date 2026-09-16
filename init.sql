@@ -1110,7 +1110,7 @@ ALTER TABLE public.has_read_right
 
 CREATE TABLE public.has_table_attribute
 (
-    sequence            integer,
+    sequence            integer NOT NULL,
     uuid_attribute_type uuid NOT NULL,
     uuid_attribute      uuid NOT NULL,
     ui_component        text NOT NULL DEFAULT 'text'
@@ -1132,6 +1132,10 @@ COMMENT ON TABLE public.has_table_attribute IS 'This table give the possibility 
 --
 
 COMMENT ON COLUMN public.has_table_attribute.uuid_attribute_type IS 'This is the link to the attribute type "table x" for example';
+
+COMMENT ON COLUMN public.has_table_attribute.uuid_attribute IS 'The attribute a column holds: every cell of the column is an attribute_instance of it';
+
+COMMENT ON COLUMN public.has_table_attribute.sequence IS 'Position of the column in its table, starting at 1 and unique per attribute type';
 
 
 --
@@ -1833,6 +1837,29 @@ ALTER TABLE ONLY public.attribute_instance
 
 
 --
+-- Name: attribute_instance attribute_instance_table_cell_row; Type: CONSTRAINT; Schema: public; Owner: api
+--
+-- A table cell is an attribute_instance whose table_attribute_reference names the
+-- table (itself an attribute_instance) it belongs to. Exactly the cells carry a row,
+-- counted from 0.
+--
+
+ALTER TABLE ONLY public.attribute_instance
+    ADD CONSTRAINT attribute_instance_table_cell_row CHECK (((table_attribute_reference IS NULL) = (table_row IS NULL)) AND (table_row >= 0));
+
+
+--
+-- Name: attribute_instance attribute_instance_table_cell_unique; Type: CONSTRAINT; Schema: public; Owner: api
+--
+-- One cell per row and column of a table. Deferred, because removing a row renumbers
+-- the rows below it one statement at a time.
+--
+
+ALTER TABLE ONLY public.attribute_instance
+    ADD CONSTRAINT attribute_instance_table_cell_unique UNIQUE (table_attribute_reference, table_row, uuid_attribute) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: attribute attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: api
 --
 
@@ -2008,6 +2035,24 @@ ALTER TABLE ONLY public.has_read_right
 
 ALTER TABLE ONLY public.has_table_attribute
     ADD CONSTRAINT has_table_attribute_pk PRIMARY KEY (uuid_attribute, uuid_attribute_type);
+
+
+--
+-- Name: has_table_attribute has_table_attribute_sequence; Type: CONSTRAINT; Schema: public; Owner: api
+--
+
+ALTER TABLE ONLY public.has_table_attribute
+    ADD CONSTRAINT has_table_attribute_sequence CHECK (sequence >= 1);
+
+
+--
+-- Name: has_table_attribute has_table_attribute_sequence_unique; Type: CONSTRAINT; Schema: public; Owner: api
+--
+-- Deferred, because reordering columns swaps their sequences one statement at a time.
+--
+
+ALTER TABLE ONLY public.has_table_attribute
+    ADD CONSTRAINT has_table_attribute_sequence_unique UNIQUE (uuid_attribute_type, sequence) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
