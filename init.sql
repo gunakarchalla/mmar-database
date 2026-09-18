@@ -702,17 +702,17 @@ CREATE TABLE public.attribute
 (
     uuid_metaobject     uuid NOT NULL,
     multi_valued        boolean,
-    default_value       text,
+    default_value       text NOT NULL DEFAULT '',
     attribute_type_uuid uuid NOT NULL,
-    facets              text,
+    facets              text NOT NULL DEFAULT '',
     min                 integer,
     max                 integer
 );
 
 comment on table public.attribute is 'this is the table for the meta attributes';
 comment on column public.attribute.multi_valued is 'this is the flag if the attribute is multi valued';
-comment on column public.attribute.default_value is 'this is the default value for the attribute';
-comment on column public.attribute.facets is 'this is if the attribute is an enum type';
+comment on column public.attribute.default_value is 'The value an instance of this attribute starts out holding. Empty means the attribute starts out unset, which is allowed only where the attribute type''s regex_value accepts an empty value - there is no separate placeholder for an unset value';
+comment on column public.attribute.facets is 'The values this attribute may take, separated by |: the choices of a dropdown, or the minimum, maximum and step of a slider. Each of them has to match the attribute type''s regex_value. Empty means no facets';
 
 ALTER TABLE public.attribute
     OWNER TO api;
@@ -726,7 +726,7 @@ CREATE TABLE public.attribute_instance
     uuid_instance_object         uuid NOT NULL,
     uuid_attribute               uuid,
     is_propagated                boolean,
-    value                        text,
+    value                        text NOT NULL DEFAULT '',
     assigned_uuid_scene_instance uuid,
     assigned_uuid_class_instance uuid,
     assigned_uuid_port_instance  uuid,
@@ -738,6 +738,8 @@ CREATE TABLE public.attribute_instance
 
 ALTER TABLE public.attribute_instance
     OWNER TO api;
+
+comment on column public.attribute_instance.value is 'The value held by this attribute instance. Empty is the value an attribute holds until someone fills it in, and the regex_value of its attribute type decides whether that is allowed';
 
 --
 -- Name: attribute_propagating_relationclass; Type: TABLE; Schema: public; Owner: api
