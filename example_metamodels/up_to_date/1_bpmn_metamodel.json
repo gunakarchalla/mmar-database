@@ -504,7 +504,7 @@
  "w": 1
  },
  "multi_valued": false,
- "default_value": null,
+"default_value": "0.5",
  "attribute_type": {
  "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
  "name": "Float",
@@ -566,7 +566,7 @@
  "w": 1
  },
  "multi_valued": false,
- "default_value": null,
+"default_value": "0",
  "attribute_type": {
  "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
  "name": "Float",
@@ -613,7 +613,7 @@
  "w": 1
  },
  "multi_valued": false,
- "default_value": null,
+"default_value": "1",
  "attribute_type": {
  "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
  "name": "Float",
@@ -660,7 +660,7 @@
  "w": 1
  },
  "multi_valued": false,
- "default_value": null,
+"default_value": "0",
  "attribute_type": {
  "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
  "name": "Float",
@@ -707,7 +707,7 @@
  "w": 1
  },
  "multi_valued": false,
- "default_value": null,
+"default_value": "1",
  "attribute_type": {
  "uuid": "00ce583a-9762-4700-af36-b4fdca7a9d3f",
  "name": "Float",
