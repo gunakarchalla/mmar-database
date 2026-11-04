@@ -1,0 +1,1622 @@
+{
+  "uuid": "e88aa578-decc-5dac-ac35-2c171b65ba99",
+  "name": "Construction Flow",
+  "geometry": null,
+  "description": "The process specification of a construction project: CoPModL flows over an IFC Product Hierarchy.",
+  "coordinates_2d": null,
+  "relative_coordinate_3d": null,
+  "absolute_coordinate_3d": null,
+  "rotation": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "w": 1
+  },
+  "classes": [
+    {
+      "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+      "name": "IfcTask",
+      "geometry": "/** @param {GraphicContext} gc */\nasync function vizRep(gc) {\n  // Shared by the card vizReps. Inlined by the generator, so it stays plain statements.\nconst CARD_TEXT = 0.15;\nconst CARD_ROW = 0.3;\n// Pixels per scene unit of the text texture, high enough to stay sharp when zoomed in.\nconst CARD_RESOLUTION = 220;\nconst CARD_FONT = \"Roboto, Arial, Helvetica, sans-serif\";\n\nconst readValue = async (name, fallback = \"\") => {\n  const value = await gc.expression.attrvalByName(name);\n  return value === undefined || value === null || value === \"\" ? fallback : String(value);\n};\n\nconst textCanvas = document.createElement(\"canvas\");\nconst textContext = textCanvas.getContext(\"2d\");\nconst useFont = (context, size) => {\n  context.font = `${Math.round(size * CARD_RESOLUTION)}px ${CARD_FONT}`;\n};\n\nconst textWidth = (text, size) => {\n  useFont(textContext, size);\n  return textContext.measureText(String(text)).width / CARD_RESOLUTION;\n};\n\nconst fitText = (text, width, size) => {\n  const room = width - 0.08;\n  if (textWidth(text, size) <= room) return text;\n  let length = text.length;\n  while (length > 1 && textWidth(text.slice(0, length) + \"..\", size) > room) length--;\n  return text.slice(0, length) + \"..\";\n};\n\n/**\n * Rows of cells, top to bottom, centred on the instance's position.\n *\n * Fills are cubes, because a texture's colours are not corrected on the way to the screen.\n * All text goes on one transparent plane rather than on graphic_text labels: every label\n * is a separate draggable object, so a card of a dozen would be hard to pick up, and\n * graphic_text only places a label through a stored variable per label.\n */\nconst drawCard = async (rows, width, outlines) => {\n  const height = rows.reduce((sum, row) => sum + row.height, 0);\n  // The outermost outline is a deep plate because relations find a card's edge with a ray\n  // travelling almost along it, which slips past thin layers. A miss ends the relation on\n  // the card's bounding sphere, and on a tall card the two ends then cross over.\n  for (const [index, outline] of outlines.entries()) {\n    const backPlate = index === 0;\n    await gc.graphic_cube(\n      width + 2 * outline.margin,\n      height + 2 * outline.margin,\n      backPlate ? 0.12 : 0.002,\n      outline.colour,\n      undefined,\n      0,\n      0,\n      backPlate ? -0.08 : -0.018 + index * 0.003,\n    );\n  }\n\n  textCanvas.width = Math.ceil(width * CARD_RESOLUTION);\n  textCanvas.height = Math.ceil(height * CARD_RESOLUTION);\n  textContext.textAlign = \"center\";\n  textContext.textBaseline = \"middle\";\n  let top = height / 2;\n  for (const row of rows) {\n    const y = top - row.height / 2;\n    const weight = row.cells.reduce((sum, cell) => sum + (cell.weight ?? 1), 0);\n    let left = -width / 2;\n    for (const cell of row.cells) {\n      const cellWidth = (width * (cell.weight ?? 1)) / weight;\n      const centre = left + cellWidth / 2;\n      await gc.graphic_cube(cellWidth - 0.015, row.height - 0.015, 0.01, cell.fill, undefined, centre, y, 0);\n      if (cell.text) {\n        const size = cell.size ?? CARD_TEXT;\n        useFont(textContext, size);\n        textContext.fillStyle = cell.colour ?? \"black\";\n        textContext.fillText(\n          fitText(cell.text, cellWidth, size),\n          (centre + width / 2) * CARD_RESOLUTION,\n          (height / 2 - y) * CARD_RESOLUTION,\n        );\n      }\n      left += cellWidth;\n    }\n    top -= row.height;\n  }\n  await gc.graphic_plane(width, height, undefined, textCanvas.toDataURL(\"image/png\"), 0, 0, 0.03);\n};\n\n  const name = await readValue('Name', 'IfcTask');\n  const globalId = await readValue('IfcGloballyUniqueId');\n  const workers = await readValue('Workers', '1');\n  const duration = await readValue('Duration', '1');\n  const actor = await readValue('Actor', 'Other');\n  const ordering = (await readValue('Ordering Constraint', 'None')).split(' ')[0];\n  const exclusive = await readValue('Exclusive Constraint', 'None');\n  const locations = (await readValue('Location Names')).split('\\n').filter((line) => line !== '');\n  const earlyStart = await readValue('EarlyStart');\n  const earlyFinish = await readValue('EarlyFinish');\n  const totalFloat = await readValue('TotalFloat');\n  const critical = (await readValue('IsCritical')) === 'true';\n  const validation = await readValue('Validation');\n\n  const rows = [];\n  if (validation) rows.push({ height: CARD_ROW, cells: [{ text: '! ' + validation, fill: '#ffb300', size: CARD_TEXT * 0.8 }] });\n  rows.push(\n    { height: CARD_ROW, cells: [{ text: 'IfcTask', fill: '#ef5350', colour: 'white' }] },\n    { height: CARD_ROW * 0.8, cells: [{ text: globalId, fill: '#111111', colour: 'white', size: CARD_TEXT * 0.72 }] },\n    {\n      height: CARD_ROW,\n      cells: [\n        { text: workers, fill: '#ffcdd2' },\n        { text: duration + 'd', fill: '#ffcdd2' },\n        { text: actor, fill: '#ffcdd2', weight: 3 },\n      ],\n    },\n    { height: CARD_ROW * 1.6, cells: [{ text: name, fill: '#b3e5fc', size: CARD_TEXT * 1.3 }] },\n    {\n      height: CARD_ROW,\n      cells: [\n        { text: ordering, fill: '#ffffff' },\n        { text: exclusive, fill: '#ffffff', weight: 2 },\n      ],\n    },\n  );\n  for (const location of locations) {\n    rows.push({ height: CARD_ROW * 0.85, cells: [{ text: location, fill: '#eeeeee', size: CARD_TEXT * 0.85 }] });\n  }\n  if (earlyStart !== '') {\n    rows.push({\n      height: CARD_ROW * 0.85,\n      cells: [\n        { text: earlyStart + ' - ' + earlyFinish, fill: '#c8e6c9', size: CARD_TEXT * 0.85, weight: 2 },\n        { text: 'float ' + totalFloat, fill: '#c8e6c9', size: CARD_TEXT * 0.85 },\n      ],\n    });\n  }\n\n  const longest = Math.max(\n    textWidth(name, CARD_TEXT * 1.3),\n    textWidth(globalId, CARD_TEXT * 0.72),\n    ...locations.map((location) => textWidth(location, CARD_TEXT * 0.85)),\n  );\n  // The double border is how [C] Section 3.3 marks an exclusive constraint.\n  const outlines = [];\n  if (critical) outlines.push({ margin: 0.11, colour: '#d50000' });\n  if (exclusive !== 'None') outlines.push({ margin: 0.075, colour: '#222222' }, { margin: 0.05, colour: '#ffffff' });\n  outlines.push({ margin: 0.03, colour: '#222222' });\n  await drawCard(rows, Math.max(2.8, longest + 0.3), outlines);\n  let icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAa0lEQVR4nO3PsQ2AQAwEwS/H5SBRKjUR0wCSSelg7fcGE1x2uzJzdYYfMOA/IiI72D/gOY+SDKAZQDOAZgDNAJoBNANocwKu+y3JAJoBNANoBtAMoBlAM4BmAM0AmgG0OQHV7RvQEX5gfMAHhkfoUFICILAAAAAASUVORK5CYII=';\n}",
+      "description": null,
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "is_reusable": null,
+      "is_abstract": null,
+      "attributes": [
+        {
+          "uuid": "d6632c72-89fa-4210-9d01-18e911505608",
+          "name": "Name",
+          "geometry": null,
+          "description": "Name Attribute",
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "Name",
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "sequence": 1,
+          "ui_component": "Text",
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2025-04-23T11:55:46.199Z",
+          "modification_time": "2025-04-24T06:23:58.188Z",
+          "uuid_metaobject": "d6632c72-89fa-4210-9d01-18e911505608",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc"
+        },
+        {
+          "uuid": "0017204f-7897-5f00-82b6-104f8d4ec750",
+          "name": "IfcGloballyUniqueId",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "f3159c07-1fa2-55a8-aaa6-9e65f5087752",
+            "name": "IfcGloballyUniqueId",
+            "geometry": null,
+            "description": "IFC's 22-character base-64 GlobalId",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": null,
+            "regex_value": "^([0-9A-Za-z_$]{22})?$",
+            "has_table_attribute": [],
+            "creation_time": "2026-11-01T00:00:00.000Z",
+            "modification_time": "2026-11-01T00:00:00.000Z",
+            "uuid_metaobject": "f3159c07-1fa2-55a8-aaa6-9e65f5087752"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "0017204f-7897-5f00-82b6-104f8d4ec750",
+          "attribute_type_uuid": "f3159c07-1fa2-55a8-aaa6-9e65f5087752",
+          "sequence": 2,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "5bc66805-979a-5786-bf8c-11dd611eb81d",
+          "name": "Workers",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "1",
+          "attribute_type": {
+            "uuid": "6f434afb-8a3a-4500-8287-8c8575340b10",
+            "name": "Integer",
+            "geometry": null,
+            "description": null,
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([0-9])*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-25T12:11:26.571Z",
+            "modification_time": "2025-04-23T09:27:00.677Z",
+            "uuid_metaobject": "6f434afb-8a3a-4500-8287-8c8575340b10"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "5bc66805-979a-5786-bf8c-11dd611eb81d",
+          "attribute_type_uuid": "6f434afb-8a3a-4500-8287-8c8575340b10",
+          "sequence": 3,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "93dbfdaf-a94a-5d54-9c77-2709ed4a894d",
+          "name": "Duration",
+          "geometry": null,
+          "description": "Working days for the whole task, across all its locations",
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "1",
+          "attribute_type": {
+            "uuid": "6f434afb-8a3a-4500-8287-8c8575340b10",
+            "name": "Integer",
+            "geometry": null,
+            "description": null,
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([0-9])*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-25T12:11:26.571Z",
+            "modification_time": "2025-04-23T09:27:00.677Z",
+            "uuid_metaobject": "6f434afb-8a3a-4500-8287-8c8575340b10"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "93dbfdaf-a94a-5d54-9c77-2709ed4a894d",
+          "attribute_type_uuid": "6f434afb-8a3a-4500-8287-8c8575340b10",
+          "sequence": 4,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "3f41db90-a9eb-5f30-a1cd-d94df23f41d1",
+          "name": "Actor",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "Other",
+          "attribute_type": {
+            "uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+            "name": "Enumeration",
+            "geometry": null,
+            "description": "This ist the enumeration AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:13:32.293Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "8d77b476-ef09-40c0-a997-92233c4b8636"
+          },
+          "facets": "Scaffolder|Brick Layer|Electrician|Window Installer|Other",
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "3f41db90-a9eb-5f30-a1cd-d94df23f41d1",
+          "attribute_type_uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+          "sequence": 5,
+          "ui_component": "dropdown"
+        },
+        {
+          "uuid": "fb11ac47-ffcc-5720-9c4a-bab44420693b",
+          "name": "Ordering Constraint",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "None",
+          "attribute_type": {
+            "uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+            "name": "Enumeration",
+            "geometry": null,
+            "description": "This ist the enumeration AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:13:32.293Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "8d77b476-ef09-40c0-a997-92233c4b8636"
+          },
+          "facets": "None|< (bottom-up)|> (top-down)",
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "fb11ac47-ffcc-5720-9c4a-bab44420693b",
+          "attribute_type_uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+          "sequence": 6,
+          "ui_component": "dropdown"
+        },
+        {
+          "uuid": "15a9c71a-b08f-5874-96bc-9af02add1a5d",
+          "name": "Exclusive Constraint",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "None",
+          "attribute_type": {
+            "uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+            "name": "Enumeration",
+            "geometry": null,
+            "description": "This ist the enumeration AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:13:32.293Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "8d77b476-ef09-40c0-a997-92233c4b8636"
+          },
+          "facets": "None|IfcBuilding|IfcBuildingStorey|IfcSpace",
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "15a9c71a-b08f-5874-96bc-9af02add1a5d",
+          "attribute_type_uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+          "sequence": 7,
+          "ui_component": "dropdown"
+        },
+        {
+          "uuid": "0c032743-7eac-5885-b39f-ecc41deb7084",
+          "name": "Locations",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "b69fca7a-697e-592f-9f35-cdbb8b7630a7",
+            "name": "IfcProductRef",
+            "geometry": null,
+            "description": "The record class of EMMSAD Section 3.3: a task's references to IfcProducts",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": null,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [
+              {
+                "attribute": {
+                  "uuid": "eb71993c-ca2c-52b3-8895-b6bef6ee1bd8",
+                  "name": "Product",
+                  "geometry": null,
+                  "description": null,
+                  "coordinates_2d": null,
+                  "relative_coordinate_3d": null,
+                  "absolute_coordinate_3d": null,
+                  "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0,
+                    "w": 1
+                  },
+                  "multi_valued": false,
+                  "default_value": null,
+                  "attribute_type": {
+                    "uuid": "0c1fc35e-b54b-586f-9bf1-1c8dd08a3a8f",
+                    "name": "IfcProductRef Target",
+                    "geometry": null,
+                    "description": "A reference to one IfcProduct",
+                    "coordinates_2d": null,
+                    "relative_coordinate_3d": null,
+                    "absolute_coordinate_3d": null,
+                    "rotation": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0,
+                      "w": 1
+                    },
+                    "pre_defined": null,
+                    "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+                    "has_table_attribute": [],
+                    "creation_time": "2026-11-01T00:00:00.000Z",
+                    "modification_time": "2026-11-01T00:00:00.000Z",
+                    "uuid_metaobject": "0c1fc35e-b54b-586f-9bf1-1c8dd08a3a8f",
+                    "role": {
+                      "uuid": "ee9b15d4-1525-58f1-b04b-6dc9b0937445",
+                      "name": "RoleRef_IfcProductRef",
+                      "geometry": null,
+                      "description": null,
+                      "coordinates_2d": null,
+                      "relative_coordinate_3d": null,
+                      "absolute_coordinate_3d": null,
+                      "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "w": 1
+                      },
+                      "class_references": [
+                        {
+                          "uuid": "af3eb87e-0095-5cdf-9cff-acd7ee57e47b",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "8d7e3b5a-4837-54c7-a292-d70b911e6b86",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "d92c2407-e4fa-56db-9a60-97b2ebadc808",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "f73bb5f6-f434-5f2e-af78-2d44e7b89613",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "648f1ccc-88ac-587c-8009-549e2a089cf9",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "5f1e647d-7baf-5353-ad88-0bdf16b5d638",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "e0ba1ce9-40cf-5f2b-a5bb-3da0deef5351",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "2af551cb-2eb6-53a9-bdbb-182384b16e2e",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "e636c9af-de4d-5c43-9988-e0e68bc6e9ed",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "315b9464-8e9d-5855-bad8-1a9ccfd7b539",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "e83705ef-2967-5780-b954-9c88e93cfb72",
+                          "min": 0,
+                          "max": 1
+                        },
+                        {
+                          "uuid": "4c781bd4-2064-56d9-996f-10a7db57e291",
+                          "min": 0,
+                          "max": 1
+                        }
+                      ],
+                      "relationclass_references": [],
+                      "scenetype_references": [],
+                      "port_references": [],
+                      "attribute_references": [],
+                      "uuid_metaobject": "ee9b15d4-1525-58f1-b04b-6dc9b0937445",
+                      "uuid_attribute_type": "0c1fc35e-b54b-586f-9bf1-1c8dd08a3a8f",
+                      "creation_time": "2026-11-01T00:00:00.000Z",
+                      "modification_time": "2026-11-01T00:00:00.000Z"
+                    }
+                  },
+                  "facets": null,
+                  "min": null,
+                  "max": null,
+                  "creation_time": "2026-11-01T00:00:00.000Z",
+                  "modification_time": "2026-11-01T00:00:00.000Z",
+                  "uuid_metaobject": "eb71993c-ca2c-52b3-8895-b6bef6ee1bd8",
+                  "attribute_type_uuid": "0c1fc35e-b54b-586f-9bf1-1c8dd08a3a8f"
+                },
+                "sequence": 1,
+                "ui_component": "text"
+              }
+            ],
+            "creation_time": "2026-11-01T00:00:00.000Z",
+            "modification_time": "2026-11-01T00:00:00.000Z",
+            "uuid_metaobject": "b69fca7a-697e-592f-9f35-cdbb8b7630a7"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "0c032743-7eac-5885-b39f-ecc41deb7084",
+          "attribute_type_uuid": "b69fca7a-697e-592f-9f35-cdbb8b7630a7",
+          "sequence": 8,
+          "ui_component": "button"
+        },
+        {
+          "uuid": "d9b7c6ab-5eed-5892-aa99-a40c8ddd3abc",
+          "name": "Location Names",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "d9b7c6ab-5eed-5892-aa99-a40c8ddd3abc",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 9,
+          "ui_component": "multi-line"
+        },
+        {
+          "uuid": "68111cb2-29d1-557e-85ed-93c17ce71aa6",
+          "name": "EarlyStart",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "68111cb2-29d1-557e-85ed-93c17ce71aa6",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 10,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "37218a06-9b58-5545-a0e5-d2411c508c1a",
+          "name": "EarlyFinish",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "37218a06-9b58-5545-a0e5-d2411c508c1a",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 11,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "b737aacc-37f0-551d-be47-922143ef76aa",
+          "name": "LateStart",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "b737aacc-37f0-551d-be47-922143ef76aa",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 12,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "1c02b864-26fd-5f6d-8d4c-e0f8e9c530ea",
+          "name": "LateFinish",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "1c02b864-26fd-5f6d-8d4c-e0f8e9c530ea",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 13,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "5c517dad-8572-5c07-9ba8-bf3eefc632ee",
+          "name": "FreeFloat",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "5c517dad-8572-5c07-9ba8-bf3eefc632ee",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 14,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "80b2bfe0-ec30-5bf8-a61a-0bdfd76a26c7",
+          "name": "TotalFloat",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "80b2bfe0-ec30-5bf8-a61a-0bdfd76a26c7",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 15,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "d34821a9-5569-5f18-bb33-37cadb48237b",
+          "name": "IsCritical",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "d34821a9-5569-5f18-bb33-37cadb48237b",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 16,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "72c95b0f-b55f-5f70-96fb-36941149a47e",
+          "name": "Validation",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": null,
+          "attribute_type": {
+            "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+            "name": "String",
+            "geometry": "",
+            "description": "Name AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:10:11.789Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "72c95b0f-b55f-5f70-96fb-36941149a47e",
+          "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+          "sequence": 17,
+          "ui_component": "text"
+        },
+        {
+          "uuid": "026a66dd-032e-51f5-93d1-0046f67f098d",
+          "name": "onTaskUpdate",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "async function onTaskUpdate(expression, task) {\n  // IFC's 22-character GlobalId: 128 bits in base 64, with its own alphabet.\nconst IFC_GUID_ALPHABET = \"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$\";\nconst compressUuid = (uuid) => {\n  let value = BigInt(\"0x\" + uuid.replace(/-/g, \"\"));\n  let compressed = \"\";\n  for (let i = 0; i < 22; i++) {\n    compressed = IFC_GUID_ALPHABET[Number(value & 63n)] + compressed;\n    value >>= 6n;\n  }\n  return compressed;\n};\n\n  const GLOBAL_ID = \"0017204f-7897-5f00-82b6-104f8d4ec750\";\n  const LOCATIONS = \"0c032743-7eac-5885-b39f-ecc41deb7084\";\n  const LOCATION_NAMES = \"d9b7c6ab-5eed-5892-aa99-a40c8ddd3abc\";\n  const NAME = \"d6632c72-89fa-4210-9d01-18e911505608\";\n\n  const id = await expression.getAttrByInstanceUUID(task.uuid, GLOBAL_ID);\n  if (id && !id.value) {\n    id.value = compressUuid(task.uuid);\n    await expression.checkForVisualizationUpdateByAttributeUUID(task.uuid, GLOBAL_ID);\n  }\n\n  // A cell edit cannot redraw its task, so the card draws this copy of the table instead.\n  // The reference is read through, so renaming a product reaches the card too, and the\n  // name saved in the cell stands in while the product's scene is not loaded.\n  const table = await expression.getAttrByInstanceUUID(task.uuid, LOCATIONS);\n  const names = [];\n  for (const cell of [...(table?.table_attributes ?? [])].sort((a, b) => a.table_row - b.table_row)) {\n    const target = cell.role_instance_from?.uuid_has_reference_class_instance;\n    if (target) names.push((await expression.attrvalByInst(NAME, target)) ?? cell.value);\n  }\n  const mirror = await expression.getAttrByInstanceUUID(task.uuid, LOCATION_NAMES);\n  const value = names.join(\"\\n\");\n  if (mirror && value !== (mirror.value ?? \"\")) {\n    mirror.value = value;\n    await expression.checkForVisualizationUpdateByAttributeUUID(task.uuid, LOCATION_NAMES);\n  }\n}",
+          "attribute_type": {
+            "uuid": "a8e33bad-9eed-4a24-a4b2-406c5439d13a",
+            "name": "Mechanism",
+            "geometry": "",
+            "description": null,
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2025-03-20T15:10:11.789Z",
+            "modification_time": "2025-04-24T05:57:24.037Z",
+            "uuid_metaobject": "a8e33bad-9eed-4a24-a4b2-406c5439d13a"
+          },
+          "facets": null,
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "026a66dd-032e-51f5-93d1-0046f67f098d",
+          "attribute_type_uuid": "a8e33bad-9eed-4a24-a4b2-406c5439d13a",
+          "sequence": 30,
+          "ui_component": "multi-line"
+        }
+      ],
+      "ports": [],
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34"
+    },
+    {
+      "uuid": "b123f50e-6c71-4e19-bc24-507a13be4c6d",
+      "name": "Bendpoint",
+      "geometry": "/** @param {GraphicContext} gc */\r\n async function vizRep(gc) { await gc.graphic_sphere(0.05, 10, 10, 'black'); let icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAaVBMVEX///8AAABMTEzz8/OAgIDu7u75+fnFxcVQUFDS0tLl5eV7e3t0dHRBQUE4ODjQ0NCkpKSKiopfX18fHx/g4ODHx8exsbFra2s9PT2pqalxcXGPj4+9vb1ISEi/v78ODg4WFhacnJwzMzOXifk/AAADHElEQVR4nO2diW7bMAyGSTuWzxQ5nAO52uz9H3JAs3XYgSapRVLi/u8NPiiiKJpiiAAAAAAAAAAAAAAAAAAAAAAAADxDGOvFclg1TVE0zWpYLuoxUG6022G+5r9Yz4dtS9nQFvwpRRYup4EfYDhR0rQzfphZuutSfeOneKkoRbonVuNjVTpKi+oLEh8yCa3LlSdxpUTYTPNg3lAKlLupHsy70tqC6MJRuBhrhD6OB/PMNA8bX2J5MO9HO48TR8UsbYmwy39nZ6IRzrE9mAuDjVLu43sw79XjcBVxm1smkpWQB/OL6poEkd/VjbnmPrlzl51Gk3HcNYrCW1kP5q2OxyjtwaySrQSxgPWLvcaGj5bvfkafzf3D/H5S6ngwl3lHXrUYPLnOkEhF4qjnwZJVokrTg1kuEZ5QT/wKMzERXQ9miNyh0xbpSIaltshSxqN61RZ5lYlbc20P5rmER6vvwdzmf4jIHSVsAkWnthHZRBd5qA8gh6siG0H5lU50CiqFlUgRWcTKg9nBaShxJopXSbXqp72dSJ97wiiSOIZ/9CdqsXZxisQ+SYwSrRt1Og1Z01jkfFuXurkf2JBDRJGVpcgqokhjKdJAJKEkPnYi70aksRRpIOI4/B68HIhLLynK1UvSWHtJ40cvF6vg5apLhsWHc1QRN+WgrZcCXWsn0kYVcVPEJrNEvoks4uZDD1mJUGx6Lx9DaxuRTXQRNw0D5KaFo7UQGQVESOCVm27C+JPyTdvjTaiv3EsrILlpziRtEYLI/9JSXumKVGIiuoW6q5yHn4cwpFfOPnh5LBacPN+rpT2UYvBM3sPPE1fy8uiY5LfJRcdDPAYPWh5+RiVQEPxeclYd8lKKha698oiXSmhN5uoT6UqRokphMPosCDSoNDbTwoaM467PQWFE497H6DaiMPMxTI/cjDekOAMnDwkMnCQ3I0DJz1BWcjMm953u+HQv1PqY2uDiG+WT15QmjS3ueLj3O+1DnQV94hY3unsD8NPcGc/9JUGf018S/CB0f/xJxKazzqcAAAAAAAAAAAAAAAAAAAAAAIAy4zvAf0IVl9ncfAAAAABJRU5ErkJggg=='}",
+      "description": null,
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "is_reusable": null,
+      "is_abstract": null,
+      "attributes": [],
+      "ports": [],
+      "creation_time": "2025-04-23T11:55:46.199Z",
+      "modification_time": "2025-04-24T06:23:58.188Z",
+      "uuid_metaobject": "b123f50e-6c71-4e19-bc24-507a13be4c6d"
+    }
+  ],
+  "relationclasses": [
+    {
+      "uuid": "cecf5151-b094-5200-880d-b6423221a110",
+      "name": "Precedence",
+      "geometry": "/** @param {GraphicContext} gc */\nasync function vizRep(gc) {\n  let map = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABHklEQVR4nO3XSwrDMBAEUd3/0gpeBLIwxrY0U9PTMWjf9cC/McaYc87heo5rfg89BgdwhDgFcIK4BHCAuAXQGeIRQEeIVwCdIJYAOkBsAVCG2AqgCBECoAQRCqAAkQJQGSIVoCIEAlAJAgWoAFECgIQoBUBAlATIhCgNkAEhARAJIQUQASEJsBNCGmAHRAuAFYhWAG8gWgI8gWgNcAfCAuAKwgrgDMIS4BfiD0CPoMItbwHbh6Dta9D2Q8j2U9j2Z8j2d3glXBpgR7gkwM5wKYCIcAmAyPDSABnhJQEyw0sBEOElAMhwFICOxgDoWAyAjsQA6DgMgI7CAOgYDICOwADo8RgAPRoDoMdiAPRIDIAehwHQozAAegwGQI8gzwfGoeHSsNeNeAAAAABJRU5ErkJggg==';\n  let icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA3klEQVR4nNXPSQrEMBBD0br/pR1oQiB04rhcg6SFVtq8b2MMU5qZjdvQoBBeKeARrxLwilcImOF/PxoYwVMHrOBpA1bxlAEePF2AF08VsIOnCdjFUwRE8PCAKB4akIGHBWThIQGZ+PaAbHxrQAW+LaAK3xJQiS8PqMaXBnTgywK68CUBnfj0gG58agACnxaAwqcEIPHhADQ+FMCA3w5gwW8FMOHdAWx4VwAjfjmAFb8UwIz/DGDHTwMU8K8BKvjHACX8X4Aa/hagiL8CVPGnXRc/DUDDQgFoVCgADfLuACxYYPGfOlUjAAAAAElFTkSuQmCC';\n  await gc.rel_graphic_line('black', 0.003, false, 0, 0, 0);\n  await gc.rel_from_object(await gc.graphic_cube(0.006, 0.006, 0.006, 'white'));\n  await gc.rel_to_object(await gc.graphic_plane(0.22, 0.22, '#000000', map));\n  const scope = await gc.expression.attrvalByName('Scope');\n  if (scope && scope !== 'None') {\n    const label = await gc.graphic_text(0, 0, 0, 0.14, 'black', scope);\n    label.anchorY = 'bottom';\n    await gc.rel_graphic_text_middle(label);\n  }\n}",
+      "description": null,
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "is_reusable": null,
+      "is_abstract": null,
+      "attributes": [
+        {
+          "uuid": "2af0633d-cdc8-54ce-a1c4-44eb379e7b81",
+          "name": "Scope",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "None",
+          "attribute_type": {
+            "uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+            "name": "Enumeration",
+            "geometry": null,
+            "description": "This ist the enumeration AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:13:32.293Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "8d77b476-ef09-40c0-a997-92233c4b8636"
+          },
+          "facets": "None|IfcSite|IfcBuilding|IfcBuildingStorey|IfcSpace",
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "2af0633d-cdc8-54ce-a1c4-44eb379e7b81",
+          "attribute_type_uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+          "sequence": 1,
+          "ui_component": "dropdown"
+        }
+      ],
+      "ports": [],
+      "role_from": {
+        "uuid": "a1599ac9-db92-53b5-b474-947664e71d35",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "a1599ac9-db92-53b5-b474-947664e71d35",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "role_to": {
+        "uuid": "0fbe8ee4-8d4f-5c98-8fc2-3af492688b60",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "0fbe8ee4-8d4f-5c98-8fc2-3af492688b60",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d",
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "cecf5151-b094-5200-880d-b6423221a110",
+      "uuid_class": "cecf5151-b094-5200-880d-b6423221a110",
+      "uuid_class_bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d"
+    },
+    {
+      "uuid": "5ec52c21-c159-55b5-9d8b-fbe7753dabb9",
+      "name": "Alternate Precedence",
+      "geometry": "/** @param {GraphicContext} gc */\nasync function vizRep(gc) {\n  let map = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABHklEQVR4nO3XSwrDMBAEUd3/0gpeBLIwxrY0U9PTMWjf9cC/McaYc87heo5rfg89BgdwhDgFcIK4BHCAuAXQGeIRQEeIVwCdIJYAOkBsAVCG2AqgCBECoAQRCqAAkQJQGSIVoCIEAlAJAgWoAFECgIQoBUBAlATIhCgNkAEhARAJIQUQASEJsBNCGmAHRAuAFYhWAG8gWgI8gWgNcAfCAuAKwgrgDMIS4BfiD0CPoMItbwHbh6Dta9D2Q8j2U9j2Z8j2d3glXBpgR7gkwM5wKYCIcAmAyPDSABnhJQEyw0sBEOElAMhwFICOxgDoWAyAjsQA6DgMgI7CAOgYDICOwADo8RgAPRoDoMdiAPRIDIAehwHQozAAegwGQI8gzwfGoeHSsNeNeAAAAABJRU5ErkJggg==';\n  let icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA4klEQVR4nNXPuxGEMBRDUQqh/xa2PDNswMAAxs/vIylQpOTcpbW2KO23ru08OMiDlwp4wssEvOElAnr4/YcDPXjqgBE8bcAonjLAgqcLsOKpAmbwNAGzeIoADx4e4MVDAyLwsIAoPCQgEl8eEI0vDcjAlwVk4UsCMvHpAdn41IAKfFpAFT4loBIfHlCNDw1A4MMCUPiQACTeHYDGuwIY8NMBLPipACa8OYANbwpgxA8HsOKHApjxnwHs+G6AAv41QAX/GKCEvwWo4S8BivgjQBX/D1DGdwPQMFcAGuUKQIOs2wDcL498gNxbKAAAAABJRU5ErkJggg==';\n  await gc.rel_graphic_line('black', 0.003, false, 0, 0, 0);\n  await gc.rel_from_object(await gc.graphic_plane(0.24, 0.24, 'black', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABW0lEQVR4nO2UwQ0DMQzDsv/S6QSHQ2JJtHF9+FVUpuima++9vjw4AD04AD04AD04AD04AD3PH6y134aGP2F94rWEdixvE0BKOGG0CiAknPLZBSQl3LBFBCQk3HLFBDglVJiiAhwSqjxxAUoJThZscYfyrwJoCYndbUCone2A4ru6XSX9a2v1LpGndvoFFyhR/lqAGpgqXxKgAifLlwV0kFDmrwaQEiTsihBCgoxbFZSUIGVWhiUkyHnVgU4JFlZHqEOCjdMVrJRgZfwLaF5+5BP49J+gq7xLwqjyDgnjyqsljCyvlDC2vErC6PIKCWh5R1ZEgAOYktCiPCmhTXlKQqvyyK5uQOmdbUCwJ0cD0BJal0+w2JaqyrslWBaqyzuPIl/mKu86jHSRu7zjOLIlqfLqA0kWpMsrj1QOp8qrDlUKpssrjnUdSpdWHQwHpwcHoAcHoAcHoAcHoOcHC5kL71LlW9cAAAAASUVORK5CYII='));\n  await gc.rel_to_object(await gc.graphic_plane(0.22, 0.22, '#000000', map));\n  const scope = await gc.expression.attrvalByName('Scope');\n  if (scope && scope !== 'None') {\n    const label = await gc.graphic_text(0, 0, 0, 0.14, 'black', scope);\n    label.anchorY = 'bottom';\n    await gc.rel_graphic_text_middle(label);\n  }\n}",
+      "description": null,
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "is_reusable": null,
+      "is_abstract": null,
+      "attributes": [
+        {
+          "uuid": "2af0633d-cdc8-54ce-a1c4-44eb379e7b81",
+          "name": "Scope",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "None",
+          "attribute_type": {
+            "uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+            "name": "Enumeration",
+            "geometry": null,
+            "description": "This ist the enumeration AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:13:32.293Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "8d77b476-ef09-40c0-a997-92233c4b8636"
+          },
+          "facets": "None|IfcSite|IfcBuilding|IfcBuildingStorey|IfcSpace",
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "2af0633d-cdc8-54ce-a1c4-44eb379e7b81",
+          "attribute_type_uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+          "sequence": 1,
+          "ui_component": "dropdown"
+        }
+      ],
+      "ports": [],
+      "role_from": {
+        "uuid": "5164ad01-6173-573d-a2aa-32fdf92b006d",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "5164ad01-6173-573d-a2aa-32fdf92b006d",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "role_to": {
+        "uuid": "f438cc69-b285-59f7-b063-5ad204b045b4",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "f438cc69-b285-59f7-b063-5ad204b045b4",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d",
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "5ec52c21-c159-55b5-9d8b-fbe7753dabb9",
+      "uuid_class": "5ec52c21-c159-55b5-9d8b-fbe7753dabb9",
+      "uuid_class_bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d"
+    },
+    {
+      "uuid": "d972491f-b128-5872-be6b-9ee19b83e261",
+      "name": "Chain Precedence",
+      "geometry": "/** @param {GraphicContext} gc */\nasync function vizRep(gc) {\n  let map = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABHklEQVR4nO3XSwrDMBAEUd3/0gpeBLIwxrY0U9PTMWjf9cC/McaYc87heo5rfg89BgdwhDgFcIK4BHCAuAXQGeIRQEeIVwCdIJYAOkBsAVCG2AqgCBECoAQRCqAAkQJQGSIVoCIEAlAJAgWoAFECgIQoBUBAlATIhCgNkAEhARAJIQUQASEJsBNCGmAHRAuAFYhWAG8gWgI8gWgNcAfCAuAKwgrgDMIS4BfiD0CPoMItbwHbh6Dta9D2Q8j2U9j2Z8j2d3glXBpgR7gkwM5wKYCIcAmAyPDSABnhJQEyw0sBEOElAMhwFICOxgDoWAyAjsQA6DgMgI7CAOgYDICOwADo8RgAPRoDoMdiAPRIDIAehwHQozAAegwGQI8gzwfGoeHSsNeNeAAAAABJRU5ErkJggg==';\n  let icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA20lEQVR4nNXPQQrDQAxDUd//0hMIpRCStDMj2ZIX2or3Y4wRjouIMTU1FMI7Bizh3QKW8U4BW3iXgG28QwCEVwfAeGUABa8KoOEVAUz8+dcZXxqQgS8LyMKXBGTi0wOy8akBFfi0gCp8SkAlnh5QjacGKPC0ABWeEqDEwwFqPBTggN8OcMFvBTjhlwPc8EsBjvjpAFf8VIAz/m+AO/5nQAf8a0AX/GNAJ/wtoBv+EtAR/w3oiv/Y++KpAQo8LUCFpwQo8XCAGg8FqOFQgBoNBajBUIAaCwWooW87AEUngJlCnT01AAAAAElFTkSuQmCC';\n  await gc.rel_graphic_line('black', 0.009, false, 0, 0, 0);\n  await gc.rel_from_object(await gc.graphic_cube(0.006, 0.006, 0.006, 'white'));\n  await gc.rel_to_object(await gc.graphic_plane(0.3, 0.3, '#000000', map));\n  const scope = await gc.expression.attrvalByName('Scope');\n  if (scope && scope !== 'None') {\n    const label = await gc.graphic_text(0, 0, 0, 0.14, 'black', scope);\n    label.anchorY = 'bottom';\n    await gc.rel_graphic_text_middle(label);\n  }\n}",
+      "description": null,
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "is_reusable": null,
+      "is_abstract": null,
+      "attributes": [
+        {
+          "uuid": "2af0633d-cdc8-54ce-a1c4-44eb379e7b81",
+          "name": "Scope",
+          "geometry": null,
+          "description": null,
+          "coordinates_2d": null,
+          "relative_coordinate_3d": null,
+          "absolute_coordinate_3d": null,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "multi_valued": false,
+          "default_value": "None",
+          "attribute_type": {
+            "uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+            "name": "Enumeration",
+            "geometry": null,
+            "description": "This ist the enumeration AttributeType",
+            "coordinates_2d": null,
+            "relative_coordinate_3d": null,
+            "absolute_coordinate_3d": null,
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "pre_defined": true,
+            "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+            "has_table_attribute": [],
+            "creation_time": "2023-08-24T15:13:32.293Z",
+            "modification_time": "2025-04-24T06:23:58.188Z",
+            "uuid_metaobject": "8d77b476-ef09-40c0-a997-92233c4b8636"
+          },
+          "facets": "None|IfcSite|IfcBuilding|IfcBuildingStorey|IfcSpace",
+          "min": null,
+          "max": null,
+          "creation_time": "2026-11-01T00:00:00.000Z",
+          "modification_time": "2026-11-01T00:00:00.000Z",
+          "uuid_metaobject": "2af0633d-cdc8-54ce-a1c4-44eb379e7b81",
+          "attribute_type_uuid": "8d77b476-ef09-40c0-a997-92233c4b8636",
+          "sequence": 1,
+          "ui_component": "dropdown"
+        }
+      ],
+      "ports": [],
+      "role_from": {
+        "uuid": "3034a264-ee48-5ba6-bfbf-aaeee228fc37",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "3034a264-ee48-5ba6-bfbf-aaeee228fc37",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "role_to": {
+        "uuid": "e026b0b6-54fa-5b8e-b40c-6b6420c5edce",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "e026b0b6-54fa-5b8e-b40c-6b6420c5edce",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d",
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "d972491f-b128-5872-be6b-9ee19b83e261",
+      "uuid_class": "d972491f-b128-5872-be6b-9ee19b83e261",
+      "uuid_class_bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d"
+    },
+    {
+      "uuid": "339f5c3f-df5e-5fa9-81b6-cdb292fcb11f",
+      "name": "Execution",
+      "geometry": "/** @param {GraphicContext} gc */\nasync function vizRep(gc) {\n  let map = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABI0lEQVR4nO3Xyw3DMAwEUTWREtNnOlOQQ4AcDMMfkbPk5qD7zgNsy+PxfM0553A94wPwPfQYHMARYhPACWIXwAHiEEBniFMAHSEuAXSCuAXQAWIJQGWIpQAVIUIAKkGEAlSASAFQhkgFUIRAAJQgUAAFCAkAEkIKgICQBMiEkAbIgCgBEAlRCiACoiTASojSACsgWgDcgWgFcAWiJcAZiNYARyAsAPYgrAC2ICwBfiH+APQIKtzyEbB9Cdp+Bm0vQrZXYdufIdvf4TvhpQFWhJcEWBleCiAivARAZLg0QEa4JEBmuBQAES4BQIajAHQ0BkDHYgB0JAZAx2EAdBQGQMdgAHQEBkCPxwDo0RgAPRYDoEdiAPQ4DIAehQHQYzAAegR53seismgGIZTTAAAAAElFTkSuQmCC';\n  let icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA40lEQVR4nNXPuxGEMBRDUZqgxO2TzszsBjswgPHz+0gKFCk5d2mtLUpbP1s7Dg7y4KUC7vAyAU94iYAe/vvDgR48dcAInjZgFE8ZYMHTBVjxVAEzeJqAWTxFgAcPD/DioQEReFhAFB4SEIkvD4jGlwZk4MsCsvAlAZn49IBsfGpABT4toAqfElCJDw+oxocGIPBhASh8SAAS7w5A410BDPjpABb8VAAT3hzAhjcFMOKHA1jxQwHM+NcAdnw3QAH/GKCCvw1Qwl8C1PCnAEX8P0AV/wtQxncD0DBXABrlCkCDrNsBUcjuaIWiSZQAAAAASUVORK5CYII=';\n  await gc.rel_graphic_line('#1565c0', 0.004, true, 1, 0.06, 0.06);\n  await gc.rel_from_object(await gc.graphic_cube(0.006, 0.006, 0.006, 'white'));\n  await gc.rel_to_object(await gc.graphic_plane(0.22, 0.22, '#1565c0', map));\n  \n}",
+      "description": null,
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "is_reusable": null,
+      "is_abstract": null,
+      "attributes": [],
+      "ports": [],
+      "role_from": {
+        "uuid": "a15db469-474d-5871-b332-a671d4863ca6",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "a15db469-474d-5871-b332-a671d4863ca6",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "role_to": {
+        "uuid": "73cec179-b9b8-5a9e-874a-354e8bcdc938",
+        "name": null,
+        "geometry": null,
+        "description": null,
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "class_references": [
+          {
+            "uuid": "70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34",
+            "min": 0,
+            "max": 1000
+          }
+        ],
+        "relationclass_references": [],
+        "scenetype_references": [],
+        "port_references": [],
+        "attribute_references": [],
+        "uuid_metaobject": "73cec179-b9b8-5a9e-874a-354e8bcdc938",
+        "uuid_attribute_type": null,
+        "creation_time": "2026-11-01T00:00:00.000Z",
+        "modification_time": "2026-11-01T00:00:00.000Z"
+      },
+      "bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d",
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "339f5c3f-df5e-5fa9-81b6-cdb292fcb11f",
+      "uuid_class": "339f5c3f-df5e-5fa9-81b6-cdb292fcb11f",
+      "uuid_class_bendpoint": "b123f50e-6c71-4e19-bc24-507a13be4c6d"
+    }
+  ],
+  "attributes": [
+    {
+      "uuid": "d6632c72-89fa-4210-9d01-18e911505608",
+      "name": "Name",
+      "geometry": null,
+      "description": "Name Attribute",
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "multi_valued": false,
+      "default_value": "Name",
+      "attribute_type": {
+        "uuid": "85897325-c2b3-4ca7-8902-8120300a08dc",
+        "name": "String",
+        "geometry": "",
+        "description": "Name AttributeType",
+        "coordinates_2d": null,
+        "relative_coordinate_3d": null,
+        "absolute_coordinate_3d": null,
+        "rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "pre_defined": true,
+        "regex_value": "^([\\x09\\x0A\\x0D\\x20-\\x7E]|[\\xC2-\\xDF][\\x80-\\xBF]|\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC\\xEE\\xEF][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2})*$",
+        "has_table_attribute": [],
+        "creation_time": "2023-08-24T15:10:11.789Z",
+        "modification_time": "2025-04-24T06:23:58.188Z",
+        "uuid_metaobject": "85897325-c2b3-4ca7-8902-8120300a08dc"
+      },
+      "sequence": 1,
+      "ui_component": "Text",
+      "facets": null,
+      "min": null,
+      "max": null,
+      "creation_time": "2025-04-23T11:55:46.199Z",
+      "modification_time": "2025-04-24T06:23:58.188Z",
+      "uuid_metaobject": "d6632c72-89fa-4210-9d01-18e911505608",
+      "attribute_type_uuid": "85897325-c2b3-4ca7-8902-8120300a08dc"
+    }
+  ],
+  "ports": [],
+  "procedures": [
+    {
+      "uuid": "391f7f40-6cff-55e8-99e1-b998e3539795",
+      "name": "Check Satisfiability",
+      "geometry": null,
+      "description": "Whether any execution satisfies the model (CoPModL Section 5), plus its structure errors and warnings.",
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "definition": "async function checkSatisfiability(expression) {\n  /**\n * Graph core of the Construction Flow procedures.\n *\n * A pure module: it receives a plain model and never touches the expression API, so the\n * algorithms can be tested without a client. The generator inlines this file into every\n * procedure string, which is why it is one factory function rather than an ES module.\n *\n * Sources, referred to by the same tags as the README:\n *   [C] Marengo, Nutt, Perktold: CoPModL. Information Systems 103 (2022).\n *   [T] Perktold: Processes in Construction: Modeling and Consistency Checking. MSc\n *       thesis, Free University of Bozen-Bolzano, 2017.\n *   [E] The EMMSAD 2026 paper this language comes from.\n *\n * Vocabulary follows [C]. A task is an activity on a set of items. An activity-item node\n * is one activity on one item, and is what start and end events belong to.\n *\n * Model shape:\n *   tasks:        { id, name, duration, workers, actor, ordering, exclusive, items[],\n *                   danglingLocations }\n *   items:        { [id]: { id, name, path[], zones: { [level]: zoneId }, elevation } }\n *   dependencies: { kind: \"precedence\" | \"alternate\" | \"chain\", from, to, scope }\n *   executions:   { from, to }\n *\n * `zones` is the projection Πs of [C] Definition 1: an item's value at each scope. `path`\n * is the item followed by everything that contains it. `scope`, `exclusive` and\n * `ordering` use the value \"None\" for absent, and `ordering` is otherwise \"<\" or \">\".\n */\nfunction createCopmodlCore() {\n  /** Tolerance for comparing times, which are fractions of a day (Duration / n). */\n  const EPSILON = 1e-9;\n  /** Satisfiability is exponential in the worst case ([C] Section 5.4). */\n  const DEFAULT_BUDGET_MS = 10000;\n  /** Reversals tried while shortening a schedule, so a large model stays responsive. */\n  const MAX_REVERSAL_TRIES = 400;\n\n  // ---------------------------------------------------------------------------------\n  // Graph construction: [C] Section 5.2 and [T] Sections 5.2, 5.3\n  // ---------------------------------------------------------------------------------\n\n  /**\n   * Builds the disjunctive graph of a model. `arcs` are end-to-start precedences. An\n   * entry of `edges` is a disjunctive edge between two node sets, meaning all of one set\n   * finishes before any of the other starts ([T] Section 5.3.2 generalises [C]'s\n   * group-to-node edge to this form).\n   *\n   * `execution` adds Execution relations, which are not constraints of the language.\n   * `scheduleEdges` adds what only a schedule needs; see addScheduleEdges.\n   */\n  function buildGraph(model, options = {}) {\n    const nodes = [];\n    const nodeByKey = new Map();\n    const nodesOfTask = new Map();\n\n    // Keyed on activity and item, not task: two tasks of one activity sharing an item\n    // yield a single node ([T] Section 5.1.1), because an activity runs once per item.\n    for (const task of model.tasks) {\n      const items = [...new Set(task.items)];\n      const own = [];\n      for (const item of items) {\n        const key = `${task.name}\\u0000${item}`;\n        let node = nodeByKey.get(key);\n        if (!node) {\n          node = { index: nodes.length, activity: task.name, item, tasks: [], duration: 0 };\n          nodes.push(node);\n          nodeByKey.set(key, node);\n        }\n        node.tasks.push(task.id);\n        node.duration = Math.max(node.duration, nodeDuration(task, items.length));\n        own.push(node.index);\n      }\n      nodesOfTask.set(task.id, own);\n    }\n\n    const arcKeys = new Set();\n    const arcs = [];\n    const edges = [];\n    const addArc = (from, to) => {\n      const key = from * nodes.length + to;\n      if (arcKeys.has(key)) return;\n      arcKeys.add(key);\n      arcs.push([from, to]);\n    };\n    const addArcs = (from, to) => {\n      for (const u of from) for (const v of to) addArc(u, v);\n    };\n\n    const zoneOf = (index, scope) =>\n      scope === \"None\" ? \"*\" : model.items[nodes[index].item]?.zones[scope];\n\n    /** The selector σπ of [C]: nodes grouped by their zone at a scope. */\n    const inZones = (indices, scope) => {\n      const groups = new Map();\n      for (const index of indices) {\n        const zone = zoneOf(index, scope);\n        if (zone === undefined) continue;\n        if (!groups.has(zone)) groups.set(zone, []);\n        groups.get(zone).push(index);\n      }\n      return groups;\n    };\n    const everyNode = nodes.map((node) => node.index);\n\n    /** [C] precedence: for each zone in Πs(Ia) ∩ Πs(Ib), a finishes there before b starts. */\n    const addPrecedence = (from, to, scope) => {\n      const fromZones = inZones(nodesOfTask.get(from) ?? [], scope);\n      const toZones = inZones(nodesOfTask.get(to) ?? [], scope);\n      const shared = [];\n      for (const [zone, fromNodes] of fromZones) {\n        const toNodes = toZones.get(zone);\n        if (!toNodes) continue;\n        addArcs(fromNodes, toNodes);\n        shared.push({ zone, members: [...new Set([...fromNodes, ...toNodes])] });\n      }\n      return shared;\n    };\n\n    /** A group against every other node in its zone: exclusive execution and chain. */\n    const addGroupAgainstZone = (group, zone, scope, origin) => {\n      const others = inZones(everyNode, scope).get(zone) ?? [];\n      const inGroup = new Set(group);\n      for (const other of others) {\n        if (!inGroup.has(other)) edges.push({ x: group, y: [other], origin });\n      }\n    };\n\n    for (const task of model.tasks) {\n      // ordered_execution, partitioned by level regardless of sector ([C] Section 3.3).\n      if (task.ordering === \"<\" || task.ordering === \">\") {\n        const groups = new Map();\n        for (const index of nodesOfTask.get(task.id)) {\n          const elevation = model.items[nodes[index].item]?.elevation;\n          if (elevation === null || elevation === undefined) continue;\n          if (!groups.has(elevation)) groups.set(elevation, []);\n          groups.get(elevation).push(index);\n        }\n        const ascending = [...groups.keys()].sort((a, b) => a - b);\n        const sequence = task.ordering === \"<\" ? ascending : ascending.reverse();\n        for (let i = 0; i + 1 < sequence.length; i++) {\n          addArcs(groups.get(sequence[i]), groups.get(sequence[i + 1]));\n        }\n      }\n\n      // exclusive_execution. \"None\" leaves the default of [C], handled in addScheduleEdges.\n      if (task.exclusive && task.exclusive !== \"None\") {\n        const origin = { kind: \"exclusive\", task: task.id };\n        for (const [zone, group] of inZones(nodesOfTask.get(task.id), task.exclusive)) {\n          addGroupAgainstZone(group, zone, task.exclusive, origin);\n        }\n      }\n    }\n\n    for (const dependency of model.dependencies) {\n      const shared = addPrecedence(dependency.from, dependency.to, dependency.scope);\n      const origin = { kind: dependency.kind, from: dependency.from, to: dependency.to };\n      if (dependency.kind === \"alternate\") {\n        for (let i = 0; i < shared.length; i++) {\n          for (let j = i + 1; j < shared.length; j++) {\n            edges.push({ x: shared[i].members, y: shared[j].members, origin });\n          }\n        }\n      } else if (dependency.kind === \"chain\") {\n        for (const { zone, members } of shared) {\n          addGroupAgainstZone(members, zone, dependency.scope, origin);\n        }\n      }\n    }\n\n    if (options.execution) {\n      for (const execution of model.executions) {\n        addArcs(nodesOfTask.get(execution.from) ?? [], nodesOfTask.get(execution.to) ?? []);\n      }\n    }\n\n    const graph = { nodes, arcs, edges, nodesOfTask };\n    if (options.scheduleEdges) addScheduleEdges(graph, model);\n    return graph;\n  }\n\n  /**\n   * A task's Duration is its total ([T] p. 16 and p. 61). [T] p. 58 derives a node's\n   * duration from the pitch, the units performed per working day, without printing a\n   * formula; with equal units that pitch is n / Duration, so a node takes Duration / n.\n   */\n  function nodeDuration(task, itemCount) {\n    return task.duration > 0 && itemCount > 0 ? task.duration / itemCount : 0;\n  }\n\n  /**\n   * Two kinds of simple edge a schedule must respect but satisfiability can ignore,\n   * because a simple edge can always be oriented ([C] Lemma 8, [T] p. 58).\n   *\n   * Default exclusiveness: [C] forbids two tasks on one item at once, and [T] Section 6.1\n   * extends that to items sharing a location, so a task on a storey also blocks work on a\n   * wall inside it. One crew: a task works in one location at a time. That is our\n   * assumption, since [E] Fig. 2 has no crew count, and it is what makes a task take its\n   * full Duration.\n   */\n  function addScheduleEdges(graph, model) {\n    const { nodes, edges } = graph;\n    const pathOf = (node) => model.items[node.item]?.path ?? [node.item];\n    for (let u = 0; u < nodes.length; u++) {\n      for (let v = u + 1; v < nodes.length; v++) {\n        const sameTask = nodes[u].tasks.some((task) => nodes[v].tasks.includes(task));\n        const overlapping =\n          pathOf(nodes[u]).includes(nodes[v].item) || pathOf(nodes[v]).includes(nodes[u].item);\n        if (sameTask) edges.push({ x: [u], y: [v], origin: { kind: \"crew\" } });\n        else if (overlapping) edges.push({ x: [u], y: [v], origin: { kind: \"default-exclusive\" } });\n      }\n    }\n  }\n\n  // ---------------------------------------------------------------------------------\n  // Satisfiability: Sat and NDSat of [C] Section 5.3\n  // ---------------------------------------------------------------------------------\n\n  /** A subproblem: nodes renumbered densely, so reachability can use bitsets. */\n  function makeProblem(ids, arcs, edges) {\n    const position = new Map(ids.map((id, index) => [id, index]));\n    const successors = ids.map(() => new Set());\n    for (const [from, to] of arcs) {\n      successors[position.get(from)].add(position.get(to));\n    }\n    return { ids, position, successors, edges };\n  }\n\n  function copyProblem(problem, edges) {\n    return {\n      ids: problem.ids,\n      position: problem.position,\n      successors: problem.successors.map((set) => new Set(set)),\n      edges,\n    };\n  }\n\n  function arcsOf(problem) {\n    const arcs = [];\n    problem.successors.forEach((set, from) => {\n      for (const to of set) arcs.push([problem.ids[from], problem.ids[to]]);\n    });\n    return arcs;\n  }\n\n  function orient(problem, edge, direction) {\n    const [from, to] = direction > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n    for (const u of from) {\n      const set = problem.successors[problem.position.get(u)];\n      for (const v of to) set.add(problem.position.get(v));\n    }\n  }\n\n  /** Kahn's algorithm. Returns undefined when the arcs contain a cycle. */\n  function topologicalOrder(successors) {\n    const indegree = new Array(successors.length).fill(0);\n    for (const set of successors) for (const to of set) indegree[to]++;\n    const queue = [];\n    indegree.forEach((degree, node) => {\n      if (degree === 0) queue.push(node);\n    });\n    const order = [];\n    while (queue.length > 0) {\n      const node = queue.pop();\n      order.push(node);\n      for (const to of successors[node]) {\n        indegree[to]--;\n        if (indegree[to] === 0) queue.push(to);\n      }\n    }\n    return order.length === successors.length ? order : undefined;\n  }\n\n  /** One cycle of the arcs, as node ids, to show the user what cannot be executed. */\n  function findCycle(problem) {\n    const state = new Array(problem.successors.length).fill(0);\n    const stack = [];\n    const visit = (node) => {\n      state[node] = 1;\n      stack.push(node);\n      for (const to of problem.successors[node]) {\n        if (state[to] === 1) return stack.slice(stack.indexOf(to));\n        if (state[to] === 0) {\n          const cycle = visit(to);\n          if (cycle) return cycle;\n        }\n      }\n      state[node] = 2;\n      stack.pop();\n      return undefined;\n    };\n    for (let node = 0; node < state.length; node++) {\n      if (state[node] === 0) {\n        const cycle = visit(node);\n        if (cycle) return cycle.map((position) => problem.ids[position]);\n      }\n    }\n    return [];\n  }\n\n  function reachability(problem, order) {\n    const words = (problem.successors.length + 31) >>> 5;\n    const reach = problem.successors.map(() => new Uint32Array(words));\n    for (let i = order.length - 1; i >= 0; i--) {\n      const node = order[i];\n      for (const to of problem.successors[node]) {\n        reach[node][to >>> 5] |= 1 << (to & 31);\n        for (let word = 0; word < words; word++) reach[node][word] |= reach[to][word];\n      }\n    }\n    return reach;\n  }\n\n  function hasPath(problem, reach, from, to) {\n    for (const u of from) {\n      const bits = reach[problem.position.get(u)];\n      for (const v of to) {\n        const target = problem.position.get(v);\n        if (bits[target >>> 5] & (1 << (target & 31))) return true;\n      }\n    }\n    return false;\n  }\n\n  /** Tarjan's algorithm. Components come back in topological order. */\n  function stronglyConnectedComponents(successors) {\n    const count = successors.length;\n    const index = new Array(count).fill(-1);\n    const low = new Array(count).fill(0);\n    const onStack = new Array(count).fill(false);\n    const stack = [];\n    const components = [];\n    let next = 0;\n    const visit = (node) => {\n      index[node] = low[node] = next++;\n      stack.push(node);\n      onStack[node] = true;\n      for (const to of successors[node]) {\n        if (index[to] < 0) {\n          visit(to);\n          low[node] = Math.min(low[node], low[to]);\n        } else if (onStack[to]) {\n          low[node] = Math.min(low[node], index[to]);\n        }\n      }\n      if (low[node] === index[node]) {\n        const component = [];\n        let member;\n        do {\n          member = stack.pop();\n          onStack[member] = false;\n          component.push(member);\n        } while (member !== node);\n        components.push(component);\n      }\n    };\n    for (let node = 0; node < count; node++) if (index[node] < 0) visit(node);\n    return components.reverse();\n  }\n\n  /** The proper acyclic partition of [C] Section 5.3: SCCs with each group held together. */\n  function partition(problem, edges) {\n    const extended = problem.successors.map((set) => new Set(set));\n    const hold = (group) => {\n      for (let i = 0; i < group.length; i++) {\n        const next = group[(i + 1) % group.length];\n        extended[problem.position.get(group[i])].add(problem.position.get(next));\n      }\n    };\n    for (const edge of edges) {\n      hold(edge.x);\n      hold(edge.y);\n    }\n    return stronglyConnectedComponents(extended);\n  }\n\n  /**\n   * Sat of [C]. Returns { ok: true, directions } or { ok: false, conflict }, or\n   * { undetermined: true } if the time budget ran out. Simple edges were dropped by the\n   * caller, the first step of Sat.\n   */\n  function sat(problem, deadline) {\n    if (Date.now() > deadline) return { undetermined: true };\n    const directions = new Map();\n    let open = problem.edges;\n\n    // Resolve: a path between the two sides leaves one possible orientation. Repeated,\n    // because each orientation adds arcs that can force further edges.\n    for (;;) {\n      const order = topologicalOrder(problem.successors);\n      if (!order) return { ok: false, conflict: { type: \"cycle\", nodes: findCycle(problem) } };\n      const reach = reachability(problem, order);\n      const remaining = [];\n      let resolved = false;\n      for (const edge of open) {\n        const forward = hasPath(problem, reach, edge.x, edge.y);\n        const backward = hasPath(problem, reach, edge.y, edge.x);\n        if (forward && backward) {\n          const nodes = [...edge.x, ...edge.y];\n          return { ok: false, conflict: { type: \"no-orientation\", nodes, origin: edge.origin } };\n        }\n        if (forward || backward) {\n          const direction = forward ? 1 : -1;\n          orient(problem, edge, direction);\n          directions.set(edge.index, direction);\n          resolved = true;\n        } else {\n          remaining.push(edge);\n        }\n      }\n      open = remaining;\n      if (!resolved) break;\n    }\n    if (open.length === 0) return { ok: true, directions };\n\n    // Partition, then solve each part on its own ([C] Lemma 9). An edge between two parts\n    // is oriented by their order, which cannot close a cycle.\n    const components = partition(problem, open);\n    const partOf = new Map();\n    components.forEach((component, part) => {\n      for (const position of component) partOf.set(problem.ids[position], part);\n    });\n    const edgesOfPart = new Map();\n    for (const edge of open) {\n      const partX = partOf.get(edge.x[0]);\n      const partY = partOf.get(edge.y[0]);\n      if (partX === partY) {\n        if (!edgesOfPart.has(partX)) edgesOfPart.set(partX, []);\n        edgesOfPart.get(partX).push(edge);\n      } else {\n        directions.set(edge.index, partX < partY ? 1 : -1);\n      }\n    }\n    const arcs = arcsOf(problem);\n    for (const [part, edges] of edgesOfPart) {\n      const ids = components[part].map((position) => problem.ids[position]);\n      const members = new Set(ids);\n      const within = arcs.filter(([from, to]) => members.has(from) && members.has(to));\n      const result = branch(makeProblem(ids, within, edges), deadline);\n      if (!result.ok) return result;\n      for (const [index, direction] of result.directions) directions.set(index, direction);\n    }\n    return { ok: true, directions };\n  }\n\n  /** NDSat of [C]: try both orientations of one edge. */\n  function branch(problem, deadline) {\n    const [edge, ...rest] = problem.edges;\n    for (const direction of [1, -1]) {\n      const attempt = copyProblem(problem, rest);\n      orient(attempt, edge, direction);\n      const result = sat(attempt, deadline);\n      if (result.undetermined) return result;\n      if (result.ok) {\n        result.directions.set(edge.index, direction);\n        return result;\n      }\n    }\n    return { ok: false, conflict: { type: \"no-orientation\", nodes: problem.ids, origin: edge.origin } };\n  }\n\n  /** A model is satisfiable iff its disjunctive graph is orientable ([C] Theorem 7). */\n  function checkSatisfiability(graph, options = {}) {\n    const hard = [];\n    graph.edges.forEach((edge, index) => {\n      if (edge.x.length > 1 || edge.y.length > 1) hard.push({ ...edge, index });\n    });\n    const ids = graph.nodes.map((node) => node.index);\n    const deadline = Date.now() + (options.budgetMs ?? DEFAULT_BUDGET_MS);\n    const result = sat(makeProblem(ids, graph.arcs, hard), deadline);\n    if (result.undetermined) return { status: \"undetermined\" };\n    if (!result.ok) return { status: \"unsatisfiable\", conflict: result.conflict };\n    return { status: \"satisfiable\", directions: result.directions };\n  }\n\n  // ---------------------------------------------------------------------------------\n  // Structure checks: the warnings and errors of [C] Section 6\n  // ---------------------------------------------------------------------------------\n\n  function analyseStructure(model) {\n    const errors = [];\n    const warnings = [];\n    const byId = new Map(model.tasks.map((task) => [task.id, task]));\n    const nameOf = (id) => byId.get(id)?.name ?? id;\n    const report = (list, code, message, tasks) => list.push({ code, message, tasks });\n\n    for (const task of model.tasks) {\n      if (task.danglingLocations > 0) {\n        report(errors, \"dangling-location\",\n          `${task.name}: ${task.danglingLocations} location(s) do not point at a loaded product.`, [task.id]);\n      }\n      if (task.items.length === 0 && !(task.danglingLocations > 0)) {\n        report(errors, \"no-locations\", `${task.name}: no Locations.`, [task.id]);\n      }\n      if (!(task.duration > 0)) {\n        report(errors, \"missing-duration\", `${task.name}: Duration is missing.`, [task.id]);\n      }\n\n      const items = new Set(task.items);\n      if (items.size < task.items.length) {\n        report(warnings, \"repeated-location\", `${task.name}: a location is repeated.`, [task.id]);\n      }\n      if (task.exclusive && task.exclusive !== \"None\") {\n        reportMissingZones(task, task.exclusive, \"its Exclusive Constraint\");\n      }\n      if (task.ordering === \"<\" || task.ordering === \">\") {\n        for (const item of items) {\n          const elevation = model.items[item]?.elevation;\n          if (elevation === null || elevation === undefined) {\n            report(warnings, \"no-elevation\",\n              `${task.name}: ${model.items[item]?.name ?? item} has no storey Elevation, so the Ordering Constraint skips it.`, [task.id]);\n          }\n        }\n      }\n\n      const sites = new Set([...items].map((item) => model.items[item]?.zones.IfcSite).filter(Boolean));\n      if (sites.size > 1) {\n        report(warnings, \"several-sites\", `${task.name}: its locations are under different IfcSite roots.`, [task.id]);\n      }\n    }\n\n    function reportMissingZones(task, scope, purpose) {\n      for (const item of new Set(task.items)) {\n        if (model.items[item] && model.items[item].zones[scope] === undefined) {\n          report(warnings, \"coarser-than-scope\",\n            `${task.name}: ${model.items[item].name} has no ${scope}, so ${purpose} does not apply to it.`, [task.id]);\n        }\n      }\n    }\n\n    const activityItems = new Map();\n    for (const task of model.tasks) {\n      for (const item of new Set(task.items)) {\n        const key = `${task.name}\\u0000${item}`;\n        if (activityItems.has(key)) {\n          report(warnings, \"shared-node\",\n            `Two ${task.name} tasks share ${model.items[item]?.name ?? item}; the activity runs there once.`,\n            [activityItems.get(key), task.id]);\n        }\n        activityItems.set(key, task.id);\n      }\n    }\n\n    for (const dependency of model.dependencies) {\n      if (dependency.scope === \"None\") continue;\n      const from = byId.get(dependency.from);\n      const to = byId.get(dependency.to);\n      if (!from || !to) continue;\n      const label = `${nameOf(dependency.from)} -> ${nameOf(dependency.to)}`;\n      reportMissingZones(from, dependency.scope, `the dependency ${label}`);\n      reportMissingZones(to, dependency.scope, `the dependency ${label}`);\n      const zonesOf = (task) => new Set(task.items.map((item) => model.items[item]?.zones[dependency.scope]));\n      const fromZones = zonesOf(from);\n      const shared = [...zonesOf(to)].some((zone) => zone !== undefined && fromZones.has(zone));\n      if (!shared) {\n        report(warnings, \"no-shared-zone\",\n          `${label}: no ${dependency.scope} is shared, so the dependency has no effect.`, [from.id, to.id]);\n      }\n    }\n\n    return { errors, warnings };\n  }\n\n  /** Loops in the diagram. A loop can be satisfiable, so it is only ever a warning. */\n  function diagramLoops(model) {\n    const position = new Map(model.tasks.map((task, index) => [task.id, index]));\n    const successors = model.tasks.map(() => new Set());\n    for (const dependency of model.dependencies) {\n      if (position.has(dependency.from) && position.has(dependency.to)) {\n        successors[position.get(dependency.from)].add(position.get(dependency.to));\n      }\n    }\n    return stronglyConnectedComponents(successors)\n      .filter((component) => component.length > 1)\n      .map((component) => component.map((index) => model.tasks[index].id));\n  }\n\n  /**\n   * Check Satisfiability. Execution is left out of the first pass because [E] Section 3.2\n   * has the modeler \"plan or record a specific path\": it picks an execution rather than\n   * constraining the model. The second pass reports a path that contradicts the\n   * constraints as exactly that.\n   */\n  function checkModel(model, options = {}) {\n    const { errors, warnings } = analyseStructure(model);\n    const verdict = checkSatisfiability(buildGraph(model), options);\n    const graph = buildGraph(model, { execution: true });\n    let execution;\n    if (verdict.status === \"satisfiable\" && model.executions.length > 0) {\n      execution = checkSatisfiability(graph, options);\n    }\n    if (verdict.status === \"satisfiable\") {\n      for (const loop of diagramLoops(model)) {\n        const names = loop.map((id) => model.tasks.find((task) => task.id === id).name);\n        warnings.push({\n          code: \"satisfiable-loop\",\n          message: `Loop between ${names.join(\", \")}: satisfiable, but a constraint may be redundant.`,\n          tasks: loop,\n        });\n      }\n    }\n    return { errors, warnings, verdict, execution, graph };\n  }\n\n  // ---------------------------------------------------------------------------------\n  // Schedule and critical path: [T] Section 6.2\n  // ---------------------------------------------------------------------------------\n\n  /**\n   * Forward and backward pass on a fully oriented graph, the activity network of\n   * [T] p. 58. Returns undefined if the orientation is cyclic.\n   */\n  function timeNetwork(graph, directions) {\n    const count = graph.nodes.length;\n    const successors = graph.nodes.map(() => new Set());\n    for (const [from, to] of graph.arcs) successors[from].add(to);\n    graph.edges.forEach((edge, index) => {\n      const [from, to] = directions[index] > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n      for (const u of from) for (const v of to) successors[u].add(v);\n    });\n\n    const order = topologicalOrder(successors);\n    if (!order) return undefined;\n\n    const duration = graph.nodes.map((node) => node.duration);\n    const start = new Array(count).fill(0);\n    const finish = new Array(count).fill(0);\n    for (const node of order) {\n      finish[node] = start[node] + duration[node];\n      for (const to of successors[node]) start[to] = Math.max(start[to], finish[node]);\n    }\n    const projectLength = finish.reduce((longest, value) => Math.max(longest, value), 0);\n\n    const lateFinish = new Array(count).fill(projectLength);\n    const lateStart = new Array(count).fill(0);\n    const freeFloat = new Array(count).fill(0);\n    for (let i = order.length - 1; i >= 0; i--) {\n      const node = order[i];\n      let earliestSuccessor = projectLength;\n      for (const to of successors[node]) {\n        lateFinish[node] = Math.min(lateFinish[node], lateStart[to]);\n        earliestSuccessor = Math.min(earliestSuccessor, start[to]);\n      }\n      lateStart[node] = lateFinish[node] - duration[node];\n      freeFloat[node] = earliestSuccessor - finish[node];\n    }\n    const totalFloat = lateStart.map((value, node) => value - start[node]);\n    return { start, finish, lateStart, lateFinish, totalFloat, freeFloat, projectLength };\n  }\n\n  /**\n   * Orients every edge left open by satisfiability. Sat leaves simple edges out, and these\n   * can be oriented along any topological order ([C] Lemma 8), so nodes are placed one at\n   * a time, earliest possible start first and longest remaining work on ties. Placement\n   * order then decides each simple edge, so no cycle can arise.\n   */\n  function completeOrientation(graph, satDirections) {\n    const count = graph.nodes.length;\n    const directions = graph.edges.map((_, index) => satDirections.get(index) ?? 0);\n    const successors = graph.nodes.map(() => new Set());\n    const predecessors = graph.nodes.map(() => new Set());\n    const addFixed = (from, to) => {\n      successors[from].add(to);\n      predecessors[to].add(from);\n    };\n    for (const [from, to] of graph.arcs) addFixed(from, to);\n    const rivals = graph.nodes.map(() => []);\n    graph.edges.forEach((edge, index) => {\n      if (directions[index] === 0) {\n        rivals[edge.x[0]].push({ other: edge.y[0], index, isX: true });\n        rivals[edge.y[0]].push({ other: edge.x[0], index, isX: false });\n        return;\n      }\n      const [from, to] = directions[index] > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n      for (const u of from) for (const v of to) addFixed(u, v);\n    });\n\n    const order = topologicalOrder(successors);\n    const tail = new Array(count).fill(0);\n    for (let i = order.length - 1; i >= 0; i--) {\n      const node = order[i];\n      let longest = 0;\n      for (const to of successors[node]) longest = Math.max(longest, tail[to]);\n      tail[node] = longest + graph.nodes[node].duration;\n    }\n\n    const finish = new Array(count).fill(-1);\n    const waiting = predecessors.map((set) => set.size);\n    const ready = new Set();\n    waiting.forEach((value, node) => {\n      if (value === 0) ready.add(node);\n    });\n    const earliestStart = (node) => {\n      let earliest = 0;\n      for (const from of predecessors[node]) earliest = Math.max(earliest, finish[from]);\n      for (const { other } of rivals[node]) earliest = Math.max(earliest, finish[other]);\n      return earliest;\n    };\n    while (ready.size > 0) {\n      let chosen = -1;\n      let chosenStart = Infinity;\n      for (const node of ready) {\n        const start = earliestStart(node);\n        if (\n          start < chosenStart - EPSILON ||\n          (Math.abs(start - chosenStart) < EPSILON && tail[node] > tail[chosen])\n        ) {\n          chosen = node;\n          chosenStart = start;\n        }\n      }\n      ready.delete(chosen);\n      finish[chosen] = chosenStart + graph.nodes[chosen].duration;\n      // An edge still open means its other node is unplaced, so this node goes first.\n      for (const { index, isX } of rivals[chosen]) {\n        if (directions[index] === 0) directions[index] = isX ? 1 : -1;\n      }\n      for (const to of successors[chosen]) {\n        waiting[to]--;\n        if (waiting[to] === 0) ready.add(to);\n      }\n    }\n    return directions;\n  }\n\n  /** Edges with an arc on a critical path; only these can shorten it ([T] p. 59). */\n  function criticalEdges(graph, directions, timing) {\n    const isCritical = (node) => Math.abs(timing.totalFloat[node]) < EPSILON;\n    const candidates = [];\n    graph.edges.forEach((edge, index) => {\n      const [from, to] = directions[index] > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n      const critical = from.some((u) =>\n        isCritical(u) &&\n        to.some((v) => isCritical(v) && Math.abs(timing.finish[u] - timing.start[v]) < EPSILON));\n      if (critical) candidates.push(index);\n    });\n    return candidates;\n  }\n\n  /**\n   * Local search of [T] p. 59: reverse a disjunctive edge on the critical path while the\n   * project gets shorter. A reversal can close a cycle here, unlike in a job shop, so\n   * those are rejected. An optimal schedule is NP-complete ([T] Section 6.3).\n   */\n  function shortenByReversal(graph, directions) {\n    let timing = timeNetwork(graph, directions);\n    let tries = 0;\n    let reversals = 0;\n    let improved = true;\n    while (improved && tries < MAX_REVERSAL_TRIES) {\n      improved = false;\n      for (const index of criticalEdges(graph, directions, timing)) {\n        if (tries >= MAX_REVERSAL_TRIES) break;\n        tries++;\n        directions[index] = -directions[index];\n        const candidate = timeNetwork(graph, directions);\n        if (candidate && candidate.projectLength < timing.projectLength - EPSILON) {\n          timing = candidate;\n          reversals++;\n          improved = true;\n          break;\n        }\n        directions[index] = -directions[index];\n      }\n    }\n    return { timing, reversals };\n  }\n\n  /** Per-task values, named after IfcTaskTime. Floats take the tightest node. */\n  function taskTimes(graph, timing) {\n    const times = new Map();\n    for (const [task, nodes] of graph.nodesOfTask) {\n      if (nodes.length === 0) continue;\n      const pick = (values, choose) => choose(...nodes.map((node) => values[node]));\n      times.set(task, {\n        earlyStart: pick(timing.start, Math.min),\n        earlyFinish: pick(timing.finish, Math.max),\n        lateStart: pick(timing.lateStart, Math.min),\n        lateFinish: pick(timing.lateFinish, Math.max),\n        totalFloat: pick(timing.totalFloat, Math.min),\n        freeFloat: pick(timing.freeFloat, Math.min),\n        isCritical: nodes.some((node) => Math.abs(timing.totalFloat[node]) < EPSILON),\n      });\n    }\n    return times;\n  }\n\n  /** Workers are reported, not levelled: Workers is the size of the task's one crew. */\n  function peakWorkers(model, graph, timing) {\n    const byId = new Map(model.tasks.map((task) => [task.id, task]));\n    const events = new Map();\n    graph.nodes.forEach((node, index) => {\n      const task = byId.get(node.tasks[0]);\n      if (!events.has(task.actor)) events.set(task.actor, []);\n      events.get(task.actor).push({ at: timing.start[index], change: task.workers });\n      events.get(task.actor).push({ at: timing.finish[index], change: -task.workers });\n    });\n    const peaks = [];\n    for (const [actor, changes] of events) {\n      changes.sort((a, b) => a.at - b.at || a.change - b.change);\n      let current = 0;\n      let peak = { actor, workers: 0, at: 0 };\n      for (const { at, change } of changes) {\n        current += change;\n        if (current > peak.workers) peak = { actor, workers: current, at };\n      }\n      peaks.push(peak);\n    }\n    return peaks;\n  }\n\n  /**\n   * Schedule and Critical Path ([T] Section 6.2): find an acyclic orientation, label nodes\n   * with durations, and run CPM on the resulting network. The result satisfies the model\n   * by construction, but it is not guaranteed to be the shortest.\n   */\n  function computeSchedule(model, options = {}) {\n    const graph = buildGraph(model, { execution: true, scheduleEdges: true });\n    const verdict = checkSatisfiability(graph, options);\n    if (verdict.status !== \"satisfiable\") return { status: verdict.status, conflict: verdict.conflict, graph };\n\n    const directions = completeOrientation(graph, verdict.directions);\n    const { timing, reversals } = shortenByReversal(graph, directions);\n    const nodes = graph.nodes.map((node, index) => ({\n      activity: node.activity,\n      item: node.item,\n      tasks: node.tasks,\n      start: timing.start[index],\n      finish: timing.finish[index],\n      lateStart: timing.lateStart[index],\n      lateFinish: timing.lateFinish[index],\n      totalFloat: timing.totalFloat[index],\n      freeFloat: timing.freeFloat[index],\n    }));\n    return {\n      status: \"scheduled\",\n      graph,\n      nodes,\n      tasks: taskTimes(graph, timing),\n      projectLength: timing.projectLength,\n      peaks: peakWorkers(model, graph, timing),\n      reversals,\n    };\n  }\n\n  return {\n    buildGraph,\n    checkSatisfiability,\n    analyseStructure,\n    diagramLoops,\n    checkModel,\n    computeSchedule,\n  };\n}\n\nif (typeof module !== \"undefined\") module.exports = createCopmodlCore;\n\n  // Shared by the Flow procedures. Inlined by the generator, so it stays plain statements.\nconst CLASS_LEVEL = {\n  \"af3eb87e-0095-5cdf-9cff-acd7ee57e47b\": \"IfcSite\",\n  \"8d7e3b5a-4837-54c7-a292-d70b911e6b86\": \"IfcBuilding\",\n  \"d92c2407-e4fa-56db-9a60-97b2ebadc808\": \"IfcBuildingStorey\",\n  \"f73bb5f6-f434-5f2e-af78-2d44e7b89613\": \"IfcSpace\",\n};\nconst COMPUTED_ATTRIBUTES = [\n  \"68111cb2-29d1-557e-85ed-93c17ce71aa6\",\n  \"37218a06-9b58-5545-a0e5-d2411c508c1a\",\n  \"b737aacc-37f0-551d-be47-922143ef76aa\",\n  \"1c02b864-26fd-5f6d-8d4c-e0f8e9c530ea\",\n  \"5c517dad-8572-5c07-9ba8-bf3eefc632ee\",\n  \"80b2bfe0-ec30-5bf8-a61a-0bdfd76a26c7\",\n  \"d34821a9-5569-5f18-bb33-37cadb48237b\",\n];\n\nconst parentOf = async (uuid) => {\n  for (const relationClass of [\"301698e6-9731-52a7-bde9-38186d9a1bc1\", \"1e2faabe-2c1c-558a-957b-a03791588e72\"]) {\n    const incoming = await expression.getIncomingRelationsByInstanceUUID(uuid, relationClass);\n    if (incoming.length > 0) return expression.getSourceByRelInstanceUUID(incoming[0].uuid);\n  }\n  return undefined;\n};\n\n/** An item with its projection Πs: the zone it falls in at each level of the hierarchy. */\nconst readItem = async (instance) => {\n  const zones = {};\n  const path = [];\n  let elevation = null;\n  let current = instance;\n  // The guard is for a hierarchy drawn in a loop, which the metamodel cannot forbid.\n  while (current && !path.includes(current.uuid)) {\n    path.push(current.uuid);\n    const level = CLASS_LEVEL[current.uuid_class];\n    if (level) zones[level] = current.uuid;\n    if (level === \"IfcBuildingStorey\" && elevation === null) {\n      const value = parseFloat(await expression.attrvalByInst(\"1e390bc2-23b2-51c2-a0ea-497327183106\", current.uuid));\n      if (Number.isFinite(value)) elevation = value;\n    }\n    current = await parentOf(current.uuid);\n  }\n  const name = (await expression.attrvalByInst(\"d6632c72-89fa-4210-9d01-18e911505608\", instance.uuid)) ?? instance.name;\n  return { id: instance.uuid, name, path, zones, elevation };\n};\n\nconst readRelations = async (relationClass) => {\n  const ends = [];\n  for (const relation of await expression.getClassInstancesByMetaUUID(relationClass)) {\n    const from = await expression.getSourceByRelInstanceUUID(relation.uuid);\n    const to = await expression.getDestinationByRelInstanceUUID(relation.uuid);\n    if (from && to) ends.push({ relation, from: from.uuid, to: to.uuid });\n  }\n  return ends;\n};\n\nconst readScoped = async (relationClass, kind) => {\n  const dependencies = [];\n  for (const { relation, from, to } of await readRelations(relationClass)) {\n    const scope = (await expression.attrvalByInst(\"2af0633d-cdc8-54ce-a1c4-44eb379e7b81\", relation.uuid)) || \"None\";\n    dependencies.push({ kind, from, to, scope });\n  }\n  return dependencies;\n};\n\nconst readFlowModel = async () => {\n  await expression.loadAllSceneInstances();\n  const items = {};\n  const tasks = [];\n  for (const instance of await expression.getClassInstancesByMetaUUID(\"70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34\")) {\n    const text = async (attribute) => (await expression.attrvalByInst(attribute, instance.uuid)) ?? \"\";\n    const table = await expression.getAttrByInstanceUUID(instance.uuid, \"0c032743-7eac-5885-b39f-ecc41deb7084\");\n    const locations = [];\n    let danglingLocations = 0;\n    for (const cell of [...(table?.table_attributes ?? [])].sort((a, b) => a.table_row - b.table_row)) {\n      const target = cell.role_instance_from?.uuid_has_reference_class_instance;\n      // A row nobody filled in yet, as every new task's first row is, is no location.\n      if (!target) continue;\n      const product = await expression.getInstanceByUUID(target);\n      if (!product) {\n        danglingLocations++;\n        continue;\n      }\n      items[product.uuid] ??= await readItem(product);\n      locations.push(product.uuid);\n    }\n    const ordering = (await text(\"fb11ac47-ffcc-5720-9c4a-bab44420693b\")).trim().charAt(0);\n    tasks.push({\n      id: instance.uuid,\n      name: (await text(\"d6632c72-89fa-4210-9d01-18e911505608\")) || instance.name,\n      duration: parseFloat(await text(\"93dbfdaf-a94a-5d54-9c77-2709ed4a894d\")),\n      workers: parseFloat(await text(\"5bc66805-979a-5786-bf8c-11dd611eb81d\")) || 0,\n      actor: (await text(\"3f41db90-a9eb-5f30-a1cd-d94df23f41d1\")) || \"Other\",\n      ordering: ordering === \"<\" || ordering === \">\" ? ordering : \"None\",\n      exclusive: (await text(\"15a9c71a-b08f-5874-96bc-9af02add1a5d\")) || \"None\",\n      items: locations,\n      danglingLocations,\n    });\n  }\n  const executions = (await readRelations(\"339f5c3f-df5e-5fa9-81b6-cdb292fcb11f\")).map(({ from, to }) => ({ from, to }));\n  const dependencies = [\n    ...(await readScoped(\"cecf5151-b094-5200-880d-b6423221a110\", \"precedence\")),\n    ...(await readScoped(\"5ec52c21-c159-55b5-9d8b-fbe7753dabb9\", \"alternate\")),\n    ...(await readScoped(\"d972491f-b128-5872-be6b-9ee19b83e261\", \"chain\")),\n  ];\n  return { items, tasks, dependencies, executions };\n};\n\n/** Writes values onto a task, then redraws it once. */\nconst writeTask = async (task, values) => {\n  let last;\n  for (const [attribute, value] of values) {\n    await expression.setAttrvalByInstanceUUID(task.id, attribute, value);\n    last = attribute;\n  }\n  if (last) await expression.checkForVisualizationUpdateByAttributeUUID(task.id, last);\n};\n\n/**\n * What a procedure reports goes to the log as it happens, and into one alert at the end.\n * There is no alert outside a browser, so the tests under Node only log.\n */\nconst reported = [];\nconst report = (message, status) => {\n  expression.log(message, status);\n  reported.push(message);\n};\nconst showReport = (title) => {\n  if (reported.length > 0 && typeof globalThis.alert === \"function\") {\n    globalThis.alert(`${title}\\n\\n${reported.join(\"\\n\")}`);\n  }\n};\n\n/** Saving validates values against the attribute type, whose pattern is ASCII only. */\nconst asValue = (text) => text.replace(/[^\\x20-\\x7E]/g, \"?\").slice(0, 200);\n\nconst nodeLabel = (model, node) => `${node.activity} @ ${model.items[node.item]?.name ?? node.item}`;\n\n/** A readable reason, and the tasks to mark, for an unsatisfiable graph. */\nconst describeConflict = (model, graph, conflict) => {\n  const nodes = [...new Set(conflict.nodes)].map((index) => graph.nodes[index]);\n  const tasks = [...new Set(nodes.flatMap((node) => node.tasks))];\n  const labels = nodes.slice(0, 12).map((node) => nodeLabel(model, node)).join(\", \");\n  const more = nodes.length > 12 ? ` and ${nodes.length - 12} more` : \"\";\n  const reason = conflict.type === \"cycle\"\n    ? \"these must each finish before the next, in a cycle\"\n    : \"no order of these satisfies the exclusive, chain and alternate constraints between them\";\n  return { tasks, message: `${labels}${more}: ${reason}.` };\n};\n\n\n  const run = async () => {\n    const core = createCopmodlCore();\n    const model = await readFlowModel();\n    if (model.tasks.length === 0) {\n      report(\"Check Satisfiability: this scene has no IfcTask.\", \"close\");\n      return;\n    }\n    const { errors, warnings, verdict, execution, graph } = core.checkModel(model);\n\n    const marks = new Map(model.tasks.map((task) => [task.id, \"\"]));\n    const mark = (tasks, message) => {\n      for (const task of tasks) if (!marks.get(task)) marks.set(task, message);\n    };\n\n    for (const warning of warnings) report(`Structure warning. ${warning.message}`, \"close\");\n    for (const error of errors) {\n      report(`Structure error. ${error.message}`, \"error\");\n      mark(error.tasks, error.message);\n    }\n\n    if (verdict.status === \"undetermined\") {\n      report(\"Check Satisfiability: the time budget ran out, so the result is undetermined.\", \"error\");\n    } else if (verdict.status === \"unsatisfiable\") {\n      const { tasks, message } = describeConflict(model, graph, verdict.conflict);\n      report(`Consistency error: no execution satisfies this model. ${message}`, \"error\");\n      mark(tasks, \"Part of a contradiction; see the log.\");\n    } else if (execution?.status === \"unsatisfiable\") {\n      const { tasks, message } = describeConflict(model, graph, execution.conflict);\n      report(`The model is satisfiable, but its Execution path contradicts it. ${message}`, \"error\");\n      mark(tasks, \"Execution path contradicts the constraints; see the log.\");\n    } else if (execution?.status === \"undetermined\") {\n      report(\"The model is satisfiable, but the time budget ran out checking its Execution path.\", \"error\");\n    } else {\n      report(`Satisfiable: at least one execution meets every constraint (${graph.nodes.length} activity-item nodes).`, \"done\");\n    }\n\n    for (const task of model.tasks) {\n      await writeTask(task, [[\"72c95b0f-b55f-5f70-96fb-36941149a47e\", asValue(marks.get(task.id))]]);\n    }\n  };\n\n  try {\n    await run();\n  } finally {\n    showReport(\"Check Satisfiability\");\n  }\n}",
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "391f7f40-6cff-55e8-99e1-b998e3539795"
+    },
+    {
+      "uuid": "0903f875-ec34-54bf-b1ee-f51f2998f7a4",
+      "name": "Schedule and Critical Path",
+      "geometry": null,
+      "description": "A schedule satisfying the model, with CPM times and the critical path (Perktold 2017, Section 6.2).",
+      "coordinates_2d": null,
+      "relative_coordinate_3d": null,
+      "absolute_coordinate_3d": null,
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "definition": "async function scheduleAndCriticalPath(expression) {\n  /**\n * Graph core of the Construction Flow procedures.\n *\n * A pure module: it receives a plain model and never touches the expression API, so the\n * algorithms can be tested without a client. The generator inlines this file into every\n * procedure string, which is why it is one factory function rather than an ES module.\n *\n * Sources, referred to by the same tags as the README:\n *   [C] Marengo, Nutt, Perktold: CoPModL. Information Systems 103 (2022).\n *   [T] Perktold: Processes in Construction: Modeling and Consistency Checking. MSc\n *       thesis, Free University of Bozen-Bolzano, 2017.\n *   [E] The EMMSAD 2026 paper this language comes from.\n *\n * Vocabulary follows [C]. A task is an activity on a set of items. An activity-item node\n * is one activity on one item, and is what start and end events belong to.\n *\n * Model shape:\n *   tasks:        { id, name, duration, workers, actor, ordering, exclusive, items[],\n *                   danglingLocations }\n *   items:        { [id]: { id, name, path[], zones: { [level]: zoneId }, elevation } }\n *   dependencies: { kind: \"precedence\" | \"alternate\" | \"chain\", from, to, scope }\n *   executions:   { from, to }\n *\n * `zones` is the projection Πs of [C] Definition 1: an item's value at each scope. `path`\n * is the item followed by everything that contains it. `scope`, `exclusive` and\n * `ordering` use the value \"None\" for absent, and `ordering` is otherwise \"<\" or \">\".\n */\nfunction createCopmodlCore() {\n  /** Tolerance for comparing times, which are fractions of a day (Duration / n). */\n  const EPSILON = 1e-9;\n  /** Satisfiability is exponential in the worst case ([C] Section 5.4). */\n  const DEFAULT_BUDGET_MS = 10000;\n  /** Reversals tried while shortening a schedule, so a large model stays responsive. */\n  const MAX_REVERSAL_TRIES = 400;\n\n  // ---------------------------------------------------------------------------------\n  // Graph construction: [C] Section 5.2 and [T] Sections 5.2, 5.3\n  // ---------------------------------------------------------------------------------\n\n  /**\n   * Builds the disjunctive graph of a model. `arcs` are end-to-start precedences. An\n   * entry of `edges` is a disjunctive edge between two node sets, meaning all of one set\n   * finishes before any of the other starts ([T] Section 5.3.2 generalises [C]'s\n   * group-to-node edge to this form).\n   *\n   * `execution` adds Execution relations, which are not constraints of the language.\n   * `scheduleEdges` adds what only a schedule needs; see addScheduleEdges.\n   */\n  function buildGraph(model, options = {}) {\n    const nodes = [];\n    const nodeByKey = new Map();\n    const nodesOfTask = new Map();\n\n    // Keyed on activity and item, not task: two tasks of one activity sharing an item\n    // yield a single node ([T] Section 5.1.1), because an activity runs once per item.\n    for (const task of model.tasks) {\n      const items = [...new Set(task.items)];\n      const own = [];\n      for (const item of items) {\n        const key = `${task.name}\\u0000${item}`;\n        let node = nodeByKey.get(key);\n        if (!node) {\n          node = { index: nodes.length, activity: task.name, item, tasks: [], duration: 0 };\n          nodes.push(node);\n          nodeByKey.set(key, node);\n        }\n        node.tasks.push(task.id);\n        node.duration = Math.max(node.duration, nodeDuration(task, items.length));\n        own.push(node.index);\n      }\n      nodesOfTask.set(task.id, own);\n    }\n\n    const arcKeys = new Set();\n    const arcs = [];\n    const edges = [];\n    const addArc = (from, to) => {\n      const key = from * nodes.length + to;\n      if (arcKeys.has(key)) return;\n      arcKeys.add(key);\n      arcs.push([from, to]);\n    };\n    const addArcs = (from, to) => {\n      for (const u of from) for (const v of to) addArc(u, v);\n    };\n\n    const zoneOf = (index, scope) =>\n      scope === \"None\" ? \"*\" : model.items[nodes[index].item]?.zones[scope];\n\n    /** The selector σπ of [C]: nodes grouped by their zone at a scope. */\n    const inZones = (indices, scope) => {\n      const groups = new Map();\n      for (const index of indices) {\n        const zone = zoneOf(index, scope);\n        if (zone === undefined) continue;\n        if (!groups.has(zone)) groups.set(zone, []);\n        groups.get(zone).push(index);\n      }\n      return groups;\n    };\n    const everyNode = nodes.map((node) => node.index);\n\n    /** [C] precedence: for each zone in Πs(Ia) ∩ Πs(Ib), a finishes there before b starts. */\n    const addPrecedence = (from, to, scope) => {\n      const fromZones = inZones(nodesOfTask.get(from) ?? [], scope);\n      const toZones = inZones(nodesOfTask.get(to) ?? [], scope);\n      const shared = [];\n      for (const [zone, fromNodes] of fromZones) {\n        const toNodes = toZones.get(zone);\n        if (!toNodes) continue;\n        addArcs(fromNodes, toNodes);\n        shared.push({ zone, members: [...new Set([...fromNodes, ...toNodes])] });\n      }\n      return shared;\n    };\n\n    /** A group against every other node in its zone: exclusive execution and chain. */\n    const addGroupAgainstZone = (group, zone, scope, origin) => {\n      const others = inZones(everyNode, scope).get(zone) ?? [];\n      const inGroup = new Set(group);\n      for (const other of others) {\n        if (!inGroup.has(other)) edges.push({ x: group, y: [other], origin });\n      }\n    };\n\n    for (const task of model.tasks) {\n      // ordered_execution, partitioned by level regardless of sector ([C] Section 3.3).\n      if (task.ordering === \"<\" || task.ordering === \">\") {\n        const groups = new Map();\n        for (const index of nodesOfTask.get(task.id)) {\n          const elevation = model.items[nodes[index].item]?.elevation;\n          if (elevation === null || elevation === undefined) continue;\n          if (!groups.has(elevation)) groups.set(elevation, []);\n          groups.get(elevation).push(index);\n        }\n        const ascending = [...groups.keys()].sort((a, b) => a - b);\n        const sequence = task.ordering === \"<\" ? ascending : ascending.reverse();\n        for (let i = 0; i + 1 < sequence.length; i++) {\n          addArcs(groups.get(sequence[i]), groups.get(sequence[i + 1]));\n        }\n      }\n\n      // exclusive_execution. \"None\" leaves the default of [C], handled in addScheduleEdges.\n      if (task.exclusive && task.exclusive !== \"None\") {\n        const origin = { kind: \"exclusive\", task: task.id };\n        for (const [zone, group] of inZones(nodesOfTask.get(task.id), task.exclusive)) {\n          addGroupAgainstZone(group, zone, task.exclusive, origin);\n        }\n      }\n    }\n\n    for (const dependency of model.dependencies) {\n      const shared = addPrecedence(dependency.from, dependency.to, dependency.scope);\n      const origin = { kind: dependency.kind, from: dependency.from, to: dependency.to };\n      if (dependency.kind === \"alternate\") {\n        for (let i = 0; i < shared.length; i++) {\n          for (let j = i + 1; j < shared.length; j++) {\n            edges.push({ x: shared[i].members, y: shared[j].members, origin });\n          }\n        }\n      } else if (dependency.kind === \"chain\") {\n        for (const { zone, members } of shared) {\n          addGroupAgainstZone(members, zone, dependency.scope, origin);\n        }\n      }\n    }\n\n    if (options.execution) {\n      for (const execution of model.executions) {\n        addArcs(nodesOfTask.get(execution.from) ?? [], nodesOfTask.get(execution.to) ?? []);\n      }\n    }\n\n    const graph = { nodes, arcs, edges, nodesOfTask };\n    if (options.scheduleEdges) addScheduleEdges(graph, model);\n    return graph;\n  }\n\n  /**\n   * A task's Duration is its total ([T] p. 16 and p. 61). [T] p. 58 derives a node's\n   * duration from the pitch, the units performed per working day, without printing a\n   * formula; with equal units that pitch is n / Duration, so a node takes Duration / n.\n   */\n  function nodeDuration(task, itemCount) {\n    return task.duration > 0 && itemCount > 0 ? task.duration / itemCount : 0;\n  }\n\n  /**\n   * Two kinds of simple edge a schedule must respect but satisfiability can ignore,\n   * because a simple edge can always be oriented ([C] Lemma 8, [T] p. 58).\n   *\n   * Default exclusiveness: [C] forbids two tasks on one item at once, and [T] Section 6.1\n   * extends that to items sharing a location, so a task on a storey also blocks work on a\n   * wall inside it. One crew: a task works in one location at a time. That is our\n   * assumption, since [E] Fig. 2 has no crew count, and it is what makes a task take its\n   * full Duration.\n   */\n  function addScheduleEdges(graph, model) {\n    const { nodes, edges } = graph;\n    const pathOf = (node) => model.items[node.item]?.path ?? [node.item];\n    for (let u = 0; u < nodes.length; u++) {\n      for (let v = u + 1; v < nodes.length; v++) {\n        const sameTask = nodes[u].tasks.some((task) => nodes[v].tasks.includes(task));\n        const overlapping =\n          pathOf(nodes[u]).includes(nodes[v].item) || pathOf(nodes[v]).includes(nodes[u].item);\n        if (sameTask) edges.push({ x: [u], y: [v], origin: { kind: \"crew\" } });\n        else if (overlapping) edges.push({ x: [u], y: [v], origin: { kind: \"default-exclusive\" } });\n      }\n    }\n  }\n\n  // ---------------------------------------------------------------------------------\n  // Satisfiability: Sat and NDSat of [C] Section 5.3\n  // ---------------------------------------------------------------------------------\n\n  /** A subproblem: nodes renumbered densely, so reachability can use bitsets. */\n  function makeProblem(ids, arcs, edges) {\n    const position = new Map(ids.map((id, index) => [id, index]));\n    const successors = ids.map(() => new Set());\n    for (const [from, to] of arcs) {\n      successors[position.get(from)].add(position.get(to));\n    }\n    return { ids, position, successors, edges };\n  }\n\n  function copyProblem(problem, edges) {\n    return {\n      ids: problem.ids,\n      position: problem.position,\n      successors: problem.successors.map((set) => new Set(set)),\n      edges,\n    };\n  }\n\n  function arcsOf(problem) {\n    const arcs = [];\n    problem.successors.forEach((set, from) => {\n      for (const to of set) arcs.push([problem.ids[from], problem.ids[to]]);\n    });\n    return arcs;\n  }\n\n  function orient(problem, edge, direction) {\n    const [from, to] = direction > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n    for (const u of from) {\n      const set = problem.successors[problem.position.get(u)];\n      for (const v of to) set.add(problem.position.get(v));\n    }\n  }\n\n  /** Kahn's algorithm. Returns undefined when the arcs contain a cycle. */\n  function topologicalOrder(successors) {\n    const indegree = new Array(successors.length).fill(0);\n    for (const set of successors) for (const to of set) indegree[to]++;\n    const queue = [];\n    indegree.forEach((degree, node) => {\n      if (degree === 0) queue.push(node);\n    });\n    const order = [];\n    while (queue.length > 0) {\n      const node = queue.pop();\n      order.push(node);\n      for (const to of successors[node]) {\n        indegree[to]--;\n        if (indegree[to] === 0) queue.push(to);\n      }\n    }\n    return order.length === successors.length ? order : undefined;\n  }\n\n  /** One cycle of the arcs, as node ids, to show the user what cannot be executed. */\n  function findCycle(problem) {\n    const state = new Array(problem.successors.length).fill(0);\n    const stack = [];\n    const visit = (node) => {\n      state[node] = 1;\n      stack.push(node);\n      for (const to of problem.successors[node]) {\n        if (state[to] === 1) return stack.slice(stack.indexOf(to));\n        if (state[to] === 0) {\n          const cycle = visit(to);\n          if (cycle) return cycle;\n        }\n      }\n      state[node] = 2;\n      stack.pop();\n      return undefined;\n    };\n    for (let node = 0; node < state.length; node++) {\n      if (state[node] === 0) {\n        const cycle = visit(node);\n        if (cycle) return cycle.map((position) => problem.ids[position]);\n      }\n    }\n    return [];\n  }\n\n  function reachability(problem, order) {\n    const words = (problem.successors.length + 31) >>> 5;\n    const reach = problem.successors.map(() => new Uint32Array(words));\n    for (let i = order.length - 1; i >= 0; i--) {\n      const node = order[i];\n      for (const to of problem.successors[node]) {\n        reach[node][to >>> 5] |= 1 << (to & 31);\n        for (let word = 0; word < words; word++) reach[node][word] |= reach[to][word];\n      }\n    }\n    return reach;\n  }\n\n  function hasPath(problem, reach, from, to) {\n    for (const u of from) {\n      const bits = reach[problem.position.get(u)];\n      for (const v of to) {\n        const target = problem.position.get(v);\n        if (bits[target >>> 5] & (1 << (target & 31))) return true;\n      }\n    }\n    return false;\n  }\n\n  /** Tarjan's algorithm. Components come back in topological order. */\n  function stronglyConnectedComponents(successors) {\n    const count = successors.length;\n    const index = new Array(count).fill(-1);\n    const low = new Array(count).fill(0);\n    const onStack = new Array(count).fill(false);\n    const stack = [];\n    const components = [];\n    let next = 0;\n    const visit = (node) => {\n      index[node] = low[node] = next++;\n      stack.push(node);\n      onStack[node] = true;\n      for (const to of successors[node]) {\n        if (index[to] < 0) {\n          visit(to);\n          low[node] = Math.min(low[node], low[to]);\n        } else if (onStack[to]) {\n          low[node] = Math.min(low[node], index[to]);\n        }\n      }\n      if (low[node] === index[node]) {\n        const component = [];\n        let member;\n        do {\n          member = stack.pop();\n          onStack[member] = false;\n          component.push(member);\n        } while (member !== node);\n        components.push(component);\n      }\n    };\n    for (let node = 0; node < count; node++) if (index[node] < 0) visit(node);\n    return components.reverse();\n  }\n\n  /** The proper acyclic partition of [C] Section 5.3: SCCs with each group held together. */\n  function partition(problem, edges) {\n    const extended = problem.successors.map((set) => new Set(set));\n    const hold = (group) => {\n      for (let i = 0; i < group.length; i++) {\n        const next = group[(i + 1) % group.length];\n        extended[problem.position.get(group[i])].add(problem.position.get(next));\n      }\n    };\n    for (const edge of edges) {\n      hold(edge.x);\n      hold(edge.y);\n    }\n    return stronglyConnectedComponents(extended);\n  }\n\n  /**\n   * Sat of [C]. Returns { ok: true, directions } or { ok: false, conflict }, or\n   * { undetermined: true } if the time budget ran out. Simple edges were dropped by the\n   * caller, the first step of Sat.\n   */\n  function sat(problem, deadline) {\n    if (Date.now() > deadline) return { undetermined: true };\n    const directions = new Map();\n    let open = problem.edges;\n\n    // Resolve: a path between the two sides leaves one possible orientation. Repeated,\n    // because each orientation adds arcs that can force further edges.\n    for (;;) {\n      const order = topologicalOrder(problem.successors);\n      if (!order) return { ok: false, conflict: { type: \"cycle\", nodes: findCycle(problem) } };\n      const reach = reachability(problem, order);\n      const remaining = [];\n      let resolved = false;\n      for (const edge of open) {\n        const forward = hasPath(problem, reach, edge.x, edge.y);\n        const backward = hasPath(problem, reach, edge.y, edge.x);\n        if (forward && backward) {\n          const nodes = [...edge.x, ...edge.y];\n          return { ok: false, conflict: { type: \"no-orientation\", nodes, origin: edge.origin } };\n        }\n        if (forward || backward) {\n          const direction = forward ? 1 : -1;\n          orient(problem, edge, direction);\n          directions.set(edge.index, direction);\n          resolved = true;\n        } else {\n          remaining.push(edge);\n        }\n      }\n      open = remaining;\n      if (!resolved) break;\n    }\n    if (open.length === 0) return { ok: true, directions };\n\n    // Partition, then solve each part on its own ([C] Lemma 9). An edge between two parts\n    // is oriented by their order, which cannot close a cycle.\n    const components = partition(problem, open);\n    const partOf = new Map();\n    components.forEach((component, part) => {\n      for (const position of component) partOf.set(problem.ids[position], part);\n    });\n    const edgesOfPart = new Map();\n    for (const edge of open) {\n      const partX = partOf.get(edge.x[0]);\n      const partY = partOf.get(edge.y[0]);\n      if (partX === partY) {\n        if (!edgesOfPart.has(partX)) edgesOfPart.set(partX, []);\n        edgesOfPart.get(partX).push(edge);\n      } else {\n        directions.set(edge.index, partX < partY ? 1 : -1);\n      }\n    }\n    const arcs = arcsOf(problem);\n    for (const [part, edges] of edgesOfPart) {\n      const ids = components[part].map((position) => problem.ids[position]);\n      const members = new Set(ids);\n      const within = arcs.filter(([from, to]) => members.has(from) && members.has(to));\n      const result = branch(makeProblem(ids, within, edges), deadline);\n      if (!result.ok) return result;\n      for (const [index, direction] of result.directions) directions.set(index, direction);\n    }\n    return { ok: true, directions };\n  }\n\n  /** NDSat of [C]: try both orientations of one edge. */\n  function branch(problem, deadline) {\n    const [edge, ...rest] = problem.edges;\n    for (const direction of [1, -1]) {\n      const attempt = copyProblem(problem, rest);\n      orient(attempt, edge, direction);\n      const result = sat(attempt, deadline);\n      if (result.undetermined) return result;\n      if (result.ok) {\n        result.directions.set(edge.index, direction);\n        return result;\n      }\n    }\n    return { ok: false, conflict: { type: \"no-orientation\", nodes: problem.ids, origin: edge.origin } };\n  }\n\n  /** A model is satisfiable iff its disjunctive graph is orientable ([C] Theorem 7). */\n  function checkSatisfiability(graph, options = {}) {\n    const hard = [];\n    graph.edges.forEach((edge, index) => {\n      if (edge.x.length > 1 || edge.y.length > 1) hard.push({ ...edge, index });\n    });\n    const ids = graph.nodes.map((node) => node.index);\n    const deadline = Date.now() + (options.budgetMs ?? DEFAULT_BUDGET_MS);\n    const result = sat(makeProblem(ids, graph.arcs, hard), deadline);\n    if (result.undetermined) return { status: \"undetermined\" };\n    if (!result.ok) return { status: \"unsatisfiable\", conflict: result.conflict };\n    return { status: \"satisfiable\", directions: result.directions };\n  }\n\n  // ---------------------------------------------------------------------------------\n  // Structure checks: the warnings and errors of [C] Section 6\n  // ---------------------------------------------------------------------------------\n\n  function analyseStructure(model) {\n    const errors = [];\n    const warnings = [];\n    const byId = new Map(model.tasks.map((task) => [task.id, task]));\n    const nameOf = (id) => byId.get(id)?.name ?? id;\n    const report = (list, code, message, tasks) => list.push({ code, message, tasks });\n\n    for (const task of model.tasks) {\n      if (task.danglingLocations > 0) {\n        report(errors, \"dangling-location\",\n          `${task.name}: ${task.danglingLocations} location(s) do not point at a loaded product.`, [task.id]);\n      }\n      if (task.items.length === 0 && !(task.danglingLocations > 0)) {\n        report(errors, \"no-locations\", `${task.name}: no Locations.`, [task.id]);\n      }\n      if (!(task.duration > 0)) {\n        report(errors, \"missing-duration\", `${task.name}: Duration is missing.`, [task.id]);\n      }\n\n      const items = new Set(task.items);\n      if (items.size < task.items.length) {\n        report(warnings, \"repeated-location\", `${task.name}: a location is repeated.`, [task.id]);\n      }\n      if (task.exclusive && task.exclusive !== \"None\") {\n        reportMissingZones(task, task.exclusive, \"its Exclusive Constraint\");\n      }\n      if (task.ordering === \"<\" || task.ordering === \">\") {\n        for (const item of items) {\n          const elevation = model.items[item]?.elevation;\n          if (elevation === null || elevation === undefined) {\n            report(warnings, \"no-elevation\",\n              `${task.name}: ${model.items[item]?.name ?? item} has no storey Elevation, so the Ordering Constraint skips it.`, [task.id]);\n          }\n        }\n      }\n\n      const sites = new Set([...items].map((item) => model.items[item]?.zones.IfcSite).filter(Boolean));\n      if (sites.size > 1) {\n        report(warnings, \"several-sites\", `${task.name}: its locations are under different IfcSite roots.`, [task.id]);\n      }\n    }\n\n    function reportMissingZones(task, scope, purpose) {\n      for (const item of new Set(task.items)) {\n        if (model.items[item] && model.items[item].zones[scope] === undefined) {\n          report(warnings, \"coarser-than-scope\",\n            `${task.name}: ${model.items[item].name} has no ${scope}, so ${purpose} does not apply to it.`, [task.id]);\n        }\n      }\n    }\n\n    const activityItems = new Map();\n    for (const task of model.tasks) {\n      for (const item of new Set(task.items)) {\n        const key = `${task.name}\\u0000${item}`;\n        if (activityItems.has(key)) {\n          report(warnings, \"shared-node\",\n            `Two ${task.name} tasks share ${model.items[item]?.name ?? item}; the activity runs there once.`,\n            [activityItems.get(key), task.id]);\n        }\n        activityItems.set(key, task.id);\n      }\n    }\n\n    for (const dependency of model.dependencies) {\n      if (dependency.scope === \"None\") continue;\n      const from = byId.get(dependency.from);\n      const to = byId.get(dependency.to);\n      if (!from || !to) continue;\n      const label = `${nameOf(dependency.from)} -> ${nameOf(dependency.to)}`;\n      reportMissingZones(from, dependency.scope, `the dependency ${label}`);\n      reportMissingZones(to, dependency.scope, `the dependency ${label}`);\n      const zonesOf = (task) => new Set(task.items.map((item) => model.items[item]?.zones[dependency.scope]));\n      const fromZones = zonesOf(from);\n      const shared = [...zonesOf(to)].some((zone) => zone !== undefined && fromZones.has(zone));\n      if (!shared) {\n        report(warnings, \"no-shared-zone\",\n          `${label}: no ${dependency.scope} is shared, so the dependency has no effect.`, [from.id, to.id]);\n      }\n    }\n\n    return { errors, warnings };\n  }\n\n  /** Loops in the diagram. A loop can be satisfiable, so it is only ever a warning. */\n  function diagramLoops(model) {\n    const position = new Map(model.tasks.map((task, index) => [task.id, index]));\n    const successors = model.tasks.map(() => new Set());\n    for (const dependency of model.dependencies) {\n      if (position.has(dependency.from) && position.has(dependency.to)) {\n        successors[position.get(dependency.from)].add(position.get(dependency.to));\n      }\n    }\n    return stronglyConnectedComponents(successors)\n      .filter((component) => component.length > 1)\n      .map((component) => component.map((index) => model.tasks[index].id));\n  }\n\n  /**\n   * Check Satisfiability. Execution is left out of the first pass because [E] Section 3.2\n   * has the modeler \"plan or record a specific path\": it picks an execution rather than\n   * constraining the model. The second pass reports a path that contradicts the\n   * constraints as exactly that.\n   */\n  function checkModel(model, options = {}) {\n    const { errors, warnings } = analyseStructure(model);\n    const verdict = checkSatisfiability(buildGraph(model), options);\n    const graph = buildGraph(model, { execution: true });\n    let execution;\n    if (verdict.status === \"satisfiable\" && model.executions.length > 0) {\n      execution = checkSatisfiability(graph, options);\n    }\n    if (verdict.status === \"satisfiable\") {\n      for (const loop of diagramLoops(model)) {\n        const names = loop.map((id) => model.tasks.find((task) => task.id === id).name);\n        warnings.push({\n          code: \"satisfiable-loop\",\n          message: `Loop between ${names.join(\", \")}: satisfiable, but a constraint may be redundant.`,\n          tasks: loop,\n        });\n      }\n    }\n    return { errors, warnings, verdict, execution, graph };\n  }\n\n  // ---------------------------------------------------------------------------------\n  // Schedule and critical path: [T] Section 6.2\n  // ---------------------------------------------------------------------------------\n\n  /**\n   * Forward and backward pass on a fully oriented graph, the activity network of\n   * [T] p. 58. Returns undefined if the orientation is cyclic.\n   */\n  function timeNetwork(graph, directions) {\n    const count = graph.nodes.length;\n    const successors = graph.nodes.map(() => new Set());\n    for (const [from, to] of graph.arcs) successors[from].add(to);\n    graph.edges.forEach((edge, index) => {\n      const [from, to] = directions[index] > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n      for (const u of from) for (const v of to) successors[u].add(v);\n    });\n\n    const order = topologicalOrder(successors);\n    if (!order) return undefined;\n\n    const duration = graph.nodes.map((node) => node.duration);\n    const start = new Array(count).fill(0);\n    const finish = new Array(count).fill(0);\n    for (const node of order) {\n      finish[node] = start[node] + duration[node];\n      for (const to of successors[node]) start[to] = Math.max(start[to], finish[node]);\n    }\n    const projectLength = finish.reduce((longest, value) => Math.max(longest, value), 0);\n\n    const lateFinish = new Array(count).fill(projectLength);\n    const lateStart = new Array(count).fill(0);\n    const freeFloat = new Array(count).fill(0);\n    for (let i = order.length - 1; i >= 0; i--) {\n      const node = order[i];\n      let earliestSuccessor = projectLength;\n      for (const to of successors[node]) {\n        lateFinish[node] = Math.min(lateFinish[node], lateStart[to]);\n        earliestSuccessor = Math.min(earliestSuccessor, start[to]);\n      }\n      lateStart[node] = lateFinish[node] - duration[node];\n      freeFloat[node] = earliestSuccessor - finish[node];\n    }\n    const totalFloat = lateStart.map((value, node) => value - start[node]);\n    return { start, finish, lateStart, lateFinish, totalFloat, freeFloat, projectLength };\n  }\n\n  /**\n   * Orients every edge left open by satisfiability. Sat leaves simple edges out, and these\n   * can be oriented along any topological order ([C] Lemma 8), so nodes are placed one at\n   * a time, earliest possible start first and longest remaining work on ties. Placement\n   * order then decides each simple edge, so no cycle can arise.\n   */\n  function completeOrientation(graph, satDirections) {\n    const count = graph.nodes.length;\n    const directions = graph.edges.map((_, index) => satDirections.get(index) ?? 0);\n    const successors = graph.nodes.map(() => new Set());\n    const predecessors = graph.nodes.map(() => new Set());\n    const addFixed = (from, to) => {\n      successors[from].add(to);\n      predecessors[to].add(from);\n    };\n    for (const [from, to] of graph.arcs) addFixed(from, to);\n    const rivals = graph.nodes.map(() => []);\n    graph.edges.forEach((edge, index) => {\n      if (directions[index] === 0) {\n        rivals[edge.x[0]].push({ other: edge.y[0], index, isX: true });\n        rivals[edge.y[0]].push({ other: edge.x[0], index, isX: false });\n        return;\n      }\n      const [from, to] = directions[index] > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n      for (const u of from) for (const v of to) addFixed(u, v);\n    });\n\n    const order = topologicalOrder(successors);\n    const tail = new Array(count).fill(0);\n    for (let i = order.length - 1; i >= 0; i--) {\n      const node = order[i];\n      let longest = 0;\n      for (const to of successors[node]) longest = Math.max(longest, tail[to]);\n      tail[node] = longest + graph.nodes[node].duration;\n    }\n\n    const finish = new Array(count).fill(-1);\n    const waiting = predecessors.map((set) => set.size);\n    const ready = new Set();\n    waiting.forEach((value, node) => {\n      if (value === 0) ready.add(node);\n    });\n    const earliestStart = (node) => {\n      let earliest = 0;\n      for (const from of predecessors[node]) earliest = Math.max(earliest, finish[from]);\n      for (const { other } of rivals[node]) earliest = Math.max(earliest, finish[other]);\n      return earliest;\n    };\n    while (ready.size > 0) {\n      let chosen = -1;\n      let chosenStart = Infinity;\n      for (const node of ready) {\n        const start = earliestStart(node);\n        if (\n          start < chosenStart - EPSILON ||\n          (Math.abs(start - chosenStart) < EPSILON && tail[node] > tail[chosen])\n        ) {\n          chosen = node;\n          chosenStart = start;\n        }\n      }\n      ready.delete(chosen);\n      finish[chosen] = chosenStart + graph.nodes[chosen].duration;\n      // An edge still open means its other node is unplaced, so this node goes first.\n      for (const { index, isX } of rivals[chosen]) {\n        if (directions[index] === 0) directions[index] = isX ? 1 : -1;\n      }\n      for (const to of successors[chosen]) {\n        waiting[to]--;\n        if (waiting[to] === 0) ready.add(to);\n      }\n    }\n    return directions;\n  }\n\n  /** Edges with an arc on a critical path; only these can shorten it ([T] p. 59). */\n  function criticalEdges(graph, directions, timing) {\n    const isCritical = (node) => Math.abs(timing.totalFloat[node]) < EPSILON;\n    const candidates = [];\n    graph.edges.forEach((edge, index) => {\n      const [from, to] = directions[index] > 0 ? [edge.x, edge.y] : [edge.y, edge.x];\n      const critical = from.some((u) =>\n        isCritical(u) &&\n        to.some((v) => isCritical(v) && Math.abs(timing.finish[u] - timing.start[v]) < EPSILON));\n      if (critical) candidates.push(index);\n    });\n    return candidates;\n  }\n\n  /**\n   * Local search of [T] p. 59: reverse a disjunctive edge on the critical path while the\n   * project gets shorter. A reversal can close a cycle here, unlike in a job shop, so\n   * those are rejected. An optimal schedule is NP-complete ([T] Section 6.3).\n   */\n  function shortenByReversal(graph, directions) {\n    let timing = timeNetwork(graph, directions);\n    let tries = 0;\n    let reversals = 0;\n    let improved = true;\n    while (improved && tries < MAX_REVERSAL_TRIES) {\n      improved = false;\n      for (const index of criticalEdges(graph, directions, timing)) {\n        if (tries >= MAX_REVERSAL_TRIES) break;\n        tries++;\n        directions[index] = -directions[index];\n        const candidate = timeNetwork(graph, directions);\n        if (candidate && candidate.projectLength < timing.projectLength - EPSILON) {\n          timing = candidate;\n          reversals++;\n          improved = true;\n          break;\n        }\n        directions[index] = -directions[index];\n      }\n    }\n    return { timing, reversals };\n  }\n\n  /** Per-task values, named after IfcTaskTime. Floats take the tightest node. */\n  function taskTimes(graph, timing) {\n    const times = new Map();\n    for (const [task, nodes] of graph.nodesOfTask) {\n      if (nodes.length === 0) continue;\n      const pick = (values, choose) => choose(...nodes.map((node) => values[node]));\n      times.set(task, {\n        earlyStart: pick(timing.start, Math.min),\n        earlyFinish: pick(timing.finish, Math.max),\n        lateStart: pick(timing.lateStart, Math.min),\n        lateFinish: pick(timing.lateFinish, Math.max),\n        totalFloat: pick(timing.totalFloat, Math.min),\n        freeFloat: pick(timing.freeFloat, Math.min),\n        isCritical: nodes.some((node) => Math.abs(timing.totalFloat[node]) < EPSILON),\n      });\n    }\n    return times;\n  }\n\n  /** Workers are reported, not levelled: Workers is the size of the task's one crew. */\n  function peakWorkers(model, graph, timing) {\n    const byId = new Map(model.tasks.map((task) => [task.id, task]));\n    const events = new Map();\n    graph.nodes.forEach((node, index) => {\n      const task = byId.get(node.tasks[0]);\n      if (!events.has(task.actor)) events.set(task.actor, []);\n      events.get(task.actor).push({ at: timing.start[index], change: task.workers });\n      events.get(task.actor).push({ at: timing.finish[index], change: -task.workers });\n    });\n    const peaks = [];\n    for (const [actor, changes] of events) {\n      changes.sort((a, b) => a.at - b.at || a.change - b.change);\n      let current = 0;\n      let peak = { actor, workers: 0, at: 0 };\n      for (const { at, change } of changes) {\n        current += change;\n        if (current > peak.workers) peak = { actor, workers: current, at };\n      }\n      peaks.push(peak);\n    }\n    return peaks;\n  }\n\n  /**\n   * Schedule and Critical Path ([T] Section 6.2): find an acyclic orientation, label nodes\n   * with durations, and run CPM on the resulting network. The result satisfies the model\n   * by construction, but it is not guaranteed to be the shortest.\n   */\n  function computeSchedule(model, options = {}) {\n    const graph = buildGraph(model, { execution: true, scheduleEdges: true });\n    const verdict = checkSatisfiability(graph, options);\n    if (verdict.status !== \"satisfiable\") return { status: verdict.status, conflict: verdict.conflict, graph };\n\n    const directions = completeOrientation(graph, verdict.directions);\n    const { timing, reversals } = shortenByReversal(graph, directions);\n    const nodes = graph.nodes.map((node, index) => ({\n      activity: node.activity,\n      item: node.item,\n      tasks: node.tasks,\n      start: timing.start[index],\n      finish: timing.finish[index],\n      lateStart: timing.lateStart[index],\n      lateFinish: timing.lateFinish[index],\n      totalFloat: timing.totalFloat[index],\n      freeFloat: timing.freeFloat[index],\n    }));\n    return {\n      status: \"scheduled\",\n      graph,\n      nodes,\n      tasks: taskTimes(graph, timing),\n      projectLength: timing.projectLength,\n      peaks: peakWorkers(model, graph, timing),\n      reversals,\n    };\n  }\n\n  return {\n    buildGraph,\n    checkSatisfiability,\n    analyseStructure,\n    diagramLoops,\n    checkModel,\n    computeSchedule,\n  };\n}\n\nif (typeof module !== \"undefined\") module.exports = createCopmodlCore;\n\n  // Shared by the Flow procedures. Inlined by the generator, so it stays plain statements.\nconst CLASS_LEVEL = {\n  \"af3eb87e-0095-5cdf-9cff-acd7ee57e47b\": \"IfcSite\",\n  \"8d7e3b5a-4837-54c7-a292-d70b911e6b86\": \"IfcBuilding\",\n  \"d92c2407-e4fa-56db-9a60-97b2ebadc808\": \"IfcBuildingStorey\",\n  \"f73bb5f6-f434-5f2e-af78-2d44e7b89613\": \"IfcSpace\",\n};\nconst COMPUTED_ATTRIBUTES = [\n  \"68111cb2-29d1-557e-85ed-93c17ce71aa6\",\n  \"37218a06-9b58-5545-a0e5-d2411c508c1a\",\n  \"b737aacc-37f0-551d-be47-922143ef76aa\",\n  \"1c02b864-26fd-5f6d-8d4c-e0f8e9c530ea\",\n  \"5c517dad-8572-5c07-9ba8-bf3eefc632ee\",\n  \"80b2bfe0-ec30-5bf8-a61a-0bdfd76a26c7\",\n  \"d34821a9-5569-5f18-bb33-37cadb48237b\",\n];\n\nconst parentOf = async (uuid) => {\n  for (const relationClass of [\"301698e6-9731-52a7-bde9-38186d9a1bc1\", \"1e2faabe-2c1c-558a-957b-a03791588e72\"]) {\n    const incoming = await expression.getIncomingRelationsByInstanceUUID(uuid, relationClass);\n    if (incoming.length > 0) return expression.getSourceByRelInstanceUUID(incoming[0].uuid);\n  }\n  return undefined;\n};\n\n/** An item with its projection Πs: the zone it falls in at each level of the hierarchy. */\nconst readItem = async (instance) => {\n  const zones = {};\n  const path = [];\n  let elevation = null;\n  let current = instance;\n  // The guard is for a hierarchy drawn in a loop, which the metamodel cannot forbid.\n  while (current && !path.includes(current.uuid)) {\n    path.push(current.uuid);\n    const level = CLASS_LEVEL[current.uuid_class];\n    if (level) zones[level] = current.uuid;\n    if (level === \"IfcBuildingStorey\" && elevation === null) {\n      const value = parseFloat(await expression.attrvalByInst(\"1e390bc2-23b2-51c2-a0ea-497327183106\", current.uuid));\n      if (Number.isFinite(value)) elevation = value;\n    }\n    current = await parentOf(current.uuid);\n  }\n  const name = (await expression.attrvalByInst(\"d6632c72-89fa-4210-9d01-18e911505608\", instance.uuid)) ?? instance.name;\n  return { id: instance.uuid, name, path, zones, elevation };\n};\n\nconst readRelations = async (relationClass) => {\n  const ends = [];\n  for (const relation of await expression.getClassInstancesByMetaUUID(relationClass)) {\n    const from = await expression.getSourceByRelInstanceUUID(relation.uuid);\n    const to = await expression.getDestinationByRelInstanceUUID(relation.uuid);\n    if (from && to) ends.push({ relation, from: from.uuid, to: to.uuid });\n  }\n  return ends;\n};\n\nconst readScoped = async (relationClass, kind) => {\n  const dependencies = [];\n  for (const { relation, from, to } of await readRelations(relationClass)) {\n    const scope = (await expression.attrvalByInst(\"2af0633d-cdc8-54ce-a1c4-44eb379e7b81\", relation.uuid)) || \"None\";\n    dependencies.push({ kind, from, to, scope });\n  }\n  return dependencies;\n};\n\nconst readFlowModel = async () => {\n  await expression.loadAllSceneInstances();\n  const items = {};\n  const tasks = [];\n  for (const instance of await expression.getClassInstancesByMetaUUID(\"70a01e20-d79d-5ddc-a4a6-7a0f66fcdd34\")) {\n    const text = async (attribute) => (await expression.attrvalByInst(attribute, instance.uuid)) ?? \"\";\n    const table = await expression.getAttrByInstanceUUID(instance.uuid, \"0c032743-7eac-5885-b39f-ecc41deb7084\");\n    const locations = [];\n    let danglingLocations = 0;\n    for (const cell of [...(table?.table_attributes ?? [])].sort((a, b) => a.table_row - b.table_row)) {\n      const target = cell.role_instance_from?.uuid_has_reference_class_instance;\n      // A row nobody filled in yet, as every new task's first row is, is no location.\n      if (!target) continue;\n      const product = await expression.getInstanceByUUID(target);\n      if (!product) {\n        danglingLocations++;\n        continue;\n      }\n      items[product.uuid] ??= await readItem(product);\n      locations.push(product.uuid);\n    }\n    const ordering = (await text(\"fb11ac47-ffcc-5720-9c4a-bab44420693b\")).trim().charAt(0);\n    tasks.push({\n      id: instance.uuid,\n      name: (await text(\"d6632c72-89fa-4210-9d01-18e911505608\")) || instance.name,\n      duration: parseFloat(await text(\"93dbfdaf-a94a-5d54-9c77-2709ed4a894d\")),\n      workers: parseFloat(await text(\"5bc66805-979a-5786-bf8c-11dd611eb81d\")) || 0,\n      actor: (await text(\"3f41db90-a9eb-5f30-a1cd-d94df23f41d1\")) || \"Other\",\n      ordering: ordering === \"<\" || ordering === \">\" ? ordering : \"None\",\n      exclusive: (await text(\"15a9c71a-b08f-5874-96bc-9af02add1a5d\")) || \"None\",\n      items: locations,\n      danglingLocations,\n    });\n  }\n  const executions = (await readRelations(\"339f5c3f-df5e-5fa9-81b6-cdb292fcb11f\")).map(({ from, to }) => ({ from, to }));\n  const dependencies = [\n    ...(await readScoped(\"cecf5151-b094-5200-880d-b6423221a110\", \"precedence\")),\n    ...(await readScoped(\"5ec52c21-c159-55b5-9d8b-fbe7753dabb9\", \"alternate\")),\n    ...(await readScoped(\"d972491f-b128-5872-be6b-9ee19b83e261\", \"chain\")),\n  ];\n  return { items, tasks, dependencies, executions };\n};\n\n/** Writes values onto a task, then redraws it once. */\nconst writeTask = async (task, values) => {\n  let last;\n  for (const [attribute, value] of values) {\n    await expression.setAttrvalByInstanceUUID(task.id, attribute, value);\n    last = attribute;\n  }\n  if (last) await expression.checkForVisualizationUpdateByAttributeUUID(task.id, last);\n};\n\n/**\n * What a procedure reports goes to the log as it happens, and into one alert at the end.\n * There is no alert outside a browser, so the tests under Node only log.\n */\nconst reported = [];\nconst report = (message, status) => {\n  expression.log(message, status);\n  reported.push(message);\n};\nconst showReport = (title) => {\n  if (reported.length > 0 && typeof globalThis.alert === \"function\") {\n    globalThis.alert(`${title}\\n\\n${reported.join(\"\\n\")}`);\n  }\n};\n\n/** Saving validates values against the attribute type, whose pattern is ASCII only. */\nconst asValue = (text) => text.replace(/[^\\x20-\\x7E]/g, \"?\").slice(0, 200);\n\nconst nodeLabel = (model, node) => `${node.activity} @ ${model.items[node.item]?.name ?? node.item}`;\n\n/** A readable reason, and the tasks to mark, for an unsatisfiable graph. */\nconst describeConflict = (model, graph, conflict) => {\n  const nodes = [...new Set(conflict.nodes)].map((index) => graph.nodes[index]);\n  const tasks = [...new Set(nodes.flatMap((node) => node.tasks))];\n  const labels = nodes.slice(0, 12).map((node) => nodeLabel(model, node)).join(\", \");\n  const more = nodes.length > 12 ? ` and ${nodes.length - 12} more` : \"\";\n  const reason = conflict.type === \"cycle\"\n    ? \"these must each finish before the next, in a cycle\"\n    : \"no order of these satisfies the exclusive, chain and alternate constraints between them\";\n  return { tasks, message: `${labels}${more}: ${reason}.` };\n};\n\n\n  const clearResults = async (model) => {\n    for (const task of model.tasks) await writeTask(task, COMPUTED_ATTRIBUTES.map((attribute) => [attribute, \"\"]));\n  };\n\n  const run = async () => {\n    const core = createCopmodlCore();\n    const model = await readFlowModel();\n    if (model.tasks.length === 0) {\n      report(\"Schedule and Critical Path: this scene has no IfcTask.\", \"close\");\n      return;\n    }\n\n    const { errors } = core.analyseStructure(model);\n    if (errors.length > 0) {\n      for (const error of errors) report(`Structure error. ${error.message}`, \"error\");\n      report(\"Schedule and Critical Path: fix the structure errors first.\", \"error\");\n      await clearResults(model);\n      return;\n    }\n\n    const schedule = core.computeSchedule(model);\n    if (schedule.status !== \"scheduled\") {\n      const reason = schedule.status === \"undetermined\"\n        ? \"the time budget ran out before satisfiability was decided\"\n        : describeConflict(model, schedule.graph, schedule.conflict).message;\n      report(`Schedule and Critical Path: no schedule, because ${reason}`, \"error\");\n      await clearResults(model);\n      return;\n    }\n\n    const round = (value) => String(Math.round(value * 100) / 100);\n    for (const task of model.tasks) {\n      const times = schedule.tasks.get(task.id);\n      await writeTask(task, [\n        [\"68111cb2-29d1-557e-85ed-93c17ce71aa6\", round(times.earlyStart)],\n        [\"37218a06-9b58-5545-a0e5-d2411c508c1a\", round(times.earlyFinish)],\n        [\"b737aacc-37f0-551d-be47-922143ef76aa\", round(times.lateStart)],\n        [\"1c02b864-26fd-5f6d-8d4c-e0f8e9c530ea\", round(times.lateFinish)],\n        [\"5c517dad-8572-5c07-9ba8-bf3eefc632ee\", round(times.freeFloat)],\n        [\"80b2bfe0-ec30-5bf8-a61a-0bdfd76a26c7\", round(times.totalFloat)],\n        [\"d34821a9-5569-5f18-bb33-37cadb48237b\", times.isCritical ? \"true\" : \"false\"],\n      ]);\n    }\n\n    const inOrder = [...schedule.nodes].sort((a, b) => a.start - b.start || a.finish - b.finish);\n    for (const node of inOrder) {\n      report(`Day ${round(node.start)} to ${round(node.finish)}: ${nodeLabel(model, node)}`, \"info\");\n    }\n    for (const peak of schedule.peaks) {\n      report(`Peak workers, ${peak.actor}: ${peak.workers} on day ${round(peak.at)}`, \"info\");\n    }\n    const critical = model.tasks.filter((task) => schedule.tasks.get(task.id).isCritical).map((task) => task.name);\n    report(`Critical tasks: ${critical.join(\", \")}`, \"info\");\n    report(`Project length: ${round(schedule.projectLength)} days. Valid, but not guaranteed to be the shortest.`, \"done\");\n  };\n\n  try {\n    await run();\n  } finally {\n    showReport(\"Schedule and Critical Path\");\n  }\n}",
+      "creation_time": "2026-11-01T00:00:00.000Z",
+      "modification_time": "2026-11-01T00:00:00.000Z",
+      "uuid_metaobject": "0903f875-ec34-54bf-b1ee-f51f2998f7a4"
+    }
+  ],
+  "creation_time": "2026-11-01T00:00:00.000Z",
+  "modification_time": "2026-11-01T00:00:00.000Z",
+  "uuid_metaobject": "e88aa578-decc-5dac-ac35-2c171b65ba99"
+}

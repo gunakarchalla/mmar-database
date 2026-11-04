@@ -2274,6 +2274,101 @@ ALTER TABLE ONLY public.users
 -- Name: file_uuid_uindex; Type: INDEX; Schema: public; Owner: api
 --
 
+--
+-- Name: delete_unassigned_class_instance(); Type: FUNCTION; Schema: public; Owner: api
+--
+
+CREATE OR REPLACE FUNCTION public.delete_unassigned_class_instance()
+    RETURNS trigger AS
+$$
+BEGIN
+    -- assigned_to_scene only links a class instance to its scene instance, so deleting a
+    -- scene instance cascades this far and no further. Its class and relation instances
+    -- go with it here, unless another scene instance still holds them. That includes the
+    -- instances of a reusable class: one that no scene instance holds cannot be reached.
+    IF NOT EXISTS(SELECT 1
+                  FROM public.assigned_to_scene
+                  WHERE uuid_class_instance = OLD.uuid_class_instance)
+    THEN
+        DELETE FROM public.instance_object WHERE uuid = OLD.uuid_class_instance;
+    END IF;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+ALTER FUNCTION public.delete_unassigned_class_instance() OWNER TO api;
+
+--
+-- Name: FUNCTION delete_unassigned_class_instance(); Type: COMMENT; Schema: public; Owner: api
+--
+
+COMMENT ON FUNCTION public.delete_unassigned_class_instance() IS 'This trigger deletes a class instance once no scene instance holds it';
+
+
+--
+-- Name: delete_attribute_reference_role(); Type: FUNCTION; Schema: public; Owner: api
+--
+
+CREATE OR REPLACE FUNCTION public.delete_attribute_reference_role()
+    RETURNS trigger AS
+$$
+BEGIN
+    IF OLD.role_instance_from IS NOT NULL
+    THEN
+        -- The role instance belongs to this attribute instance, what it points at does
+        -- not. Deleting a role instance also deletes a relation instance or attribute
+        -- instance it references, see delete_relationclass_from_role_entries() and
+        -- delete_attribute_role_entries(), and that target can sit in another scene.
+        UPDATE public.role_instance
+        SET uuid_has_reference_attribute_instance     = NULL,
+            uuid_has_reference_relationclass_instance = NULL
+        WHERE uuid_instance_object = OLD.role_instance_from;
+
+        DELETE FROM public.instance_object WHERE uuid = OLD.role_instance_from;
+    END IF;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+ALTER FUNCTION public.delete_attribute_reference_role() OWNER TO api;
+
+--
+-- Name: FUNCTION delete_attribute_reference_role(); Type: COMMENT; Schema: public; Owner: api
+--
+
+COMMENT ON FUNCTION public.delete_attribute_reference_role() IS 'This trigger deletes the role instance a reference attribute instance held, and leaves its target alone';
+
+
+--
+-- Name: clear_attribute_reference(); Type: FUNCTION; Schema: public; Owner: api
+--
+
+CREATE OR REPLACE FUNCTION public.clear_attribute_reference()
+    RETURNS trigger AS
+$$
+BEGIN
+    -- A role instance goes when its target is deleted, in any scene instance. The foreign
+    -- key would only set role_instance_from to null and leave the target's old name in
+    -- value, so this runs before the delete, while role_instance_from still says which
+    -- attribute instance held it. A table cell is cleared like any other attribute
+    -- instance, and its row stays.
+    UPDATE public.attribute_instance
+    SET role_instance_from = NULL,
+        value              = ''
+    WHERE role_instance_from = OLD.uuid_instance_object;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+ALTER FUNCTION public.clear_attribute_reference() OWNER TO api;
+
+--
+-- Name: FUNCTION clear_attribute_reference(); Type: COMMENT; Schema: public; Owner: api
+--
+
+COMMENT ON FUNCTION public.clear_attribute_reference() IS 'This trigger clears the reference of the attribute instance holding a role instance that is being deleted';
+
+
 CREATE UNIQUE INDEX file_uuid_uindex ON public.file USING btree (uuid_metaobject);
 
 -- Then, create the trigger on the relationclass table
@@ -2305,6 +2400,27 @@ CREATE TRIGGER trigger_attribute_role
     ON public.role_instance
     FOR EACH ROW
 EXECUTE FUNCTION public.delete_attribute_role_entries();
+
+CREATE TRIGGER trigger_delete_unassigned_class
+    AFTER DELETE
+    ON public.assigned_to_scene
+    FOR EACH ROW
+EXECUTE FUNCTION public.delete_unassigned_class_instance();
+
+
+CREATE TRIGGER trigger_delete_attribute_reference_role
+    AFTER DELETE
+    ON public.attribute_instance
+    FOR EACH ROW
+EXECUTE FUNCTION public.delete_attribute_reference_role();
+
+
+CREATE TRIGGER trigger_clear_attribute_reference
+    BEFORE DELETE
+    ON public.role_instance
+    FOR EACH ROW
+EXECUTE FUNCTION public.clear_attribute_reference();
+
 
 --CREATE TRIGGER trigger_prevent_delete_role
 --    BEFORE DELETE ON public.metaobject
